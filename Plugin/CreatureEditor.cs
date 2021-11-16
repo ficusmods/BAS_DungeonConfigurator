@@ -141,7 +141,7 @@ namespace DungeonConfigurator
                 newdrop.referenceID = idTable;
 
             }
-            else if(idCreature != null)
+            else if(idCreature != "")
             {
                 Logger.Detailed("Changing drop to Creature with id: {0}", idCreature);
                 newdrop.reference = CreatureTable.Drop.Reference.Creature;
