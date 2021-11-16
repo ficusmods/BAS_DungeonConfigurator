@@ -1,0 +1,11 @@
+
+NexusMods: 
+Github: 
+
+Planned features:
+  Be able to configure more than one type of enemy
+  Hide the keypad without breaking input fields
+  Refactor keypad code
+  Improve keypad
+  Automatically revert changes
+  Level select (for custom dungeons)
