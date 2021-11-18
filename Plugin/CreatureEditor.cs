@@ -44,17 +44,17 @@ namespace DungeonConfigurator
         {
             creatureEditor = obj;
 
-            toggleCreatureReference =   Utils.get_child_from_path(creatureEditor, "Reference/ToggleCreatureReference").GetComponent<Toggle>();
-            toggleTableReference =      Utils.get_child_from_path(creatureEditor, "Reference/ToggleTableReference").GetComponent<Toggle>();
-            tgroupReference =           Utils.get_child_from_path(creatureEditor, "Reference/ToggleGroupReference").GetComponent<ToggleGroup>();
-            toggleNoneContainer =       Utils.get_child_from_path(creatureEditor, "Container/ToggleNoneContainer").GetComponent<Toggle>();
-            toggleOverrideContainer =   Utils.get_child_from_path(creatureEditor, "Container/ToggleOverrideContainer").GetComponent<Toggle>();
-            tgroupContainer =           Utils.get_child_from_path(creatureEditor, "Container/ToggleGroupContainer").GetComponent<ToggleGroup>();
-            toggleNoneBrain =           Utils.get_child_from_path(creatureEditor, "Brain/ToggleNoneBrain").GetComponent<Toggle>();
-            toggleOverrideBrain =       Utils.get_child_from_path(creatureEditor, "Brain/ToggleOverrideBrain").GetComponent<Toggle>();
-            tgroupBrain =               Utils.get_child_from_path(creatureEditor, "Brain/ToggleGroupBrain").GetComponent<ToggleGroup>();
+            toggleCreatureReference =   Utils.get_child(creatureEditor, "Reference/ToggleCreatureReference").GetComponent<Toggle>();
+            toggleTableReference =      Utils.get_child(creatureEditor, "Reference/ToggleTableReference").GetComponent<Toggle>();
+            tgroupReference =           Utils.get_child(creatureEditor, "Reference/ToggleGroupReference").GetComponent<ToggleGroup>();
+            toggleNoneContainer =       Utils.get_child(creatureEditor, "Container/ToggleNoneContainer").GetComponent<Toggle>();
+            toggleOverrideContainer =   Utils.get_child(creatureEditor, "Container/ToggleOverrideContainer").GetComponent<Toggle>();
+            tgroupContainer =           Utils.get_child(creatureEditor, "Container/ToggleGroupContainer").GetComponent<ToggleGroup>();
+            toggleNoneBrain =           Utils.get_child(creatureEditor, "Brain/ToggleNoneBrain").GetComponent<Toggle>();
+            toggleOverrideBrain =       Utils.get_child(creatureEditor, "Brain/ToggleOverrideBrain").GetComponent<Toggle>();
+            tgroupBrain =               Utils.get_child(creatureEditor, "Brain/ToggleGroupBrain").GetComponent<ToggleGroup>();
 
-            selectorAreaContent = Utils.get_child_from_path(creatureEditor, "SelectorArea/ScrollView/SelectorContent");
+            selectorAreaContent = Utils.get_child(creatureEditor, "SelectorArea/ScrollView/SelectorContent");
             toggleSelectorTemplate = Utils.get_child(creatureEditor, "SelectorArea/ScrollView/ToggleTemplate");
             tgroupSelector = Utils.get_child(creatureEditor, "SelectorArea/ScrollView/ToggleGroupSelector");
 
