@@ -38,7 +38,6 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.Button buttonEditRooms;
         protected UnityEngine.UI.Button buttonEditInventory;
 
-        protected UnityEngine.UI.Button buttonRevertChanges;
         protected UnityEngine.UI.Button buttonStart;
 
         protected UnityEngine.UI.Button buttonCopy;
@@ -79,7 +78,6 @@ namespace DungeonConfigurator
             buttonEditInventory = Utils.get_child(pageLeft, "InventoryEditButton").GetComponent<UnityEngine.UI.Button>();
 
             buttonStart = Utils.get_child(pageLeft, "StartButton").GetComponent<UnityEngine.UI.Button>();
-            buttonRevertChanges = Utils.get_child(pageLeft, "RevertChangesButton").GetComponent<UnityEngine.UI.Button>();
 
             buttonCopy = Utils.get_child(pageInput, "CopyButton").GetComponent<UnityEngine.UI.Button>();
             buttonPaste = Utils.get_child(pageInput, "PasteButton").GetComponent<UnityEngine.UI.Button>();
@@ -175,7 +173,6 @@ namespace DungeonConfigurator
             buttonEditRooms.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.RoomEditor); });
             buttonEditInventory.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.InventoryEditor); });
             buttonStart.onClick.AddListener(Start);
-            buttonRevertChanges.onClick.AddListener(creatureEditor.revert_changes);
             buttonCopy.onClick.AddListener(CopyFromCurrentField);
             buttonPaste.onClick.AddListener(PasteToCurrentField);
             buttonDelete.onClick.AddListener(RemoveLastCharFromCurrentField);
