@@ -15,6 +15,14 @@ namespace DungeonConfigurator
 {
     public class DungeonConfiguratorMenuModule : MenuModule
     {
+        public enum RightPageView
+        {
+            None,
+            CreatureEditor,
+            RoomEditor,
+            InventoryEditor
+        }
+
         protected GameObject pageLeft;
         protected GameObject pageRight;
         protected GameObject pageInput;
@@ -25,6 +33,10 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.InputField fieldSeed;
         protected UnityEngine.UI.Slider sliderDifficulty;
         protected UnityEngine.UI.Slider sliderLength;
+
+        protected UnityEngine.UI.Button buttonEditCreatures;
+        protected UnityEngine.UI.Button buttonEditRooms;
+        protected UnityEngine.UI.Button buttonEditInventory;
 
         protected UnityEngine.UI.Button buttonRevertChanges;
         protected UnityEngine.UI.Button buttonStart;
@@ -61,6 +73,11 @@ namespace DungeonConfigurator
             fieldSeed = Utils.get_child(pageLeft, "SeedField").GetComponent<UnityEngine.UI.InputField>();
             sliderDifficulty = Utils.get_child(pageLeft, "DifficultySlider").GetComponent<UnityEngine.UI.Slider>();
             sliderLength = Utils.get_child(pageLeft, "LengthSlider").GetComponent<UnityEngine.UI.Slider>();
+
+            buttonEditCreatures = Utils.get_child(pageLeft, "CreatureEditButton").GetComponent<UnityEngine.UI.Button>();
+            buttonEditRooms = Utils.get_child(pageLeft, "RoomEditButton").GetComponent<UnityEngine.UI.Button>();
+            buttonEditInventory = Utils.get_child(pageLeft, "InventoryEditButton").GetComponent<UnityEngine.UI.Button>();
+
             buttonStart = Utils.get_child(pageLeft, "StartButton").GetComponent<UnityEngine.UI.Button>();
             buttonRevertChanges = Utils.get_child(pageLeft, "RevertChangesButton").GetComponent<UnityEngine.UI.Button>();
 
@@ -83,6 +100,7 @@ namespace DungeonConfigurator
             add_button_events();
 
             pageInput.SetActive(false);
+            SwitchToRightPageView(RightPageView.None);
         }
         public virtual void CopyFromCurrentField()
         {
@@ -153,6 +171,9 @@ namespace DungeonConfigurator
 
         private void add_button_events()
         {
+            buttonEditCreatures.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.CreatureEditor); });
+            buttonEditRooms.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.RoomEditor); });
+            buttonEditInventory.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.InventoryEditor); });
             buttonStart.onClick.AddListener(Start);
             buttonRevertChanges.onClick.AddListener(creatureEditor.revert_changes);
             buttonCopy.onClick.AddListener(CopyFromCurrentField);
@@ -169,6 +190,30 @@ namespace DungeonConfigurator
             Keypad_7.onClick.AddListener(() => { AddTextToCurrentField("7"); });
             Keypad_8.onClick.AddListener(() => { AddTextToCurrentField("8"); });
             Keypad_9.onClick.AddListener(() => { AddTextToCurrentField("9"); });
+        }
+
+        public virtual void SwitchToRightPageView(RightPageView view)
+        {
+            HideAllRightPageViews();
+            switch (view)
+            {
+                case RightPageView.CreatureEditor:
+                    creatureEditor.setHidden(false);
+                    break;
+                case RightPageView.RoomEditor:
+                    roomEditor.setHidden(false);
+                    break;
+                case RightPageView.InventoryEditor:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public virtual void HideAllRightPageViews()
+        {
+            creatureEditor.setHidden(true);
+            roomEditor.setHidden(true);
         }
 
         public virtual void Start()

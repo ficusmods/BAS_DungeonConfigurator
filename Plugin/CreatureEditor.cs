@@ -129,6 +129,17 @@ namespace DungeonConfigurator
 
         }
 
+        public virtual void setHidden(bool hidden)
+        {
+            if (hidden)
+            {
+                creatureEditor.SetActive(false);
+            }
+            else
+            {
+                creatureEditor.SetActive(true);
+            }
+        }
         public virtual void apply_changes()
         {
             Logger.Basic("Applying changes to the creature tables");

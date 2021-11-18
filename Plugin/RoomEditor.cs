@@ -30,6 +30,17 @@ namespace DungeonConfigurator
             buttonNpcCountDecrease.onClick.AddListener(decrease_npc_count);
             buttonNpcCountIncrease.onClick.AddListener(increase_npc_count);
         }
+        public virtual void setHidden(bool hidden)
+        {
+            if (hidden)
+            {
+                roomEditor.SetActive(false);
+            }
+            else
+            {
+                roomEditor.SetActive(true);
+            }
+        }
         public virtual void increase_npc_count()
         {
             if(additional_npc_count <= int.MaxValue-1)
