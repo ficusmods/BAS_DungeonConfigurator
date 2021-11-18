@@ -20,6 +20,7 @@ namespace DungeonConfigurator
         protected GameObject pageInput;
 
         CreatureEditor creatureEditor;
+        RoomEditor roomEditor;
 
         protected UnityEngine.UI.InputField fieldSeed;
         protected UnityEngine.UI.Slider sliderDifficulty;
@@ -44,6 +45,7 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.Button Keypad_9;
 
         protected UnityEngine.UI.InputField lastEditedField = null;
+        
 
         public override void Init(MenuData menuData, ThunderRoad.Menu menu)
         {
@@ -54,6 +56,7 @@ namespace DungeonConfigurator
             pageRight = menu.GetCustomReference("PageRight").gameObject;
             pageInput = menu.GetCustomReference("PageInput").gameObject;
             creatureEditor = new CreatureEditor(menu.GetCustomReference("CreatureEditor").gameObject);
+            roomEditor = new RoomEditor(menu.GetCustomReference("RoomEditor").gameObject);
 
             fieldSeed = Utils.get_child(pageLeft, "SeedField").GetComponent<UnityEngine.UI.InputField>();
             sliderDifficulty = Utils.get_child(pageLeft, "DifficultySlider").GetComponent<UnityEngine.UI.Slider>();
@@ -186,7 +189,16 @@ namespace DungeonConfigurator
             creatureEditor.apply_changes();
 
             Logger.Basic("Starting dungeon");
+            EventManager.onLevelLoad += EventManager_onLevelLoad;
             GameManager.LoadLevel(ld, lm, options);
+        }
+
+        private void EventManager_onLevelLoad(LevelData levelData, EventTime eventTime)
+        {
+            if (eventTime == EventTime.OnEnd)
+            {
+                roomEditor.apply_changes();
+            }
         }
 
         public override void OnShow(bool show)
