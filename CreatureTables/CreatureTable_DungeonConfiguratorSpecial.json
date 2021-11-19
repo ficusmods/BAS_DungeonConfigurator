@@ -1,6 +1,6 @@
 {
   "$type": "ThunderRoad.CreatureTable, ThunderRoad",
-  "id": "DungeonConfigurator",
+  "id": "DungeonConfiguratorSpecial",
   "saveFolder": "bas",
   "version": 1,
   "description": null,
