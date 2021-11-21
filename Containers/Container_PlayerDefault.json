@@ -1,0 +1,9 @@
+{
+  "$type": "ThunderRoad.ContainerData, ThunderRoad",
+  "id": "DungeonConfiguratorPlayerContainer",
+  "saveFolder": "bas",
+  "version": 1,
+  "displayName": "",
+  "description": null,
+  "contents": []
+}

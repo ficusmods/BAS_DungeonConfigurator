@@ -29,6 +29,7 @@ namespace DungeonConfigurator
 
         CreatureEditor creatureEditor;
         RoomEditor roomEditor;
+        InventoryEditor inventoryEditor;
 
         protected UnityEngine.UI.InputField fieldSeed;
         protected UnityEngine.UI.Slider sliderDifficulty;
@@ -68,6 +69,7 @@ namespace DungeonConfigurator
             pageInput = menu.GetCustomReference("PageInput").gameObject;
             creatureEditor = new CreatureEditor(menu.GetCustomReference("CreatureEditor").gameObject);
             roomEditor = new RoomEditor(menu.GetCustomReference("RoomEditor").gameObject);
+            inventoryEditor = new InventoryEditor(menu.GetCustomReference("InventoryEditor").gameObject);
 
             fieldSeed = Utils.get_child(pageLeft, "SeedField").GetComponent<UnityEngine.UI.InputField>();
             sliderDifficulty = Utils.get_child(pageLeft, "DifficultySlider").GetComponent<UnityEngine.UI.Slider>();
@@ -201,6 +203,7 @@ namespace DungeonConfigurator
                     roomEditor.setHidden(false);
                     break;
                 case RightPageView.InventoryEditor:
+                    inventoryEditor.setHidden(false);
                     break;
                 default:
                     break;
@@ -211,6 +214,7 @@ namespace DungeonConfigurator
         {
             creatureEditor.setHidden(true);
             roomEditor.setHidden(true);
+            inventoryEditor.setHidden(true);
         }
 
         public virtual void Start()
@@ -229,6 +233,7 @@ namespace DungeonConfigurator
             LevelData.Mode lm = ld.GetMode();
 
             creatureEditor.apply_changes();
+            inventoryEditor.apply_changes();
 
             Logger.Basic("Starting dungeon");
             EventManager.onLevelLoad += EventManager_onLevelLoad;
@@ -237,7 +242,7 @@ namespace DungeonConfigurator
 
         private void EventManager_onLevelLoad(LevelData levelData, EventTime eventTime)
         {
-            if (eventTime == EventTime.OnEnd)
+            if (eventTime == EventTime.OnStart)
             {
                 roomEditor.apply_changes();
             }
