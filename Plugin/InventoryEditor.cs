@@ -132,28 +132,33 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
-            Container playerContainer = Player.local.creature.container;
-            playerContainer.loadContent = Container.LoadContent.ContainerID;
-            playerContainer.containerID = player_container_id;
+            EventManager.onLevelLoad += (LevelData levelData, EventTime eventTime) => {
+                Logger.Detailed("Applying inventory changes");
+                Container playerContainer = Player.local.creature.container;
+                playerContainer.loadContent = Container.LoadContent.ContainerID;
+                playerContainer.containerID = player_container_id;
 
-            ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
-            foreach(var entry in equippedItems)
-            {
-                ContainerData.Content content = new ContainerData.Content();
-                content.reference = ContainerData.Content.Reference.Item;
-                content.referenceID = entry.Value.id;
-                content.itemData = Catalog.GetData<ItemData>(content.referenceID);
-                if(!non_holder_list.Contains(entry.Key))
+                ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
+                foreach(var entry in equippedItems)
                 {
-                    Item.SavedValue cval = new Item.SavedValue("Holder", entry.Key);
-                    content.customValues.Add(cval);
+                    ContainerData.Content content = new ContainerData.Content();
+                    content.reference = ContainerData.Content.Reference.Item;
+                    content.referenceID = entry.Value.id;
+                    content.itemData = Catalog.GetData<ItemData>(content.referenceID);
+                    if(!non_holder_list.Contains(entry.Key))
+                    {
+                        Item.SavedValue cval = new Item.SavedValue("Holder", entry.Key);
+                        content.customValues.Add(cval);
+                    }
+                    containterData.contents.Add(content);
                 }
-                containterData.contents.Add(content);
-            }
-
-            playerContainer.Load();
-            Player.local.creature.equipment.Load();
-            Player.local.creature.mana.Load();
+                playerContainer.Load();
+                Player.local.creature.mana.Load();
+                Player.local.creature.equipment.UnequipWeapons();
+                Player.local.creature.equipment.UnequipAllWardrobes();
+                Player.local.creature.equipment.EquipAllWardrobes(false, false);
+                Player.local.creature.equipment.EquipWeapons();
+            };
         }
 
         private void init_button_callbacks(){
