@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using ThunderRoad;
 
 namespace DungeonConfigurator
@@ -46,6 +47,9 @@ namespace DungeonConfigurator
         GameObject categoryRowsEntryListTemplate;
         GameObject categoryRowsEntryTemplate;
 
+        GameObject slotHint;
+        Text slotHintText;
+
         const int inventorySelectorEntryPerRow = 4;
         string player_container_id = "DungeonConfiguratorPlayerContainer";
         public enum SlotType {
@@ -72,6 +76,9 @@ namespace DungeonConfigurator
             viewItemSelect = Utils.get_child(inventoryEditor, "ItemSelectView");
             viewSubCategorySelect = Utils.get_child(viewItemSelect, "Category/CategoryView");
             viewSubItemSelect = Utils.get_child(viewItemSelect, "Item/ItemView");
+
+            slotHint = Utils.get_child(viewSlots, "SlotHint");
+            slotHintText = slotHint.GetComponent<Text>();
 
             buttonHipRight    = Utils.get_child(viewSlots, "Items/HipRight"   ).GetComponentInChildren<Button>();
             buttonHipLeft     = Utils.get_child(viewSlots, "Items/HipLeft"    ).GetComponentInChildren<Button>();
@@ -170,56 +177,78 @@ namespace DungeonConfigurator
             }
         }
         private void init_button_callbacks(){
-            buttonHipRight.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("HipsRight");
-                currSelectedSlot = "HipsRight";
-                switch_to_category_view();
-            });
-            buttonHipLeft.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("HipsLeft");
-                currSelectedSlot = "HipsLeft";
-                switch_to_category_view();
-            });
-            buttonBackRight.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("BackRight");
-                currSelectedSlot = "BackRight";
-                switch_to_category_view();
-            });
-            buttonBackLeft.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("BackLeft");
-                currSelectedSlot = "BackLeft";
-                switch_to_category_view();
-            });
-            buttonHandRight.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("HandRight");
-                currSelectedSlot = "HandRight";
-                switch_to_category_view();
-            });
-            buttonHandLeft.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("HandLeft");
-                currSelectedSlot = "HandLeft";
-                switch_to_category_view();
-            });
-            buttonSpellTop.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("SpellTop");
-                currSelectedSlot = "SpellTop";
-                switch_to_category_view();
-            });
-            buttonSpellLeft.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("SpellLeft");
-                currSelectedSlot = "SpellLeft";
-                switch_to_category_view();
-            });
-            buttonSpellRight.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("SpellRight");
-                currSelectedSlot = "SpellRight";
-                switch_to_category_view();
-            });
-            buttonSpellBottom.onClick.AddListener(delegate {
-                tryRemoveItemFromSlot("SpellBottom");
-                currSelectedSlot = "SpellBottom";
-                switch_to_category_view();
-            });
+            buttonHipRight.onClick.AddListener(delegate    { handle_slot_click("HipsRight"  ); });
+            buttonHipLeft.onClick.AddListener(delegate     { handle_slot_click("HipsLeft"   ); });
+            buttonBackRight.onClick.AddListener(delegate   { handle_slot_click("BackRight"  ); });
+            buttonBackLeft.onClick.AddListener(delegate    { handle_slot_click("BackLeft"   ); });
+            buttonHandRight.onClick.AddListener(delegate   { handle_slot_click("HandRight"  ); });
+            buttonHandLeft.onClick.AddListener(delegate    { handle_slot_click("HandLeft"   ); });
+            buttonSpellTop.onClick.AddListener(delegate    { handle_slot_click("SpellTop"   ); });
+            buttonSpellLeft.onClick.AddListener(delegate   { handle_slot_click("SpellLeft"  ); });
+            buttonSpellRight.onClick.AddListener(delegate  { handle_slot_click("SpellRight" ); });
+            buttonSpellBottom.onClick.AddListener(delegate { handle_slot_click("SpellBottom"); });
+
+            add_pointer_enter_to_slotbutton(buttonHipRight   , "HipsRight"  );
+            add_pointer_enter_to_slotbutton(buttonHipLeft    , "HipsLeft"   );
+            add_pointer_enter_to_slotbutton(buttonBackRight  , "BackRight"  );
+            add_pointer_enter_to_slotbutton(buttonBackLeft   , "BackLeft"   );
+            add_pointer_enter_to_slotbutton(buttonHandRight  , "HandRight"  );
+            add_pointer_enter_to_slotbutton(buttonHandLeft   , "HandLeft"   );
+            add_pointer_enter_to_slotbutton(buttonSpellTop   , "SpellTop"   );
+            add_pointer_enter_to_slotbutton(buttonSpellLeft  , "SpellLeft"  );
+            add_pointer_enter_to_slotbutton(buttonSpellRight , "SpellRight" );
+            add_pointer_enter_to_slotbutton(buttonSpellBottom, "SpellBottom");
+            add_pointer_exit_to_slotbutton(buttonHipRight   , "HipsRight"  );
+            add_pointer_exit_to_slotbutton(buttonHipLeft    , "HipsLeft"   );
+            add_pointer_exit_to_slotbutton(buttonBackRight  , "BackRight"  );
+            add_pointer_exit_to_slotbutton(buttonBackLeft   , "BackLeft"   );
+            add_pointer_exit_to_slotbutton(buttonHandRight  , "HandRight"  );
+            add_pointer_exit_to_slotbutton(buttonHandLeft   , "HandLeft"   );
+            add_pointer_exit_to_slotbutton(buttonSpellTop   , "SpellTop"   );
+            add_pointer_exit_to_slotbutton(buttonSpellLeft  , "SpellLeft"  );
+            add_pointer_exit_to_slotbutton(buttonSpellRight , "SpellRight" );
+            add_pointer_exit_to_slotbutton(buttonSpellBottom, "SpellBottom");
+        }
+
+        private void add_pointer_enter_to_slotbutton(Button slotbutton, string slot)
+        {
+            var trigger = slotbutton.gameObject.GetComponent<EventTrigger>();
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerEnter;
+            entry.callback.AddListener((data) => { showHintForSlot(slot); });
+            trigger.triggers.Add(entry);
+        }
+
+        private void add_pointer_exit_to_slotbutton(Button slotbutton, string slot)
+        {
+            var trigger = slotbutton.gameObject.GetComponent<EventTrigger>();
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerExit;
+            entry.callback.AddListener((data) => { hideSlotHint();});
+            trigger.triggers.Add(entry);
+        }
+
+        private void handle_slot_click(string slot)
+        {
+            tryRemoveItemFromSlot(slot);
+            currSelectedSlot = slot;
+            switch_to_category_view();
+        }
+
+        private void showHintForSlot(string slot)
+        {
+            if(equippedItems.ContainsKey(slot))
+            {
+                slotHint.SetActive(true);
+                slotHintText.text = equippedItems[slot].id;
+                slotHint.transform.position = equippedItemImages[slot].transform.position;
+                slotHint.transform.LookAt(Camera.main.transform.position, Camera.main.transform.up);
+            }
+        }
+
+        private void hideSlotHint()
+        {
+            slotHint.SetActive(false);
         }
 
         private void init_equipped_image_map()
@@ -239,7 +268,8 @@ namespace DungeonConfigurator
         {
             GameObject currList = GameObject.Instantiate(categoryRowsEntryListTemplate, categoryRowsContent.transform);
             var categories = Catalog.gameData.categories;
-            foreach(GameData.Category category in categories){
+            foreach(GameData.Category category in categories)
+            {
                 if(currList.transform.childCount > inventorySelectorEntryPerRow)
                 {
                     currList = GameObject.Instantiate(categoryRowsEntryListTemplate, categoryRowsContent.transform);
