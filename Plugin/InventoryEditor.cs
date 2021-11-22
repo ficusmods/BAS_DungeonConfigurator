@@ -161,44 +161,62 @@ namespace DungeonConfigurator
             };
         }
 
+        private void tryRemoveItemFromSlot(string slot)
+        {
+            if(equippedItems.ContainsKey(slot))
+            {
+                equippedItems.Remove(slot);
+                equippedItemImages[slot].texture = null;
+            }
+        }
         private void init_button_callbacks(){
             buttonHipRight.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("HipsRight");
                 currSelectedSlot = "HipsRight";
                 switch_to_category_view();
             });
             buttonHipLeft.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("HipsLeft");
                 currSelectedSlot = "HipsLeft";
                 switch_to_category_view();
             });
             buttonBackRight.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("BackRight");
                 currSelectedSlot = "BackRight";
                 switch_to_category_view();
             });
             buttonBackLeft.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("BackLeft");
                 currSelectedSlot = "BackLeft";
                 switch_to_category_view();
             });
             buttonHandRight.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("HandRight");
                 currSelectedSlot = "HandRight";
                 switch_to_category_view();
             });
             buttonHandLeft.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("HandLeft");
                 currSelectedSlot = "HandLeft";
                 switch_to_category_view();
             });
             buttonSpellTop.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("SpellTop");
                 currSelectedSlot = "SpellTop";
                 switch_to_category_view();
             });
             buttonSpellLeft.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("SpellLeft");
                 currSelectedSlot = "SpellLeft";
                 switch_to_category_view();
             });
             buttonSpellRight.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("SpellRight");
                 currSelectedSlot = "SpellRight";
                 switch_to_category_view();
             });
             buttonSpellBottom.onClick.AddListener(delegate {
+                tryRemoveItemFromSlot("SpellBottom");
                 currSelectedSlot = "SpellBottom";
                 switch_to_category_view();
             });
