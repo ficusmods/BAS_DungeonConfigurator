@@ -23,8 +23,6 @@ namespace DungeonConfigurator
         Button buttonHipLeft;
         Button buttonBackRight;
         Button buttonBackLeft;
-        Button buttonHandRight;
-        Button buttonHandLeft;
         Button buttonSpellTop;
         Button buttonSpellLeft;
         Button buttonSpellRight;
@@ -33,8 +31,6 @@ namespace DungeonConfigurator
         RawImage imgHipLeft;
         RawImage imgBackRight;
         RawImage imgBackLeft;
-        RawImage imgHandRight;
-        RawImage imgHandLeft;
         RawImage imgSpellTop;
         RawImage imgSpellLeft;
         RawImage imgSpellRight;
@@ -84,8 +80,6 @@ namespace DungeonConfigurator
             buttonHipLeft     = Utils.get_child(viewSlots, "Items/HipLeft"    ).GetComponentInChildren<Button>();
             buttonBackRight   = Utils.get_child(viewSlots, "Items/BackRight"  ).GetComponentInChildren<Button>();
             buttonBackLeft    = Utils.get_child(viewSlots, "Items/BackLeft"   ).GetComponentInChildren<Button>();
-            buttonHandRight   = Utils.get_child(viewSlots, "Items/HandRight"  ).GetComponentInChildren<Button>();
-            buttonHandLeft    = Utils.get_child(viewSlots, "Items/HandLeft"   ).GetComponentInChildren<Button>();
             buttonSpellTop    = Utils.get_child(viewSlots, "Items/TopSpell"   ).GetComponentInChildren<Button>();
             buttonSpellLeft   = Utils.get_child(viewSlots, "Items/LeftSpell"  ).GetComponentInChildren<Button>();
             buttonSpellRight  = Utils.get_child(viewSlots, "Items/RightSpell" ).GetComponentInChildren<Button>();
@@ -94,8 +88,6 @@ namespace DungeonConfigurator
             imgHipLeft        = Utils.get_child(viewSlots, "Items/HipLeft"    ).GetComponentInChildren<RawImage>();
             imgBackRight      = Utils.get_child(viewSlots, "Items/BackRight"  ).GetComponentInChildren<RawImage>();
             imgBackLeft       = Utils.get_child(viewSlots, "Items/BackLeft"   ).GetComponentInChildren<RawImage>();
-            imgHandRight      = Utils.get_child(viewSlots, "Items/HandRight"  ).GetComponentInChildren<RawImage>();
-            imgHandLeft       = Utils.get_child(viewSlots, "Items/HandLeft"   ).GetComponentInChildren<RawImage>();
             imgSpellTop       = Utils.get_child(viewSlots, "Items/TopSpell"   ).GetComponentInChildren<RawImage>();
             imgSpellLeft      = Utils.get_child(viewSlots, "Items/LeftSpell"  ).GetComponentInChildren<RawImage>();
             imgSpellRight     = Utils.get_child(viewSlots, "Items/RightSpell" ).GetComponentInChildren<RawImage>();
@@ -112,8 +104,6 @@ namespace DungeonConfigurator
             imgHipLeft.gameObject.SetActive(false);
             imgBackRight.gameObject.SetActive(false);
             imgBackLeft.gameObject.SetActive(false);
-            imgHandRight.gameObject.SetActive(false);
-            imgHandLeft.gameObject.SetActive(false);
             imgSpellTop.gameObject.SetActive(false);
             imgSpellLeft.gameObject.SetActive(false);
             imgSpellRight.gameObject.SetActive(false);
@@ -181,8 +171,6 @@ namespace DungeonConfigurator
             buttonHipLeft.onClick.AddListener(delegate     { handle_slot_click("HipsLeft"   ); });
             buttonBackRight.onClick.AddListener(delegate   { handle_slot_click("BackRight"  ); });
             buttonBackLeft.onClick.AddListener(delegate    { handle_slot_click("BackLeft"   ); });
-            buttonHandRight.onClick.AddListener(delegate   { handle_slot_click("HandRight"  ); });
-            buttonHandLeft.onClick.AddListener(delegate    { handle_slot_click("HandLeft"   ); });
             buttonSpellTop.onClick.AddListener(delegate    { handle_slot_click("SpellTop"   ); });
             buttonSpellLeft.onClick.AddListener(delegate   { handle_slot_click("SpellLeft"  ); });
             buttonSpellRight.onClick.AddListener(delegate  { handle_slot_click("SpellRight" ); });
@@ -192,8 +180,6 @@ namespace DungeonConfigurator
             add_pointer_enter_to_slotbutton(buttonHipLeft    , "HipsLeft"   );
             add_pointer_enter_to_slotbutton(buttonBackRight  , "BackRight"  );
             add_pointer_enter_to_slotbutton(buttonBackLeft   , "BackLeft"   );
-            add_pointer_enter_to_slotbutton(buttonHandRight  , "HandRight"  );
-            add_pointer_enter_to_slotbutton(buttonHandLeft   , "HandLeft"   );
             add_pointer_enter_to_slotbutton(buttonSpellTop   , "SpellTop"   );
             add_pointer_enter_to_slotbutton(buttonSpellLeft  , "SpellLeft"  );
             add_pointer_enter_to_slotbutton(buttonSpellRight , "SpellRight" );
@@ -202,8 +188,6 @@ namespace DungeonConfigurator
             add_pointer_exit_to_slotbutton(buttonHipLeft    , "HipsLeft"   );
             add_pointer_exit_to_slotbutton(buttonBackRight  , "BackRight"  );
             add_pointer_exit_to_slotbutton(buttonBackLeft   , "BackLeft"   );
-            add_pointer_exit_to_slotbutton(buttonHandRight  , "HandRight"  );
-            add_pointer_exit_to_slotbutton(buttonHandLeft   , "HandLeft"   );
             add_pointer_exit_to_slotbutton(buttonSpellTop   , "SpellTop"   );
             add_pointer_exit_to_slotbutton(buttonSpellLeft  , "SpellLeft"  );
             add_pointer_exit_to_slotbutton(buttonSpellRight , "SpellRight" );
@@ -257,8 +241,6 @@ namespace DungeonConfigurator
             equippedItemImages["HipsLeft"] = imgHipLeft;
             equippedItemImages["BackRight"] = imgBackRight;
             equippedItemImages["BackLeft"] = imgBackLeft;
-            equippedItemImages["HandRight"] = imgHandRight;
-            equippedItemImages["HandLeft"] = imgHandLeft;
             equippedItemImages["SpellTop"] = imgSpellRight;
             equippedItemImages["SpellLeft"] = imgSpellLeft;
             equippedItemImages["SpellRight"] = imgSpellRight;
