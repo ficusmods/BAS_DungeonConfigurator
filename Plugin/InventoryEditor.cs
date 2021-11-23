@@ -78,17 +78,17 @@ namespace DungeonConfigurator
             slots["ItemsExtra3"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Items/Extra3"), "ItemsExtra3");
             slots["ItemsExtra4"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Items/Extra4"), "ItemsExtra4");
             
-            slots["ArmorChest"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots     , "Armor/Chest"     ), "ArmorChest");
-            slots["ArmorHelmet"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots    , "Armor/Helmet"    ), "ArmorHelmet");
-            slots["ArmorHandLeft"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots  , "Armor/HandLeft"  ), "ArmorHandLeft");
-            slots["ArmorHandRight"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots , "Armor/HandRight" ), "ArmorHandRight");
-            slots["ArmorLegs"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots      , "Armor/Legs"      ), "ArmorLegs");
-            slots["ArmorBootsRight"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Armor/BootsRight"), "ArmorBootsRight");
-            slots["ArmorBootsLeft"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots , "Armor/BootsLeft" ), "ArmorBootsLeft");
-            slots["ArmorCosmetics1"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Armor/Cosmetics1"), "ArmorCosmetics1");
-            slots["ArmorCosmetics2"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Armor/Cosmetics2"), "ArmorCosmetics2");
-            slots["ArmorCosmetics3"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Armor/Cosmetics3"), "ArmorCosmetics3");
-            slots["ArmorCosmetics4"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Armor/Cosmetics4"), "ArmorCosmetics4");
+            slots["ArmorChest"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots     , "Armor/Chest"     ), "ArmorChest");
+            slots["ArmorHelmet"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots    , "Armor/Helmet"    ), "ArmorHelmet");
+            slots["ArmorHandLeft"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots  , "Armor/HandLeft"  ), "ArmorHandLeft");
+            slots["ArmorHandRight"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots , "Armor/HandRight" ), "ArmorHandRight");
+            slots["ArmorLegs"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots      , "Armor/Legs"      ), "ArmorLegs");
+            slots["ArmorBootsRight"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/BootsRight"), "ArmorBootsRight");
+            slots["ArmorBootsLeft"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots , "Armor/BootsLeft" ), "ArmorBootsLeft");
+            slots["ArmorCosmetics1"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Cosmetics1"), "ArmorCosmetics1");
+            slots["ArmorCosmetics2"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Cosmetics2"), "ArmorCosmetics2");
+            slots["ArmorCosmetics3"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Cosmetics3"), "ArmorCosmetics3");
+            slots["ArmorCosmetics4"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Cosmetics4"), "ArmorCosmetics4");
 
             slots["Spell1"] = new InventoryEditorSpellSlot(Utils.get_child(viewSlots, "Spells/Spell1"), "Spell1");
             slots["Spell2"] = new InventoryEditorSpellSlot(Utils.get_child(viewSlots, "Spells/Spell2"), "Spell2");
