@@ -19,16 +19,6 @@ namespace DungeonConfigurator
         GameObject viewItemSelect;
         GameObject viewSubItemSelect;
 
-        InventoryEditorSlot HipRight;
-        InventoryEditorSlot HipLeft;
-        InventoryEditorSlot BackRight;
-        InventoryEditorSlot BackLeft;
-
-        InventoryEditorSlot Spell1;
-        InventoryEditorSlot Spell2;
-        InventoryEditorSlot Spell3;
-        InventoryEditorSlot Spell4;
-
         GameObject itemRowsContentTemplate;
         GameObject itemRowsEntryListTemplate;
         GameObject itemRowsEntryTemplate;
@@ -38,7 +28,6 @@ namespace DungeonConfigurator
         const int inventorySelectorEntryPerRow = 4;
         string player_container_id = "DungeonConfiguratorPlayerContainer";
 
-        InventoryEditorSlot currSelectedSlot;
         Dictionary<string, InventoryEditorSlot> slots = new Dictionary<string, InventoryEditorSlot>();
 
         public InventoryEditor(GameObject obj)
@@ -151,7 +140,6 @@ namespace DungeonConfigurator
         private void handle_slot_click(InventoryEditorSlot slot)
         {
             slot.item = null;
-            currSelectedSlot = slot;
             fill_items(slot);
         }
 
