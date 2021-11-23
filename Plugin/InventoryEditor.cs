@@ -387,6 +387,7 @@ namespace DungeonConfigurator
                 entry.Value.SetActive(false);
             }
             item_page_map[category.name].SetActive(true);
+            viewSubItemSelect.GetComponent<ScrollRect>().content = item_page_map[category.name].GetComponent<RectTransform>();
         }
 
         private void fill_items_with_spells()
@@ -398,6 +399,7 @@ namespace DungeonConfigurator
                 entry.Value.SetActive(false);
             }
             spellPage.SetActive(true);
+            viewSubItemSelect.GetComponent<ScrollRect>().content = spellPage.GetComponent<RectTransform>();
         }
 
         private void switch_to_category_view()
