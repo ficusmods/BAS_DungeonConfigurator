@@ -42,17 +42,14 @@ namespace DungeonConfigurator
             slotHint = Utils.get_child(viewSlots, "SlotHint");
             slotHintText = slotHint.GetComponent<Text>();
 
-            itemRowsContentTemplate = Utils.get_child(viewItemSelect, "ItemRowsTemplate");
-            itemRowsEntryListTemplate = Utils.get_child(viewItemSelect, "ItemListTemplate");
-            itemRowsEntryTemplate = Utils.get_child(viewItemSelect, "ItemListEntryTemplate");
+            itemRowsContentTemplate = Utils.get_child(viewItemSelect, "Item/ItemRowsTemplate");
+            itemRowsEntryListTemplate = Utils.get_child(viewItemSelect, "Item/ItemListTemplate");
+            itemRowsEntryTemplate = Utils.get_child(viewItemSelect, "Item/ItemListEntryTemplate");
 
             init_slot_map();
             init_button_callbacks();
 
             viewItemSelect.SetActive(false);
-            itemRowsContentTemplate.SetActive(false);
-            itemRowsEntryListTemplate.SetActive(false);
-            itemRowsEntryTemplate.SetActive(false);
         }
 
         private void init_slot_map()
@@ -60,19 +57,19 @@ namespace DungeonConfigurator
             Logger.Detailed("Initializing slots");
             slots["HipsRight"] = new InventoryEditorItemSlot(
                 Utils.get_child(viewSlots, "Items/HipRight"), "HipsRight",
-                Player.local.creature.equipment.GetHolder(Holder.DrawSlot.HipsRight)
+                Holder.DrawSlot.HipsRight
                 );
             slots["HipsLeft"] = new InventoryEditorItemSlot(
                 Utils.get_child(viewSlots, "Items/HipLeft"), "HipsLeft",
-                Player.local.creature.equipment.GetHolder(Holder.DrawSlot.HipsLeft)
+                Holder.DrawSlot.HipsLeft
                 );
             slots["BackRight"] = new InventoryEditorItemSlot(
                 Utils.get_child(viewSlots, "Items/BackRight"), "BackRight",
-                Player.local.creature.equipment.GetHolder(Holder.DrawSlot.BackRight)
+                Holder.DrawSlot.BackRight
                 );
             slots["BackLeft"] = new InventoryEditorItemSlot(
                 Utils.get_child(viewSlots, "Items/BackLeft"), "BackLeft",
-                Player.local.creature.equipment.GetHolder(Holder.DrawSlot.BackLeft)
+                Holder.DrawSlot.BackLeft
                 );
             
             slots["ItemsExtra1"] = new InventoryEditorItemSlot(Utils.get_child(viewSlots, "Items/Extra1"), "ItemsExtra1");
@@ -167,8 +164,11 @@ namespace DungeonConfigurator
             {
                 slotHintText.text = slot.item.id;
             }
-            slotHint.transform.position = slot.objSlot.transform.position;
-            slotHint.transform.LookAt(Camera.main.transform.position, Camera.main.transform.up);   
+            Logger.Detailed("Showing hint at slot loc: {0} {1} {2} moved to {4} {5} {6}",
+                slot.objSlot.transform.position.x, slot.objSlot.transform.position.y, slot.objSlot.transform.position.z,
+                slotHint.transform.position.x, slotHint.transform.position.y, slotHint.transform.position.z);
+            slotHint.transform.position = slot.objSlot.transform.position + slotHint.transform.up * 2.0f;
+            slotHint.transform.LookAt(2f * slotHint.transform.position - Camera.main.transform.position, Camera.main.transform.up);   
         }
 
         private void hide_slot_hint()
@@ -185,14 +185,21 @@ namespace DungeonConfigurator
             }
 
             viewItemSelect.SetActive(true);
-
+            viewSubItemSelect.SetActive(true);
+            itemRowsContentTemplate.SetActive(true);
+            itemRowsEntryListTemplate.SetActive(true);
+            itemRowsEntryTemplate.SetActive(true);
+            
             List<ItemData> items = slot.get_possible_coices();
             GameObject rows = GameObject.Instantiate(itemRowsContentTemplate, viewSubItemSelect.transform);
+            rows.SetActive(true);
             GameObject column = GameObject.Instantiate(itemRowsEntryListTemplate, rows.transform);
+            column.SetActive(true);
             foreach(var item in items)
             {
                 if(column.transform.childCount > inventorySelectorEntryPerRow)
                 {
+                    Logger.Detailed("Starting new column");
                     column = GameObject.Instantiate(itemRowsEntryListTemplate, rows.transform);
                 }
                 
@@ -206,8 +213,14 @@ namespace DungeonConfigurator
                     slot.item = item;
                     viewItemSelect.SetActive(false);
                 });
+                currEntry.SetActive(true);
             }
             viewSubItemSelect.GetComponent<ScrollRect>().content = rows.GetComponent<RectTransform>();
+
+            
+            itemRowsContentTemplate.SetActive(false);
+            itemRowsEntryListTemplate.SetActive(false);
+            itemRowsEntryTemplate.SetActive(false);
         }
     }
 }
