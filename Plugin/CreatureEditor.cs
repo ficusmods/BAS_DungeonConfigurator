@@ -29,11 +29,10 @@ namespace DungeonConfigurator
         GameObject toggleSelectorTemplate;
         GameObject tgroupSelector;
 
-        CreatureTable originalDungeonTable_DungeonHumansHardMelee;
-        CreatureTable originalDungeonTable_DungeonHumansMix;
-        CreatureTable originalDungeonTable_DungeonHumansNormalMelee;
-        CreatureTable originalDungeonTable_DungeonHumansRange;
-        CreatureTable originalDungeonTable_DungeonHumansRareMelee;
+        CreatureTable ctDungeonConfiguratorGeneral;
+        CreatureTable ctDungeonConfiguratorRanged;
+        CreatureTable ctDungeonConfiguratorSpecial;
+        CreatureTable ctDungeonConfiguratorEmpty;
 
         string idCreature = "";
         string idTable = "";
@@ -121,12 +120,10 @@ namespace DungeonConfigurator
                 }
             });
 
-            originalDungeonTable_DungeonHumansHardMelee = Catalog.GetData<CreatureTable>("DungeonHumansHardMelee").CloneJson();
-            originalDungeonTable_DungeonHumansMix = Catalog.GetData<CreatureTable>("DungeonHumansMix").CloneJson();
-            originalDungeonTable_DungeonHumansNormalMelee = Catalog.GetData<CreatureTable>("DungeonHumansNormalMelee").CloneJson();
-            originalDungeonTable_DungeonHumansRange = Catalog.GetData<CreatureTable>("DungeonHumansRange").CloneJson();
-            originalDungeonTable_DungeonHumansRareMelee = Catalog.GetData<CreatureTable>("DungeonHumansRareMelee").CloneJson();
-
+            ctDungeonConfiguratorGeneral = Catalog.GetData<CreatureTable>("DungeonConfiguratorGeneral");
+            ctDungeonConfiguratorRanged = Catalog.GetData<CreatureTable>("DungeonConfiguratorRanged");
+            ctDungeonConfiguratorSpecial = Catalog.GetData<CreatureTable>("DungeonConfiguratorSpecial");
+            ctDungeonConfiguratorEmpty = Catalog.GetData<CreatureTable>("DungeonConfiguratorGeneral").CloneJson();
         }
 
         public virtual void setHidden(bool hidden)
@@ -190,24 +187,25 @@ namespace DungeonConfigurator
             newdrop.probabilityWeights[3] = 1;
             newdrop.probabilityWeights[4] = 1;
 
-            CreatureTable newtable = Catalog.GetData<CreatureTable>("DungeonHumansHardMelee").CloneJson();
+            CreatureTable newtable = ctDungeonConfiguratorEmpty.CloneJson();
             newtable.drops = new List<CreatureTable.Drop>();
             newtable.drops.Add(newdrop);
-            alter_table("DungeonHumansHardMelee", newtable);
-            alter_table("DungeonHumansMix", newtable);
-            alter_table("DungeonHumansNormalMelee", newtable);
-            alter_table("DungeonHumansRange", newtable);
-            alter_table("DungeonHumansRareMelee", newtable);
+            alter_table("DungeonConfiguratorGeneral", newtable);
+
+            Level.current.OnLevelEvent += HandleLevelLoad;
         }
 
-        public virtual void revert_changes()
+        private void HandleLevelLoad()
         {
-            Logger.Basic("Reverting changes made to the creature tables");
-            alter_table("DungeonHumansHardMelee", originalDungeonTable_DungeonHumansHardMelee);
-            alter_table("DungeonHumansMix", originalDungeonTable_DungeonHumansMix);
-            alter_table("DungeonHumansNormalMelee", originalDungeonTable_DungeonHumansNormalMelee);
-            alter_table("DungeonHumansRange", originalDungeonTable_DungeonHumansRange);
-            alter_table("DungeonHumansRareMelee", originalDungeonTable_DungeonHumansRareMelee);
+            foreach(Room room in Level.current.dungeon.rooms)
+            {
+                var spawners = room.GetComponentsInChildren<CreatureSpawner>();
+                foreach(CreatureSpawner spawner in spawners)
+                {
+                    spawner.creatureTableID = "DungeonConfiguratorGeneral";
+                }
+            } 
+            Level.current.OnLevelEvent -= HandleLevelLoad;
         }
 
         private void alter_table(string tableid, CreatureTable change)
