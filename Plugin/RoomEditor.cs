@@ -61,11 +61,14 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
-            EventManager.onLevelLoad += delegate
+            EventManager.onLevelLoad += (LevelData levelData, EventTime eventTime) =>
             {
-                var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
-                module.additional_npc_count = additional_npc_count;
-                module.apply_changes();
+                if(eventTime == EventTime.OnEnd)
+                {
+                    var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
+                    module.additional_npc_count = additional_npc_count;
+                    module.apply_changes();
+                }
             };
         }
     }
