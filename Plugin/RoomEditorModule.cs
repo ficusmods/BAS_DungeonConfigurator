@@ -14,16 +14,7 @@ namespace DungeonConfigurator
     {
         public int additional_npc_count = 0;
 
-        private void Awake()
-        {
-            Level.current.dungeon.onDungeonGenerated += Dungeon_onDungeonGenerated;
-        }
-        private void OnDisable()
-        {
-            Level.current.dungeon.onDungeonGenerated -= Dungeon_onDungeonGenerated;
-        }
-
-        private void Dungeon_onDungeonGenerated(EventTime eventTime)
+        public void apply_changes()
         {
             Catalog.gameData.platformParameters.maxRoomNpc = int.MaxValue;
             foreach (Room room in Level.current.dungeon.rooms)
