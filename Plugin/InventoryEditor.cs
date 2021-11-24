@@ -105,28 +105,32 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
-            EventManager.onLevelLoad += (LevelData levelData, EventTime eventTime) => {
-                Logger.Basic("Applying inventory changes");
-                Container playerContainer = Player.local.creature.container;
-                playerContainer.loadContent = Container.LoadContent.ContainerID;
-                playerContainer.containerID = player_container_id;
+            EventManager.onLevelLoad += apply_changes_impl;
+        }
 
-                ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
-                foreach(var entry in slots)
+        private void apply_changes_impl(LevelData levelData, EventTime eventTime)
+        {
+            Logger.Basic("Applying inventory changes");
+            Container playerContainer = Player.local.creature.container;
+            playerContainer.loadContent = Container.LoadContent.ContainerID;
+            playerContainer.containerID = player_container_id;
+
+            ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
+            foreach(var entry in slots)
+            {
+                if(entry.Value.item != null)
                 {
-                    if(entry.Value.item != null)
-                    {
-                        ContainerData.Content content = entry.Value.as_content();
-                        containterData.contents.Add(content);
-                    }
+                    ContainerData.Content content = entry.Value.as_content();
+                    containterData.contents.Add(content);
                 }
-                playerContainer.Load();
-                Player.local.creature.mana.Load();
-                Player.local.creature.equipment.UnequipWeapons();
-                Player.local.creature.equipment.UnequipAllWardrobes();
-                Player.local.creature.equipment.EquipAllWardrobes(false, false);
-                Player.local.creature.equipment.EquipWeapons();
-            };
+            }
+            playerContainer.Load();
+            Player.local.creature.mana.Load();
+            Player.local.creature.equipment.UnequipWeapons();
+            Player.local.creature.equipment.UnequipAllWardrobes();
+            Player.local.creature.equipment.EquipAllWardrobes(false, false);
+            Player.local.creature.equipment.EquipWeapons();
+            EventManager.onLevelLoad -= apply_changes_impl;
         }
 
         private void init_button_callbacks()
