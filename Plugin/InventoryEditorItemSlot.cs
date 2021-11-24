@@ -39,6 +39,10 @@ namespace DungeonConfigurator
                 ItemData itemData = data as ItemData;
                 if (itemData.categoryPath.Length > 0)
                 {
+                    if(itemData.iconAddress == null)
+                    {
+                        itemData.iconAddress = "Bas.Icon.sword";
+                    }
                     ret.Add(itemData);
                 }
             }

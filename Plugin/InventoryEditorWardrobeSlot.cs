@@ -23,6 +23,10 @@ namespace DungeonConfigurator
                 ItemData itemData = data as ItemData;
                 if (itemData.type == ItemData.Type.Wardrobe)
                 {
+                    if(itemData.iconAddress == null)
+                    {
+                        itemData.iconAddress = "Bas.Icon.lamellar";
+                    }
                     ret.Add(itemData);
                 }
             }
