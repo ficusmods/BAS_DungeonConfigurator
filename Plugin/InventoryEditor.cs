@@ -32,6 +32,7 @@ namespace DungeonConfigurator
 
         public InventoryEditor(GameObject obj)
         {
+            Logger.Detailed("Initializing inventory editor");
             inventoryEditor = obj;
 
             viewSlots = Utils.get_child(inventoryEditor, "SlotsView");
@@ -56,6 +57,7 @@ namespace DungeonConfigurator
 
         private void init_slot_map()
         {
+            Logger.Detailed("Initializing slots");
             slots["HipsRight"] = new InventoryEditorItemSlot(
                 Utils.get_child(viewSlots, "Items/HipRight"), "HipsRight",
                 Player.local.creature.equipment.GetHolder(Holder.DrawSlot.HipsRight)
@@ -104,7 +106,7 @@ namespace DungeonConfigurator
         public virtual void apply_changes()
         {
             EventManager.onLevelLoad += (LevelData levelData, EventTime eventTime) => {
-                Logger.Detailed("Applying inventory changes");
+                Logger.Basic("Applying inventory changes");
                 Container playerContainer = Player.local.creature.container;
                 playerContainer.loadContent = Container.LoadContent.ContainerID;
                 playerContainer.containerID = player_container_id;
@@ -131,8 +133,12 @@ namespace DungeonConfigurator
         {
             foreach(var entry in slots)
             {
-                entry.Value.onClick += delegate { handle_slot_click(entry.Value); };
-                entry.Value.onHoverStart += delegate { show_hint_for_slot(entry.Value); };
+                entry.Value.onClick += delegate {
+                    Logger.Detailed("Click on slot {0}", entry.Value.name);
+                    handle_slot_click(entry.Value); };
+                entry.Value.onHoverStart += delegate {
+                    Logger.Detailed("Showing hint for slot {0}", entry.Value.name);
+                    show_hint_for_slot(entry.Value); };
                 entry.Value.onHoverEnd += delegate { hide_slot_hint(); };
             }
         }
@@ -165,6 +171,7 @@ namespace DungeonConfigurator
 
         private void fill_items(InventoryEditorSlot slot)
         {
+            Logger.Detailed("Filling item list based on {0}", slot.name);
             foreach (Transform child in viewSubItemSelect.transform)
             {
                 GameObject.Destroy(child.gameObject);
