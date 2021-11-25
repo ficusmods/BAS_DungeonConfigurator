@@ -34,8 +34,8 @@ namespace DungeonConfigurator
         CreatureTable ctDungeonConfiguratorSpecial;
         CreatureTable ctDungeonConfiguratorEmpty;
 
-        string idCreature = "";
-        string idTable = "";
+        LinkedList<string> idCreatures = new LinkedList<string>();
+        LinkedList<string> idTables = new LinkedList<string>();
         string idContainer = "";
         string idBrain = "";
 
@@ -62,30 +62,24 @@ namespace DungeonConfigurator
             toggleCreatureReference.onValueChanged.AddListener((bool active) => {
                 if (active)
                 {
+                    Logger.Detailed("Switched to creature selector");
+                    idCreatures.Clear();
                     fillSelectorWithCreature();
-                }
-                else
-                {
-                    Logger.Detailed("Cleared Creature id");
-                    idCreature = "";
                 }
             });
             toggleTableReference.onValueChanged.AddListener((bool active) => {
                 if (active)
                 {
+                    Logger.Detailed("Switched to creature table selector");
+                    idTables.Clear();
                     fillSelectorWithTable();
                 } 
-                else
-                {
-                    Logger.Detailed("Cleared Table id");
-                    idTable = "";
-                }
             });
             toggleNoneContainer.onValueChanged.AddListener((bool active) =>{
                 if (active)
                 {
+                    Logger.Detailed("Container set to None");
                     clearSelector();
-                    Logger.Detailed("Cleared Container id");
                     idContainer = "";
                 }
             });
@@ -93,30 +87,25 @@ namespace DungeonConfigurator
             {
                 if (active)
                 {
-                    fillSelectorWithContainer();
-                }
-                else
-                {
-                    Logger.Detailed("Cleared Container id");
+                    Logger.Detailed("Container set to Override");
                     idContainer = "";
+                    fillSelectorWithContainer();
                 }
             });
             toggleNoneBrain.onValueChanged.AddListener((bool active) => {
                 if (active)
                 {
+                    Logger.Detailed("Brain set to None");
                     clearSelector();
-                    Logger.Detailed("Cleared Brain id");
                     idBrain = "";
                 }
             });
             toggleOverrideBrain.onValueChanged.AddListener((bool active) => {
                 if (active)
                 {
-                    fillSelectorWithBrain();
-                }
-                else
-                {
+                    Logger.Detailed("Brain set to Override");
                     idBrain = "";
+                    fillSelectorWithBrain();
                 }
             });
 
@@ -137,59 +126,84 @@ namespace DungeonConfigurator
                 creatureEditor.SetActive(true);
             }
         }
+
+        private List<CreatureTable.Drop> getCreatureDrops()
+        {
+            List<CreatureTable.Drop> ret = new List<CreatureTable.Drop>();
+            foreach(string id in idCreatures)
+            {
+                Logger.Detailed("Adding drop via creature id: {0}", id);
+                CreatureTable.Drop currDrop = new CreatureTable.Drop();
+                currDrop.reference = CreatureTable.Drop.Reference.Table;
+                currDrop.referenceID = id;
+                currDrop.overrideContainer = false;
+                currDrop.overrideBrain = false;
+                if(idBrain != "")
+                {
+                    Logger.Detailed("Changing drop {0} to override Brain with id: {1}", id, idBrain);
+                    currDrop.overrideBrain = true;
+                    currDrop.overrideBrainID = idBrain;
+                }
+                if (idContainer != "")
+                {
+                    Logger.Detailed("Changing drop {0} to override Container with id: {1}", id, idContainer);
+                    currDrop.overrideContainer = true;
+                    currDrop.overrideContainerID = idContainer;
+                }
+                currDrop.factionID = 0;
+                currDrop.overrideFaction = false;
+                
+                currDrop.probabilityWeights[0] = 1;
+                currDrop.probabilityWeights[1] = 1;
+                currDrop.probabilityWeights[2] = 1;
+                currDrop.probabilityWeights[3] = 1;
+                currDrop.probabilityWeights[4] = 1;
+            }
+            return ret;
+        }
+
+        private List<CreatureTable.Drop> getTableDrops()
+        {
+            List<CreatureTable.Drop> ret = new List<CreatureTable.Drop>();
+            foreach(string id in idTables)
+            {
+                Logger.Detailed("Adding drop via CreatureTable id: {0}", id);
+                CreatureTable.Drop currDrop = new CreatureTable.Drop();
+                currDrop.reference = CreatureTable.Drop.Reference.Table;
+                currDrop.referenceID = id;
+                currDrop.overrideContainer = false;
+                currDrop.overrideBrain = false;
+                if(idBrain != "")
+                {
+                    Logger.Detailed("Changing drop {0} to override Brain with id: {1}", id, idBrain);
+                    currDrop.overrideBrain = true;
+                    currDrop.overrideBrainID = idBrain;
+                }
+                if (idContainer != "")
+                {
+                    Logger.Detailed("Changing drop {0} to override Container with id: {1}", id, idContainer);
+                    currDrop.overrideContainer = true;
+                    currDrop.overrideContainerID = idContainer;
+                }
+                currDrop.factionID = 0;
+                currDrop.overrideFaction = false;
+                
+                currDrop.probabilityWeights[0] = 1;
+                currDrop.probabilityWeights[1] = 1;
+                currDrop.probabilityWeights[2] = 1;
+                currDrop.probabilityWeights[3] = 1;
+                currDrop.probabilityWeights[4] = 1;
+            }
+            return ret;
+        }
+
         public virtual void apply_changes()
         {
-            Logger.Basic("Applying changes to the creature tables");
-            CreatureTable.Drop newdrop = new CreatureTable.Drop();
-
-            if(idTable != "")
-            {
-                Logger.Detailed("Changing drop to Table with id: {0}", idTable);
-                newdrop.reference = CreatureTable.Drop.Reference.Table;
-                newdrop.referenceID = idTable;
-
-            }
-            else if(idCreature != "")
-            {
-                Logger.Detailed("Changing drop to Creature with id: {0}", idCreature);
-                newdrop.reference = CreatureTable.Drop.Reference.Creature;
-                newdrop.referenceID = idCreature;
-            }
-            else
-            {
-                Logger.Detailed("No reference to creatures set");
-                return;
-            }
-
-            newdrop.overrideContainer = false;
-            newdrop.overrideBrain = false;
-
-            if(idBrain != "")
-            {
-                Logger.Detailed("Changing drop to override Brain with id: {0}", idBrain);
-                newdrop.overrideBrain = true;
-                newdrop.overrideBrainID = idBrain;
-            }
-
-            if (idContainer != "")
-            {
-                Logger.Detailed("Changing drop to override Container with id: {0}", idContainer);
-                newdrop.overrideContainer = true;
-                newdrop.overrideContainerID = idContainer;
-            }
-
-            newdrop.factionID = 0;
-            newdrop.overrideFaction = false;
-            
-            newdrop.probabilityWeights[0] = 1;
-            newdrop.probabilityWeights[1] = 1;
-            newdrop.probabilityWeights[2] = 1;
-            newdrop.probabilityWeights[3] = 1;
-            newdrop.probabilityWeights[4] = 1;
-
+            Logger.Basic("Applying creature editor changes");
             CreatureTable newtable = ctDungeonConfiguratorEmpty.CloneJson();
-            newtable.drops = new List<CreatureTable.Drop>();
-            newtable.drops.Add(newdrop);
+            var creatureDrops = getCreatureDrops();
+            var tableDrops = getTableDrops();
+            newtable.drops = creatureDrops.Concat(tableDrops).ToList();
             alter_table("DungeonConfiguratorGeneral", newtable);
 
             Level.current.OnLevelEvent += HandleLevelLoad;
@@ -233,7 +247,7 @@ namespace DungeonConfigurator
                     if (active)
                     {
                         Logger.Detailed("Selected Creature {0}", cdata.id);
-                        idCreature = cdata.id;
+                        idCreatures.AddLast(cdata.id);
                     }
                 });
                 label.text = cdata.id;
@@ -255,7 +269,7 @@ namespace DungeonConfigurator
                     if (active)
                     {
                         Logger.Detailed("Selected CreatureTable {0}", ctdata.id);
-                        idTable = ctdata.id;
+                        idTables.AddLast(ctdata.id);
                     }
                 });
                 label.text = ctdata.id;
