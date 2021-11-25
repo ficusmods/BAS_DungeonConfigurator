@@ -23,7 +23,9 @@ namespace DungeonConfigurator
         GameObject itemRowsEntryListTemplate;
         GameObject itemRowsEntryTemplate;
         GameObject slotHint;
+        GameObject itemHint;
         Text slotHintText;
+        Text itemHintText;
 
         const int inventorySelectorEntryPerRow = 4;
         string player_container_id = "DungeonConfiguratorPlayerContainer";
@@ -41,6 +43,8 @@ namespace DungeonConfigurator
 
             slotHint = Utils.get_child(viewSlots, "SlotHint");
             slotHintText = slotHint.GetComponent<Text>();
+            itemHint = Utils.get_child(viewItemSelect, "Item/ItemHint");
+            itemHintText = itemHint.GetComponent<Text>();
 
             itemRowsContentTemplate = Utils.get_child(viewItemSelect, "Item/ItemRowsTemplate");
             itemRowsEntryListTemplate = Utils.get_child(viewItemSelect, "Item/ItemListTemplate");
@@ -50,6 +54,8 @@ namespace DungeonConfigurator
             init_button_callbacks();
 
             viewItemSelect.SetActive(false);
+            slotHint.SetActive(false);
+            itemHint.SetActive(false);
         }
 
         private void init_slot_map()
@@ -121,6 +127,7 @@ namespace DungeonConfigurator
                     {
                         ContainerData.Content content = entry.Value.as_content();
                         containterData.contents.Add(content);
+                        Logger.Detailed("Equipping {0} from slot {1}", entry.Value.item.id, entry.Value.name);
                     }
                 }
                 playerContainer.Load();
@@ -137,12 +144,8 @@ namespace DungeonConfigurator
         {
             foreach(var entry in slots)
             {
-                entry.Value.onClick += delegate {
-                    Logger.Detailed("Click on slot {0}", entry.Value.name);
-                    handle_slot_click(entry.Value); };
-                entry.Value.onHoverStart += delegate {
-                    Logger.Detailed("Showing hint for slot {0}", entry.Value.name);
-                    show_hint_for_slot(entry.Value); };
+                entry.Value.onClick += delegate { handle_slot_click(entry.Value); };
+                entry.Value.onHoverStart += delegate { show_hint_for_slot(entry.Value); };
                 entry.Value.onHoverEnd += delegate { hide_slot_hint(); };
             }
         }
@@ -164,16 +167,27 @@ namespace DungeonConfigurator
             {
                 slotHintText.text = slot.item.id;
             }
-            Logger.Detailed("Showing hint at slot loc: {0} {1} {2} moved to {4} {5} {6}",
-                slot.objSlot.transform.position.x, slot.objSlot.transform.position.y, slot.objSlot.transform.position.z,
-                slotHint.transform.position.x, slotHint.transform.position.y, slotHint.transform.position.z);
-            slotHint.transform.position = slot.objSlot.transform.position + slotHint.transform.up * 2.0f;
-            slotHint.transform.LookAt(2f * slotHint.transform.position - Camera.main.transform.position, Camera.main.transform.up);   
+            slotHint.transform.up = slot.objSlot.transform.up;
+            slotHint.transform.right = slot.objSlot.transform.right;
+            slotHint.transform.LookAt(Camera.main.transform.position - Camera.main.transform.forward*2f, Camera.main.transform.up);   
         }
-
         private void hide_slot_hint()
         {
             slotHint.SetActive(false);
+        }
+
+        private void show_hint_for_item(GameObject entry, ItemData item)
+        {
+            itemHint.SetActive(true);
+            itemHintText.text = item.id;
+            itemHint.transform.up = entry.transform.up;
+            itemHint.transform.right = entry.transform.right;
+            itemHint.transform.LookAt(Camera.main.transform.position - Camera.main.transform.forward * 2f, Camera.main.transform.up);
+        }
+
+        private void hide_item_hint()
+        {
+            itemHint.SetActive(false);
         }
 
         private void fill_items(InventoryEditorSlot slot)
@@ -199,7 +213,6 @@ namespace DungeonConfigurator
             {
                 if(column.transform.childCount > inventorySelectorEntryPerRow)
                 {
-                    Logger.Detailed("Starting new column");
                     column = GameObject.Instantiate(itemRowsEntryListTemplate, rows.transform);
                 }
                 
@@ -213,6 +226,20 @@ namespace DungeonConfigurator
                     slot.item = item;
                     viewItemSelect.SetActive(false);
                 });
+
+                var buttonEventTrigger = currButton.gameObject.GetComponent<EventTrigger>();
+
+                EventTrigger.Entry entryHoverStart = new EventTrigger.Entry();
+                entryHoverStart.eventID = EventTriggerType.PointerEnter;
+                entryHoverStart.callback.AddListener(delegate { show_hint_for_item(currEntry, item); });
+                
+                EventTrigger.Entry entryHoverEnd = new EventTrigger.Entry();
+                entryHoverEnd.eventID = EventTriggerType.PointerExit;
+                entryHoverEnd.callback.AddListener((data) => { hide_item_hint(); });
+
+                buttonEventTrigger.triggers.Add(entryHoverEnd);
+                buttonEventTrigger.triggers.Add(entryHoverStart);
+
                 currEntry.SetActive(true);
             }
             viewSubItemSelect.GetComponent<ScrollRect>().content = rows.GetComponent<RectTransform>();

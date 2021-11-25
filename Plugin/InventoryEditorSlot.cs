@@ -82,11 +82,16 @@ namespace DungeonConfigurator
             {
                 Catalog.LoadAssetAsync<Texture>(this._item.iconAddress, (Texture t) => { this.image.texture = t; }, "Item");
                 this.image.gameObject.SetActive(true);
+                Color color = this.button.GetComponent<Image>().color;
+                color.a = 0.01f;
             }
             else
             {
                 this.image.gameObject.SetActive(false);
+                this.button.GetComponent<Image>().enabled = true;
                 this.image.texture = null;
+                Color color = this.button.GetComponent<Image>().color;
+                color.a = 1.0f;
             }
         }
     }
