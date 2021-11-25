@@ -29,22 +29,25 @@ namespace DungeonConfigurator
             System.Random rand = new System.Random();
             room.spawnerMaxNPC += additional_npc_count;
             var spawners = room.GetComponentsInChildren<CreatureSpawner>();
-            while (room.spawnerNPCCount != room.spawnerMaxNPC)
+            if(spawners != null && spawners.Length > 0)
             {
-                CreatureSpawner spawner = spawners[rand.Next(spawners.Length)];
-                if (!spawner.spawning)
+                while (room.spawnerNPCCount != room.spawnerMaxNPC)
                 {
-                    spawner.Spawn();
-                    if (spawner.spawning)
+                    CreatureSpawner spawner = spawners[rand.Next(spawners.Length)];
+                    if (!spawner.spawning)
                     {
-                        room.spawnerNPCCount++;
-                        Logger.Detailed("Spawn CR: spawning creature for room {0}", room.name);
+                        spawner.Spawn();
+                        if (spawner.spawning)
+                        {
+                            room.spawnerNPCCount++;
+                            Logger.Detailed("Spawn CR: spawning creature for room {0}", room.name);
+                        }
                     }
-                }
-                else
-                {
-                    Logger.Detailed("Spawn CR: Waiting for end of frame for room {0}", room.name);
-                    yield return new WaitForEndOfFrame();
+                    else
+                    {
+                        Logger.Detailed("Spawn CR: Waiting for end of frame for room {0}", room.name);
+                        yield return new WaitForEndOfFrame();
+                    }
                 }
             }
             Logger.Detailed("Spawn CR: Finished for room {0}", room.name);
