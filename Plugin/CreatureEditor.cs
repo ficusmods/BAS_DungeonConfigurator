@@ -204,9 +204,12 @@ namespace DungeonConfigurator
             var creatureDrops = getCreatureDrops();
             var tableDrops = getTableDrops();
             newtable.drops = creatureDrops.Concat(tableDrops).ToList();
-            alter_table("DungeonConfiguratorGeneral", newtable);
 
-            Level.current.OnLevelEvent += HandleLevelLoad;
+            if(newtable.drops.Count > 0)
+            {
+                alter_table("DungeonConfiguratorGeneral", newtable);
+                Level.current.OnLevelEvent += HandleLevelLoad;
+            }
         }
 
         private void HandleLevelLoad()
