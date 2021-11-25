@@ -252,6 +252,10 @@ namespace DungeonConfigurator
                         Logger.Detailed("Selected Creature {0}", cdata.id);
                         idCreatures.AddLast(cdata.id);
                     }
+                    else
+                    {
+                        idCreatures.Remove(cdata.id);
+                    }
                 });
                 label.text = cdata.id;
                 entry.SetActive(true);
