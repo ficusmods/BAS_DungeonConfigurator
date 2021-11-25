@@ -32,12 +32,5 @@ namespace DungeonConfigurator
             }
             return ret;
         }
-
-        public override void refresh_image()
-        {
-            // TODO Add iconEffectId based on Orbs
-            base.image.texture = null;
-        }
-
     }
 }
