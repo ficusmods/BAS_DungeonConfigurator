@@ -27,6 +27,8 @@ namespace DungeonConfigurator
         Text slotHintText;
         Text itemHintText;
 
+        bool changes = false;
+
         const int inventorySelectorEntryPerRow = 4;
         string player_container_id = "DungeonConfiguratorPlayerContainer";
 
@@ -108,7 +110,10 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
-            EventManager.onLevelLoad += apply_changes_impl;
+            if (changes)
+            {
+                EventManager.onLevelLoad += apply_changes_impl;
+            }
         }
 
         private void apply_changes_impl(LevelData levelData, EventTime eventTime)
@@ -224,6 +229,7 @@ namespace DungeonConfigurator
                 Button currButton = currEntry.GetComponent<Button>();
                 currButton.onClick.AddListener(delegate {
                     slot.item = item;
+                    changes = true;
                     viewItemSelect.SetActive(false);
                 });
 
