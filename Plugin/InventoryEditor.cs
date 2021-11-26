@@ -133,30 +133,36 @@ namespace DungeonConfigurator
 
         private void apply_changes_impl(LevelData levelData, EventTime eventTime)
         {
-            if(eventTime == EventTime.OnEnd)
+            if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
             {
-                Logger.Basic("Applying inventory changes");
-                Container playerContainer = Player.local.creature.container;
-                playerContainer.loadContent = Container.LoadContent.ContainerID;
-                playerContainer.containerID = player_container_id;
-
-                ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
-                containterData.contents = new List<ContainerData.Content>();
-                foreach(var entry in slots)
+                if (eventTime == EventTime.OnEnd)
                 {
-                    if(entry.Value.item != null)
+                    Logger.Basic("Applying inventory changes");
+                    Container playerContainer = Player.local.creature.container;
+                    playerContainer.loadContent = Container.LoadContent.ContainerID;
+                    playerContainer.containerID = player_container_id;
+
+                    ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
+                    containterData.contents = new List<ContainerData.Content>();
+                    foreach (var entry in slots)
                     {
-                        ContainerData.Content content = entry.Value.as_content();
-                        containterData.contents.Add(content);
-                        Logger.Detailed("Equipping {0} from slot {1}", entry.Value.item.id, entry.Value.name);
+                        if (entry.Value.item != null)
+                        {
+                            ContainerData.Content content = entry.Value.as_content();
+                            containterData.contents.Add(content);
+                            Logger.Detailed("Equipping {0} from slot {1}", entry.Value.item.id, entry.Value.name);
+                        }
                     }
+                    playerContainer.Load();
+                    Player.local.creature.mana.Load();
+                    Player.local.creature.equipment.UnequipWeapons();
+                    Player.local.creature.equipment.UnequipAllWardrobes();
+                    Player.local.creature.equipment.EquipAllWardrobes(false, false);
+                    Player.local.creature.equipment.EquipWeapons();
                 }
-                playerContainer.Load();
-                Player.local.creature.mana.Load();
-                Player.local.creature.equipment.UnequipWeapons();
-                Player.local.creature.equipment.UnequipAllWardrobes();
-                Player.local.creature.equipment.EquipAllWardrobes(false, false);
-                Player.local.creature.equipment.EquipWeapons();
+            }
+            else
+            {
                 EventManager.onLevelLoad -= apply_changes_impl;
             }
         }

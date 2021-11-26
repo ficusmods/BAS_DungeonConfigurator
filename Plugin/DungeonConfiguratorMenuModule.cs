@@ -245,14 +245,21 @@ namespace DungeonConfigurator
 
         private void EventManager_onLevelLoad(LevelData levelData, EventTime eventTime)
         {
-            if (eventTime == EventTime.OnStart)
+            if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
             {
-                roomEditor.apply_changes();
+                if (eventTime == EventTime.OnStart)
+                {
+                    roomEditor.apply_changes();
+                }
+                if (eventTime == EventTime.OnEnd)
+                {
+                    double timeLevelLoadEnd = Time.timeAsDouble;
+                    Logger.Basic("Loading the level took {0} seconds", timeLevelLoadEnd - timeLevelLoadStart);
+                }
             }
-            if(eventTime == EventTime.OnEnd)
+            else
             {
-                double timeLevelLoadEnd = Time.timeAsDouble;
-                Logger.Basic("Loading the level took {0} seconds", timeLevelLoadEnd - timeLevelLoadStart);
+                EventManager.onLevelLoad -= EventManager_onLevelLoad;
             }
         }
 

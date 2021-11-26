@@ -79,7 +79,12 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
-            EventManager.onLevelLoad += (LevelData levelData, EventTime eventTime) =>
+            EventManager.onLevelLoad += apply_changes_impl;
+        }
+
+        private void apply_changes_impl(LevelData levelData, EventTime eventTime)
+        {
+            if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
             {
                 if (eventTime == EventTime.OnEnd)
                 {
@@ -92,7 +97,11 @@ namespace DungeonConfigurator
                         module.apply_changes();
                     }
                 }
-            };
+            }
+            else
+            {
+                EventManager.onLevelLoad -= apply_changes_impl;
+            }
         }
     }
 }
