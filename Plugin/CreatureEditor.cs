@@ -134,7 +134,7 @@ namespace DungeonConfigurator
             {
                 Logger.Detailed("Adding drop via creature id: {0}", id);
                 CreatureTable.Drop currDrop = new CreatureTable.Drop();
-                currDrop.reference = CreatureTable.Drop.Reference.Table;
+                currDrop.reference = CreatureTable.Drop.Reference.Creature;
                 currDrop.referenceID = id;
                 currDrop.overrideContainer = false;
                 currDrop.overrideBrain = false;
@@ -158,6 +158,7 @@ namespace DungeonConfigurator
                 currDrop.probabilityWeights[2] = 1;
                 currDrop.probabilityWeights[3] = 1;
                 currDrop.probabilityWeights[4] = 1;
+                ret.Add(currDrop);
             }
             return ret;
         }
@@ -193,6 +194,7 @@ namespace DungeonConfigurator
                 currDrop.probabilityWeights[2] = 1;
                 currDrop.probabilityWeights[3] = 1;
                 currDrop.probabilityWeights[4] = 1;
+                ret.Add(currDrop);
             }
             return ret;
         }
@@ -208,21 +210,45 @@ namespace DungeonConfigurator
             if(newtable.drops.Count > 0)
             {
                 alter_table("DungeonConfiguratorGeneral", newtable);
-                Level.current.OnLevelEvent += HandleLevelLoad;
+                EventManager.onLevelLoad += HandleLevelLoad;
             }
         }
 
-        private void HandleLevelLoad()
+        private void HandleLevelLoad(LevelData levelData, EventTime eventTime)
         {
-            foreach(Room room in Level.current.dungeon.rooms)
+            if (eventTime == EventTime.OnEnd)
             {
-                var spawners = room.GetComponentsInChildren<CreatureSpawner>();
-                foreach(CreatureSpawner spawner in spawners)
+                Logger.Detailed("Replacing creature spawner ids");
+                foreach (Room room in Level.current.dungeon.rooms)
                 {
-                    spawner.creatureTableID = "DungeonConfiguratorGeneral";
+                    Logger.Detailed("Replacing creatures in room {0}", room.name);
+                    foreach (Creature c in new List<Creature>(room.creatures))
+                    {
+                        c.Despawn();
+                    }
+                    room.spawnerNPCCount = 0;
+
+                    var spawners = room.GetComponentsInChildren<CreatureSpawner>(true).Shuffle<CreatureSpawner>();
+                    foreach (CreatureSpawner spawner in spawners)
+                    {
+                        spawner.creatureTableID = "DungeonConfiguratorGeneral";
+                        Logger.Detailed("Respawning creatures in {0} using {1} (NPC: {2}/{3})", room.name, spawner.name, room.spawnerNPCCount, room.spawnerMaxNPC);
+                        if (spawner.ignoreRoomMaxNPC)
+                        {
+                            spawner.Spawn();
+                            if (spawner.spawning)
+                                ++room.spawnerNPCCount;
+                        }
+                        else if (room.spawnerNPCCount < Mathf.Min(Catalog.gameData.platformParameters.maxRoomNpc, room.spawnerMaxNPC))
+                        {
+                            spawner.Spawn();
+                            if (spawner.spawning)
+                                ++room.spawnerNPCCount;
+                        }
+                    }
                 }
-            } 
-            Level.current.OnLevelEvent -= HandleLevelLoad;
+                EventManager.onLevelLoad -= HandleLevelLoad;
+            }
         }
 
         private void alter_table(string tableid, CreatureTable change)
@@ -246,6 +272,7 @@ namespace DungeonConfigurator
                 GameObject entry = GameObject.Instantiate(toggleSelectorTemplate, selectorAreaContent.transform);
                 Text label =  entry.GetComponentInChildren<Text>(true);
                 Toggle toggle = entry.GetComponentInChildren<Toggle>(true);
+                toggle.group = null;
                 toggle.onValueChanged.AddListener((bool active) => {
                     if (active)
                     {
@@ -272,6 +299,7 @@ namespace DungeonConfigurator
                 GameObject entry = GameObject.Instantiate(toggleSelectorTemplate, selectorAreaContent.transform);
                 Text label = entry.GetComponentInChildren<Text>(true);
                 Toggle toggle = entry.GetComponentInChildren<Toggle>(true);
+                toggle.group = null;
                 toggle.onValueChanged.AddListener((bool active) => {
                     if (active)
                     {
