@@ -50,7 +50,10 @@ namespace DungeonConfigurator
                     foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
                     {
                         spawner.waveData.maxAlive += additional_wave_alive_npc_count;
-                        room.spawnerMaxNPC += additional_wave_alive_npc_count;
+                        if (additional_room_npc_count == 0)
+                        {
+                            room.spawnerMaxNPC += additional_wave_alive_npc_count;
+                        }
                         Logger.Detailed("Alive count for wave {0} in room {1} set to {2}", spawner.name, room.name, spawner.waveData.maxAlive);
                     }
                 }
@@ -59,8 +62,9 @@ namespace DungeonConfigurator
 
         private IEnumerator spawn_until_full(Room room)
         {
+            Logger.Detailed("Spawn CR: Creatures in room {0}: {1}/{2}", room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
             System.Random rand = new System.Random();
-            var spawners = room.GetComponentsInChildren<CreatureSpawner>();
+            var spawners = room.GetComponentsInChildren<CreatureSpawner>(true);
             if(spawners != null && spawners.Length > 0)
             {
                 while (room.spawnerNPCCount != room.spawnerMaxNPC)
@@ -72,11 +76,13 @@ namespace DungeonConfigurator
                         if (spawner.spawning)
                         {
                             room.spawnerNPCCount++;
+                            Logger.Detailed("Spawn CR: Spawning creautre via {0} in room {1} {2}/{3}", spawner.name, room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
+                            yield return new WaitForSeconds(1);
                         }
                     }
                     else
                     {
-                        yield return new WaitForEndOfFrame();
+                        yield return new WaitForSeconds(1);
                     }
                 }
             }
