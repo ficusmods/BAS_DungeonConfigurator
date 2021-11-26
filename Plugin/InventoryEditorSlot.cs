@@ -48,6 +48,9 @@ namespace DungeonConfigurator
             image = objSlot.GetComponentInChildren<RawImage>();
             image.gameObject.SetActive(false);
 
+            Color buttColor = this.button.GetComponent<Image>().color;
+            buttColor.a = 0.3f;
+
             button.onClick.AddListener(delegate { onClick.Invoke(); });
 
             var buttonEventTrigger = button.gameObject.GetComponent<EventTrigger>();
@@ -81,18 +84,26 @@ namespace DungeonConfigurator
         {
             if (this._item != null)
             {
-                Catalog.LoadAssetAsync<Texture>(this._item.iconAddress, (Texture t) => { this.image.texture = t; }, "Item");
-                this.image.gameObject.SetActive(true);
-                Color color = this.button.GetComponent<Image>().color;
-                color.a = 0.001f;
+                Catalog.LoadAssetAsync<Texture>(this._item.iconAddress, (Texture t) => {
+                    this.image.gameObject.SetActive(true);
+                    this.image.texture = t;
+                }, "Item");
+
+                Color imgColor = this.image.color;
+                imgColor.a = 1.0f;
+
+                Color buttColor = this.button.GetComponent<Image>().color;
+                buttColor.a = 0.001f;
             }
             else
             {
                 this.image.gameObject.SetActive(false);
-                this.button.GetComponent<Image>().enabled = true;
                 this.image.texture = null;
-                Color color = this.button.GetComponent<Image>().color;
-                color.a = 1.0f;
+                Color imgColor = this.image.color;
+                imgColor.a = 0.001f;
+
+                Color buttColor = this.button.GetComponent<Image>().color;
+                buttColor.a = 0.3f;
             }
         }
     }
