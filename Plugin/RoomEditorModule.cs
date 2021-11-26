@@ -19,6 +19,7 @@ namespace DungeonConfigurator
             Catalog.gameData.platformParameters.maxRoomNpc = int.MaxValue;
             foreach (Room room in Level.current.dungeon.rooms)
             {
+                room.spawnerMaxNPC += additional_npc_count;
                 Logger.Detailed("Starting creature spawning coroutine for room {0}", room.name);
                 this.StartCoroutine(spawn_until_full(room));
             }
@@ -27,7 +28,6 @@ namespace DungeonConfigurator
         private IEnumerator spawn_until_full(Room room)
         {
             System.Random rand = new System.Random();
-            room.spawnerMaxNPC += additional_npc_count;
             var spawners = room.GetComponentsInChildren<CreatureSpawner>();
             if(spawners != null && spawners.Length > 0)
             {
