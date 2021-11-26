@@ -67,8 +67,8 @@ namespace DungeonConfigurator
         private void add_default_apparel()
         {
             ItemData chestData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
-            ItemData legsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
-            ItemData bootsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
+            ItemData legsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianLegs") as ItemData;
+            ItemData bootsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianBoots") as ItemData;
             chestData.iconAddress = "Bas.Icon.lamellar";
             legsData.iconAddress = "Bas.Icon.lamellar";
             bootsData.iconAddress = "Bas.Icon.lamellar";
