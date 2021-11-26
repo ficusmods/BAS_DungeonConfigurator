@@ -22,6 +22,7 @@ namespace DungeonConfigurator
         GameObject itemRowsContentTemplate;
         GameObject itemRowsEntryListTemplate;
         GameObject itemRowsEntryTemplate;
+        Scrollbar scrollBarItem;
         GameObject slotHint;
         GameObject itemHint;
         Text slotHintText;
@@ -51,6 +52,7 @@ namespace DungeonConfigurator
             itemRowsContentTemplate = Utils.get_child(viewItemSelect, "Item/ItemRowsTemplate");
             itemRowsEntryListTemplate = Utils.get_child(viewItemSelect, "Item/ItemListTemplate");
             itemRowsEntryTemplate = Utils.get_child(viewItemSelect, "Item/ItemListEntryTemplate");
+            scrollBarItem = Utils.get_child(viewItemSelect, "Item/ItemScrollbar").GetComponent<Scrollbar>();
 
             init_slot_map();
             init_button_callbacks();
@@ -172,9 +174,9 @@ namespace DungeonConfigurator
             {
                 slotHintText.text = slot.item.id;
             }
-            slotHint.transform.up = slot.objSlot.transform.up;
-            slotHint.transform.right = slot.objSlot.transform.right;
-            slotHint.transform.LookAt(2f * slot.objSlot.transform.position - Player.local.head.cam.transform.position, Vector3.up);   
+            slotHint.transform.position = slot.objSlot.transform.position;
+            slotHint.transform.rotation = slot.objSlot.transform.rotation;
+            slotHint.transform.position -= slotHint.transform.forward.normalized * 0.05f;
         }
         private void hide_slot_hint()
         {
@@ -185,9 +187,9 @@ namespace DungeonConfigurator
         {
             itemHint.SetActive(true);
             itemHintText.text = item.id;
-            itemHint.transform.up = entry.transform.up;
-            itemHint.transform.right = entry.transform.right;
-            itemHint.transform.LookAt(2f * entry.transform.position - Player.local.head.cam.transform.position, Vector3.up);
+            itemHint.transform.position = entry.transform.position;
+            itemHint.transform.rotation = entry.transform.rotation;
+            itemHint.transform.position -= itemHint.transform.forward.normalized * 0.05f;
         }
 
         private void hide_item_hint()
@@ -222,6 +224,7 @@ namespace DungeonConfigurator
                 }
                 
                 GameObject currEntry = GameObject.Instantiate(itemRowsEntryTemplate, column.transform);
+                currEntry.SetActive(true);
                 RawImage currImg = currEntry.GetComponentInChildren<RawImage>();
                 Catalog.LoadAssetAsync<Texture>(item.iconAddress, (Texture t) => {
                     currImg.texture = t;
@@ -241,15 +244,18 @@ namespace DungeonConfigurator
                 
                 EventTrigger.Entry entryHoverEnd = new EventTrigger.Entry();
                 entryHoverEnd.eventID = EventTriggerType.PointerExit;
-                entryHoverEnd.callback.AddListener((data) => { hide_item_hint(); });
+                entryHoverEnd.callback.AddListener(delegate { hide_item_hint(); });
 
                 buttonEventTrigger.triggers.Add(entryHoverEnd);
                 buttonEventTrigger.triggers.Add(entryHoverStart);
-
-                currEntry.SetActive(true);
             }
-            viewSubItemSelect.GetComponent<ScrollRect>().content = rows.GetComponent<RectTransform>();
-
+            ScrollRect scrollRect = viewSubItemSelect.GetComponent<ScrollRect>();
+            scrollRect.content = rows.GetComponent<RectTransform>();
+            scrollRect.verticalNormalizedPosition = 0;
+            scrollBarItem.value = 0;
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rows.GetComponent<RectTransform>());
+            
             itemRowsContentTemplate.SetActive(false);
             itemRowsEntryListTemplate.SetActive(false);
             itemRowsEntryTemplate.SetActive(false);
