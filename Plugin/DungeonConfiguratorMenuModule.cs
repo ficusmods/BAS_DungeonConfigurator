@@ -57,6 +57,8 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.Button Keypad_9;
 
         protected UnityEngine.UI.InputField lastEditedField = null;
+
+        double timeLevelLoadStart;
         
 
         public override void Init(MenuData menuData, ThunderRoad.Menu menu)
@@ -237,6 +239,7 @@ namespace DungeonConfigurator
 
             Logger.Basic("Starting dungeon");
             EventManager.onLevelLoad += EventManager_onLevelLoad;
+            timeLevelLoadStart = Time.timeAsDouble;
             GameManager.LoadLevel(ld, lm, options);
         }
 
@@ -245,6 +248,11 @@ namespace DungeonConfigurator
             if (eventTime == EventTime.OnStart)
             {
                 roomEditor.apply_changes();
+            }
+            if(eventTime == EventTime.OnEnd)
+            {
+                double timeLevelLoadEnd = Time.timeAsDouble;
+                Logger.Basic("Loading the level took {0} seconds", timeLevelLoadEnd - timeLevelLoadStart);
             }
         }
 
