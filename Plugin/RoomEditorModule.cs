@@ -19,35 +19,40 @@ namespace DungeonConfigurator
         public void apply_changes()
         {
             Catalog.gameData.platformParameters.maxRoomNpc = int.MaxValue;
-            if (additional_room_npc_count > 0)
+            Catalog.gameData.platformParameters.maxWaveAlive = int.MaxValue;
+
+            foreach (Room room in Level.current.dungeon.rooms)
             {
-                foreach (Room room in Level.current.dungeon.rooms)
+                if (additional_room_npc_count > 0)
                 {
                     room.spawnerMaxNPC += additional_room_npc_count;
                     Logger.Detailed("Starting creature spawning coroutine for room {0}", room.name);
                     this.StartCoroutine(spawn_until_full(room));
                 }
-            }
-            if (additional_wave_npc_count > 0)
-            {
-                System.Random rand = new System.Random();
-                foreach (WaveSpawner spawner in WaveSpawner.instances)
+                if (additional_wave_npc_count > 0)
                 {
-                    var groups = spawner.waveData.groups;
-                    if (groups.Count > 0)
+                    System.Random rand = new System.Random();
+                    foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
                     {
-                        for (int i = 0; i < additional_wave_npc_count; i++)
+                        Logger.Detailed("Adding {0} additional groups to {1} in room {2}", additional_wave_npc_count, spawner.name, room.name);
+                        var groups = Catalog.GetData<WaveData>(spawner.startWaveId).groups;
+                        if (groups.Count > 0)
                         {
-                            groups.Add(groups[rand.Next(groups.Count)]);
+                            for (int i = 0; i < additional_wave_npc_count; i++)
+                            {
+                                groups.Add(groups[rand.Next(groups.Count)]);
+                            }
                         }
                     }
                 }
-            }
-            if (additional_wave_alive_npc_count > 0)
-            {
-                foreach (WaveSpawner spawner in WaveSpawner.instances)
+                if (additional_wave_alive_npc_count > 0)
                 {
-                    spawner.waveData.maxAlive += additional_wave_alive_npc_count;
+                    foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
+                    {
+                        spawner.waveData.maxAlive += additional_wave_alive_npc_count;
+                        room.spawnerMaxNPC += additional_wave_alive_npc_count;
+                        Logger.Detailed("Alive count for wave {0} in room {1} set to {2}", spawner.name, room.name, spawner.waveData.maxAlive);
+                    }
                 }
             }
         }
@@ -67,12 +72,10 @@ namespace DungeonConfigurator
                         if (spawner.spawning)
                         {
                             room.spawnerNPCCount++;
-                            Logger.Detailed("Spawn CR: spawning creature for room {0}", room.name);
                         }
                     }
                     else
                     {
-                        Logger.Detailed("Spawn CR: Waiting for end of frame for room {0}", room.name);
                         yield return new WaitForEndOfFrame();
                     }
                 }

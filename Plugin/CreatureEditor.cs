@@ -116,7 +116,7 @@ namespace DungeonConfigurator
             ctDungeonConfiguratorRanged = Catalog.GetData<CreatureTable>("DungeonConfiguratorRanged");
             ctDungeonConfiguratorSpecial = Catalog.GetData<CreatureTable>("DungeonConfiguratorSpecial");
             ctDungeonConfiguratorEmpty = Catalog.GetData<CreatureTable>("DungeonConfiguratorGeneral").CloneJson();
-            wdDungeonConfiguratorGeneral = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral").CloneJson();
+            wdDungeonConfiguratorGeneral = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral");
         }
 
         public virtual void setHidden(bool hidden)
@@ -250,33 +250,33 @@ namespace DungeonConfigurator
                                 ++room.spawnerNPCCount;
                         }
                     }
-                }
 
-                Logger.Detailed("Replacing wave spawner ids");
-                WaveData waveData = wdDungeonConfiguratorGeneral.CloneJson();
-                WaveData.Group group = new WaveData.Group();
-                group.factionID = 0;
-                group.overrideFaction = false;
-                group.reference = WaveData.Group.Reference.Table;
-                group.referenceID = "DungeonConfiguratorGeneral";
-                group.overrideContainer = false;
-                group.overrideBrain = false;
-                group.overrideMaxMelee = false;
-                group.spawnPointIndex = -1;
-                group.conditionStepIndex = -1;
-                group.conditionThreshold = 0;
-                for(int i = 0; i < waveGroupCount; i++)
-                {
-                    waveData.groups.Add(group);
-                }
-                foreach (WaveSpawner spawner in WaveSpawner.instances)
-                {
-                    spawner.waveData = waveData;
+                    Logger.Detailed("Replacing wave spawner ids in room {0}", room.name);
+                    wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
+                    WaveData.Group group = new WaveData.Group();
+                    group.factionID = 0;
+                    group.overrideFaction = false;
+                    group.reference = WaveData.Group.Reference.Table;
+                    group.referenceID = "DungeonConfiguratorGeneral";
+                    group.overrideContainer = false;
+                    group.overrideBrain = false;
+                    group.overrideMaxMelee = false;
+                    group.spawnPointIndex = -1;
+                    group.conditionStepIndex = -1;
+                    group.conditionThreshold = 0;
+                    for (int i = 0; i < waveGroupCount; i++)
+                    {
+                        wdDungeonConfiguratorGeneral.groups.Add(group);
+                    }
+                    foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
+                    {
+                        Logger.Detailed("Replacing WaveSpawner creatures in {0}", spawner.name);
+                        spawner.startWaveId = "DungeonConfiguratorGeneral";
+                        spawner.waveData = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral").CloneJson();
+                    }
                 }
 
                 EventManager.onLevelLoad -= HandleLevelLoad;
-
-
             }
         }
 
