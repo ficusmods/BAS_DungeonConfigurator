@@ -67,9 +67,12 @@ namespace DungeonConfigurator
                 {
                     if (eventTime == EventTime.OnEnd)
                     {
-                        var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
-                        module.additional_npc_count = additional_npc_count;
-                        module.apply_changes();
+                        if (Level.current.dungeon != null)
+                        {
+                            var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
+                            module.additional_npc_count = additional_npc_count;
+                            module.apply_changes();
+                        }
                     }
                 };
             }
