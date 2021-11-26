@@ -57,11 +57,25 @@ namespace DungeonConfigurator
             init_slot_map();
             init_button_callbacks();
 
+            add_default_apparel();
+
             viewItemSelect.SetActive(false);
             slotHint.SetActive(false);
             itemHint.SetActive(false);
         }
 
+        private void add_default_apparel()
+        {
+            ItemData chestData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
+            ItemData legsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
+            ItemData bootsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
+            chestData.iconAddress = "Bas.Icon.lamellar";
+            legsData.iconAddress = "Bas.Icon.lamellar";
+            bootsData.iconAddress = "Bas.Icon.lamellar";
+            slots["ArmorChest"].item = chestData;
+            slots["ArmorLegs"].item = legsData;
+            slots["ArmorBoots"].item = bootsData;
+        }
         private void init_slot_map()
         {
             Logger.Detailed("Initializing slots");
@@ -92,8 +106,7 @@ namespace DungeonConfigurator
             slots["ArmorHandLeft"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots  , "Armor/HandLeft"  ), "ArmorHandLeft");
             slots["ArmorHandRight"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots , "Armor/HandRight" ), "ArmorHandRight");
             slots["ArmorLegs"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots      , "Armor/Legs"      ), "ArmorLegs");
-            slots["ArmorBootsRight"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/BootsRight"), "ArmorBootsRight");
-            slots["ArmorBootsLeft"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots , "Armor/BootsLeft" ), "ArmorBootsLeft");
+            slots["ArmorBoots"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Boots"), "ArmorBoots");
             slots["ArmorCosmetics1"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Cosmetics1"), "ArmorCosmetics1");
             slots["ArmorCosmetics2"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Cosmetics2"), "ArmorCosmetics2");
             slots["ArmorCosmetics3"] = new InventoryEditorWardrobeSlot(Utils.get_child(viewSlots, "Armor/Cosmetics3"), "ArmorCosmetics3");
