@@ -33,11 +33,14 @@ namespace DungeonConfigurator
         CreatureTable ctDungeonConfiguratorRanged;
         CreatureTable ctDungeonConfiguratorSpecial;
         CreatureTable ctDungeonConfiguratorEmpty;
+        WaveData wdDungeonConfiguratorGeneral;
 
         LinkedList<string> idCreatures = new LinkedList<string>();
         LinkedList<string> idTables = new LinkedList<string>();
         string idContainer = "";
         string idBrain = "";
+
+        int waveGroupCount = 8;
 
         public CreatureEditor(GameObject obj)
         {
@@ -113,6 +116,7 @@ namespace DungeonConfigurator
             ctDungeonConfiguratorRanged = Catalog.GetData<CreatureTable>("DungeonConfiguratorRanged");
             ctDungeonConfiguratorSpecial = Catalog.GetData<CreatureTable>("DungeonConfiguratorSpecial");
             ctDungeonConfiguratorEmpty = Catalog.GetData<CreatureTable>("DungeonConfiguratorGeneral").CloneJson();
+            wdDungeonConfiguratorGeneral = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral").CloneJson();
         }
 
         public virtual void setHidden(bool hidden)
@@ -247,7 +251,32 @@ namespace DungeonConfigurator
                         }
                     }
                 }
+
+                Logger.Detailed("Replacing wave spawner ids");
+                WaveData waveData = wdDungeonConfiguratorGeneral.CloneJson();
+                WaveData.Group group = new WaveData.Group();
+                group.factionID = 0;
+                group.overrideFaction = false;
+                group.reference = WaveData.Group.Reference.Table;
+                group.referenceID = "DungeonConfiguratorGeneral";
+                group.overrideContainer = false;
+                group.overrideBrain = false;
+                group.overrideMaxMelee = false;
+                group.spawnPointIndex = -1;
+                group.conditionStepIndex = -1;
+                group.conditionThreshold = 0;
+                for(int i = 0; i < waveGroupCount; i++)
+                {
+                    waveData.groups.Add(group);
+                }
+                foreach (WaveSpawner spawner in WaveSpawner.instances)
+                {
+                    spawner.waveData = waveData;
+                }
+
                 EventManager.onLevelLoad -= HandleLevelLoad;
+
+
             }
         }
 

@@ -1,0 +1,16 @@
+{
+  "$type": "ThunderRoad.WaveData, ThunderRoad",
+  "id": "DungeonConfiguratorGeneral",
+  "saveFolder": "bas",
+  "version": 2,
+  "category": "DungeonConfigurator",
+  "title": "DungeonConfigurator",
+  "description": "Wave used to override the waves in the level",
+  "loop": false,
+  "maxAlive": 4,
+  "alwaysAvailable": false,
+  "waveSelectors": [],
+  "playerHealthMultiplier": 1.0,
+  "enemiesHealthMultiplier": 1.0,
+  "groups": []
+}
