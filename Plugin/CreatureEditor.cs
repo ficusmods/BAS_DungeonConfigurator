@@ -30,8 +30,6 @@ namespace DungeonConfigurator
         GameObject tgroupSelector;
 
         CreatureTable ctDungeonConfiguratorGeneral;
-        CreatureTable ctDungeonConfiguratorRanged;
-        CreatureTable ctDungeonConfiguratorSpecial;
         CreatureTable ctDungeonConfiguratorEmpty;
         WaveData wdDungeonConfiguratorGeneral;
 
@@ -113,8 +111,6 @@ namespace DungeonConfigurator
             });
 
             ctDungeonConfiguratorGeneral = Catalog.GetData<CreatureTable>("DungeonConfiguratorGeneral");
-            ctDungeonConfiguratorRanged = Catalog.GetData<CreatureTable>("DungeonConfiguratorRanged");
-            ctDungeonConfiguratorSpecial = Catalog.GetData<CreatureTable>("DungeonConfiguratorSpecial");
             ctDungeonConfiguratorEmpty = Catalog.GetData<CreatureTable>("DungeonConfiguratorGeneral").CloneJson();
             wdDungeonConfiguratorGeneral = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral");
         }
