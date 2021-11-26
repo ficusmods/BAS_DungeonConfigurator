@@ -141,6 +141,7 @@ namespace DungeonConfigurator
                 playerContainer.containerID = player_container_id;
 
                 ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
+                containterData.contents = new List<ContainerData.Content>();
                 foreach(var entry in slots)
                 {
                     if(entry.Value.item != null)
