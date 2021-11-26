@@ -14,21 +14,39 @@ namespace DungeonConfigurator
     {
         GameObject roomEditor;
 
-        Button buttonNpcCountDecrease;
-        Button buttonNpcCountIncrease;
-        Text textNpcCount;
-        int additional_npc_count = 0;
+        Button buttonRoomNpcCountDecrease;
+        Button buttonRoomNpcCountIncrease;
+        Text textRoomNpcCount;
+        Button buttonWaveNpcCountDecrease;
+        Button buttonWaveNpcCountIncrease;
+        Text textWaveNpcCount;
+        Button buttonWaveAliveNpcCountDecrease;
+        Button buttonWaveAliveNpcCountIncrease;
+        Text textWaveAliveNpcCount;
+        int room_plus_npc_count = 0;
+        int wave_plus_npc_count = 0;
+        int wave_alive_plus_npc_count = 0;
 
         public RoomEditor(GameObject obj)
         {
             roomEditor = obj;
 
-            buttonNpcCountDecrease = Utils.get_child(roomEditor, "NpcCountEditor/DecreaseButton").GetComponent<Button>();
-            buttonNpcCountIncrease = Utils.get_child(roomEditor, "NpcCountEditor/IncreaseButton").GetComponent<Button>();
-            textNpcCount = Utils.get_child(roomEditor, "NpcCountEditor/ValueArea/ValueText").GetComponent<Text>();
+            buttonRoomNpcCountDecrease = Utils.get_child(roomEditor, "NpcCountEditor/DecreaseButton").GetComponent<Button>();
+            buttonRoomNpcCountIncrease = Utils.get_child(roomEditor, "NpcCountEditor/IncreaseButton").GetComponent<Button>();
+            textRoomNpcCount = Utils.get_child(roomEditor, "NpcCountEditor/ValueArea/ValueText").GetComponent<Text>();
+            buttonWaveNpcCountDecrease = Utils.get_child(roomEditor, "NpcWaveCountEditor/DecreaseButton").GetComponent<Button>();
+            buttonWaveNpcCountIncrease = Utils.get_child(roomEditor, "NpcWaveCountEditor/IncreaseButton").GetComponent<Button>();
+            textWaveNpcCount = Utils.get_child(roomEditor, "NpcWaveCountEditor/ValueArea/ValueText").GetComponent<Text>();
+            buttonWaveAliveNpcCountDecrease = Utils.get_child(roomEditor, "NpcWaveAliveCountEditor/DecreaseButton").GetComponent<Button>();
+            buttonWaveAliveNpcCountIncrease = Utils.get_child(roomEditor, "NpcWaveAliveCountEditor/IncreaseButton").GetComponent<Button>();
+            textWaveAliveNpcCount = Utils.get_child(roomEditor, "NpcWaveAliveCountEditor/ValueArea/ValueText").GetComponent<Text>();
 
-            buttonNpcCountDecrease.onClick.AddListener(decrease_npc_count);
-            buttonNpcCountIncrease.onClick.AddListener(increase_npc_count);
+            buttonRoomNpcCountDecrease.onClick.AddListener(delegate { decrease_npc_count(ref room_plus_npc_count, textRoomNpcCount); });
+            buttonRoomNpcCountIncrease.onClick.AddListener(delegate { increase_npc_count(ref room_plus_npc_count, textRoomNpcCount); });
+            buttonWaveNpcCountDecrease.onClick.AddListener(delegate { decrease_npc_count(ref wave_plus_npc_count, textWaveNpcCount); });
+            buttonWaveNpcCountIncrease.onClick.AddListener(delegate { increase_npc_count(ref wave_plus_npc_count, textWaveNpcCount); });
+            buttonWaveAliveNpcCountDecrease.onClick.AddListener(delegate { decrease_npc_count(ref wave_alive_plus_npc_count, textWaveAliveNpcCount); });
+            buttonWaveAliveNpcCountIncrease.onClick.AddListener(delegate { increase_npc_count(ref wave_alive_plus_npc_count, textWaveAliveNpcCount); });
         }
         public virtual void setHidden(bool hidden)
         {
@@ -41,41 +59,40 @@ namespace DungeonConfigurator
                 roomEditor.SetActive(true);
             }
         }
-        public virtual void increase_npc_count()
+        public virtual void increase_npc_count(ref int counter, Text text)
         {
-            if(additional_npc_count <= int.MaxValue-1)
+            if(counter <= int.MaxValue-1)
             {
-                additional_npc_count++;
-                textNpcCount.text = additional_npc_count.ToString();
+                counter++;
+                text.text = counter.ToString();
             }
         }
 
-        public virtual void decrease_npc_count()
+        public virtual void decrease_npc_count(ref int counter, Text text)
         {
-            if (additional_npc_count > 0)
+            if (counter > 0)
             {
-                additional_npc_count--;
-                textNpcCount.text = additional_npc_count.ToString();
+                counter--;
+                text.text = counter.ToString();
             }
         }
 
         public virtual void apply_changes()
         {
-            if (additional_npc_count > 0)
+            EventManager.onLevelLoad += (LevelData levelData, EventTime eventTime) =>
             {
-                EventManager.onLevelLoad += (LevelData levelData, EventTime eventTime) =>
+                if (eventTime == EventTime.OnEnd)
                 {
-                    if (eventTime == EventTime.OnEnd)
+                    if (Level.current.dungeon != null)
                     {
-                        if (Level.current.dungeon != null)
-                        {
-                            var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
-                            module.additional_npc_count = additional_npc_count;
-                            module.apply_changes();
-                        }
+                        var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
+                        module.additional_room_npc_count = room_plus_npc_count;
+                        module.additional_wave_npc_count = wave_plus_npc_count;
+                        module.additional_wave_alive_npc_count = wave_alive_plus_npc_count;
+                        module.apply_changes();
                     }
-                };
-            }
+                }
+            };
         }
     }
 }

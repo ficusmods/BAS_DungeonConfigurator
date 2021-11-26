@@ -12,16 +12,43 @@ namespace DungeonConfigurator
 {
     public class RoomEditorModule : MonoBehaviour
     {
-        public int additional_npc_count = 0;
+        public int additional_room_npc_count = 0;
+        public int additional_wave_npc_count = 0;
+        public int additional_wave_alive_npc_count = 0;
 
         public void apply_changes()
         {
             Catalog.gameData.platformParameters.maxRoomNpc = int.MaxValue;
-            foreach (Room room in Level.current.dungeon.rooms)
+            if (additional_room_npc_count > 0)
             {
-                room.spawnerMaxNPC += additional_npc_count;
-                Logger.Detailed("Starting creature spawning coroutine for room {0}", room.name);
-                this.StartCoroutine(spawn_until_full(room));
+                foreach (Room room in Level.current.dungeon.rooms)
+                {
+                    room.spawnerMaxNPC += additional_room_npc_count;
+                    Logger.Detailed("Starting creature spawning coroutine for room {0}", room.name);
+                    this.StartCoroutine(spawn_until_full(room));
+                }
+            }
+            if (additional_wave_npc_count > 0)
+            {
+                System.Random rand = new System.Random();
+                foreach (WaveSpawner spawner in WaveSpawner.instances)
+                {
+                    var groups = spawner.waveData.groups;
+                    if (groups.Count > 0)
+                    {
+                        for (int i = 0; i < additional_wave_npc_count; i++)
+                        {
+                            groups.Add(groups[rand.Next(groups.Count)]);
+                        }
+                    }
+                }
+            }
+            if (additional_wave_alive_npc_count > 0)
+            {
+                foreach (WaveSpawner spawner in WaveSpawner.instances)
+                {
+                    spawner.waveData.maxAlive += additional_wave_alive_npc_count;
+                }
             }
         }
 
