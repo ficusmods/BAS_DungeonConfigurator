@@ -174,7 +174,7 @@ namespace DungeonConfigurator
             }
             slotHint.transform.up = slot.objSlot.transform.up;
             slotHint.transform.right = slot.objSlot.transform.right;
-            slotHint.transform.LookAt(Camera.main.transform.position - Camera.main.transform.forward*2f, Camera.main.transform.up);   
+            slotHint.transform.LookAt(2f * slot.objSlot.transform.position - Player.local.head.cam.transform.position, Vector3.up);   
         }
         private void hide_slot_hint()
         {
@@ -187,7 +187,7 @@ namespace DungeonConfigurator
             itemHintText.text = item.id;
             itemHint.transform.up = entry.transform.up;
             itemHint.transform.right = entry.transform.right;
-            itemHint.transform.LookAt(Camera.main.transform.position - Camera.main.transform.forward * 2f, Camera.main.transform.up);
+            itemHint.transform.LookAt(2f * entry.transform.position - Player.local.head.cam.transform.position, Vector3.up);
         }
 
         private void hide_item_hint()
@@ -250,7 +250,6 @@ namespace DungeonConfigurator
             }
             viewSubItemSelect.GetComponent<ScrollRect>().content = rows.GetComponent<RectTransform>();
 
-            
             itemRowsContentTemplate.SetActive(false);
             itemRowsEntryListTemplate.SetActive(false);
             itemRowsEntryTemplate.SetActive(false);

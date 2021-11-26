@@ -46,6 +46,7 @@ namespace DungeonConfigurator
             name = _name;
             button = objSlot.GetComponentInChildren<Button>();
             image = objSlot.GetComponentInChildren<RawImage>();
+            image.gameObject.SetActive(false);
 
             button.onClick.AddListener(delegate { onClick.Invoke(); });
 
@@ -83,7 +84,7 @@ namespace DungeonConfigurator
                 Catalog.LoadAssetAsync<Texture>(this._item.iconAddress, (Texture t) => { this.image.texture = t; }, "Item");
                 this.image.gameObject.SetActive(true);
                 Color color = this.button.GetComponent<Image>().color;
-                color.a = 0.01f;
+                color.a = 0.001f;
             }
             else
             {
