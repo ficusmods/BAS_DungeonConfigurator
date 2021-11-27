@@ -312,6 +312,7 @@ namespace DungeonConfigurator
                     else
                     {
                         idCreatures.Remove(cdata.id);
+                        Logger.Detailed("Removed Creature {0}", cdata.id);
                     }
                 });
                 label.text = cdata.id;
@@ -335,6 +336,11 @@ namespace DungeonConfigurator
                     {
                         Logger.Detailed("Selected CreatureTable {0}", ctdata.id);
                         idTables.AddLast(ctdata.id);
+                    }
+                    else
+                    {
+                        idTables.Remove(ctdata.id);
+                        Logger.Detailed("Removed CreatureTable {0}", ctdata.id);
                     }
                 });
                 label.text = ctdata.id;
