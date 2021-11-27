@@ -252,8 +252,8 @@ namespace DungeonConfigurator
                         Logger.Detailed("Replacing wave spawner ids in room {0}", room.name);
                         wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
                         WaveData.Group group = new WaveData.Group();
-                        group.factionID = 0;
-                        group.overrideFaction = false;
+                        group.factionID = 4;
+                        group.overrideFaction = true;
                         group.reference = WaveData.Group.Reference.Table;
                         group.referenceID = "DungeonConfiguratorGeneral";
                         group.overrideContainer = false;
