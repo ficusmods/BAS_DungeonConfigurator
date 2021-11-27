@@ -63,20 +63,20 @@ namespace DungeonConfigurator
         private IEnumerator spawn_until_full(Room room)
         {
             Logger.Detailed("Spawn CR: Creatures in room {0}: {1}/{2}", room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
-            System.Random rand = new System.Random();
             var spawners = room.GetComponentsInChildren<CreatureSpawner>(true);
-            if(spawners != null && spawners.Length > 0)
+            
+            if (spawners != null && spawners.Length > 0)
             {
                 while (room.spawnerNPCCount <= room.spawnerMaxNPC)
                 {
-                    CreatureSpawner spawner = spawners[rand.Next(spawners.Length)];
+                    CreatureSpawner spawner = spawners[UnityEngine.Random.Range(0, spawners.Length-1)];
                     if (!spawner.spawning)
                     {
                         spawner.Spawn();
                         if (spawner.spawning)
                         {
                             room.spawnerNPCCount++;
-                            Logger.Detailed("Spawn CR: Spawning creautre via {0} in room {1} {2}/{3}", spawner.name, room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
+                            Logger.Detailed("Spawn CR: Spawning creature via {0} in room {1} {2}/{3}", spawner.name, room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
                             yield return new WaitForSeconds(1);
                         }
                     }
@@ -87,13 +87,7 @@ namespace DungeonConfigurator
                 }
             }
 
-            foreach(Creature c in room.creatures)
-            {
-                c.gameObject.AddComponent<CreatureDestuckModule>();
-            }
-            
             Logger.Detailed("Spawn CR: Finished for room {0}", room.name);
         }
-
     }
 }

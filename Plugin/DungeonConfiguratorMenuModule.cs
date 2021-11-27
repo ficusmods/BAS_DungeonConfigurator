@@ -239,8 +239,14 @@ namespace DungeonConfigurator
 
             Logger.Basic("Starting dungeon");
             EventManager.onLevelLoad += EventManager_onLevelLoad;
+            EventManager.onCreatureSpawn += AddUnstuckModule_onCreatureSpawn;
             timeLevelLoadStart = Time.timeAsDouble;
             GameManager.LoadLevel(ld, lm, options);
+        }
+
+        private void AddUnstuckModule_onCreatureSpawn(Creature creature)
+        {
+            creature.gameObject.AddComponent<CreatureDestuckModule>();
         }
 
         private void EventManager_onLevelLoad(LevelData levelData, EventTime eventTime)
@@ -260,6 +266,7 @@ namespace DungeonConfigurator
             else
             {
                 EventManager.onLevelLoad -= EventManager_onLevelLoad;
+                EventManager.onCreatureSpawn -= AddUnstuckModule_onCreatureSpawn;
             }
         }
 

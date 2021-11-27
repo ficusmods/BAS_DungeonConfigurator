@@ -13,33 +13,35 @@ namespace DungeonConfigurator
     public class CreatureDestuckModule : MonoBehaviour
     {
         Creature creature;
-        const float retryWait = 3.0f;
+        float retryWait = 3.0f;
 
         private void Awake()
         {
             creature = this.gameObject.GetComponent<Creature>();
-            StartCoroutine("DestuckRoutine");
         }
 
-        private IEnumerable DestuckRoutine()
+        private void LateUpdate()
         {
-            bool stuck_fixed = false;
-            yield return new WaitForSeconds(retryWait);
-
-            while (!stuck_fixed)
+            if (retryWait <= 0)
             {
-                if (creature.fallState == Creature.FallState.None)
+                if (creature.locomotion.isGrounded == false)
                 {
-                    stuck_fixed = true;
+                    if (creature.currentRoom)
+                    {
+                        Logger.Detailed("Try unstuck {0} in {1}", creature.name, creature.currentRoom.name);
+                    }
+                    creature.locomotion.SphereCastGround(creature.fallAliveDestabilizeHeight, out RaycastHit hit, out _);
+                    Vector3 tpPoint = hit.point;
+                    creature.Teleport(tpPoint, creature.transform.rotation);
+                    retryWait = 5.0f;
                 }
                 else
                 {
-                    creature.locomotion.SphereCastGround(creature.fallAliveDestabilizeHeight, out RaycastHit hit, out _);
-                    Vector3 tpPoint = hit.point + Vector3.up * 0.2f;
-                    creature.Teleport(tpPoint, creature.transform.rotation);
-                    yield return new WaitForSeconds(retryWait);
+                    GameObject.Destroy(this);
                 }
             }
+
+            retryWait -= Time.deltaTime;
         }
     }
 }
