@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 using UnityEngine;
 using ThunderRoad;
@@ -11,33 +12,33 @@ namespace DungeonConfigurator
 {
     public class CreatureDestuckModule : MonoBehaviour
     {
-        float wait_time = 3;
         Creature creature;
-        bool stuck_fixed = false;
+        const float retryWait = 3.0f;
 
         private void Awake()
         {
             creature = this.gameObject.GetComponent<Creature>();
+            StartCoroutine("DestuckRoutine");
         }
 
-        private void LateUpdate()
+        private IEnumerable DestuckRoutine()
         {
-            if(creature.fallState == Creature.FallState.None)
-            {
-                stuck_fixed = true;
-            }
+            bool stuck_fixed = false;
+            yield return new WaitForSeconds(retryWait);
 
-            if(wait_time > 0)
+            while (!stuck_fixed)
             {
-                if (!stuck_fixed)
+                if (creature.fallState == Creature.FallState.None)
+                {
+                    stuck_fixed = true;
+                }
+                else
                 {
                     creature.locomotion.SphereCastGround(creature.fallAliveDestabilizeHeight, out RaycastHit hit, out _);
                     Vector3 tpPoint = hit.point + Vector3.up * 0.2f;
                     creature.Teleport(tpPoint, creature.transform.rotation);
-                    wait_time = 3;
+                    yield return new WaitForSeconds(retryWait);
                 }
-
-                wait_time -= Time.deltaTime;
             }
         }
     }
