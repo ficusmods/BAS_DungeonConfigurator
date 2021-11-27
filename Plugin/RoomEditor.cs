@@ -90,11 +90,14 @@ namespace DungeonConfigurator
                 {
                     if (Level.current.dungeon != null)
                     {
-                        var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
-                        module.additional_room_npc_count = room_plus_npc_count;
-                        module.additional_wave_npc_count = wave_plus_npc_count;
-                        module.additional_wave_alive_npc_count = wave_alive_plus_npc_count;
-                        module.apply_changes();
+                        if (!Level.current.dungeon.gameObject.TryGetComponent<RoomEditorModule>(out _))
+                        {
+                            var module = Level.current.dungeon.gameObject.AddComponent<RoomEditorModule>();
+                            module.additional_room_npc_count = room_plus_npc_count;
+                            module.additional_wave_npc_count = wave_plus_npc_count;
+                            module.additional_wave_alive_npc_count = wave_alive_plus_npc_count;
+                            module.apply_changes();
+                        }
                     }
                 }
             }

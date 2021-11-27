@@ -246,7 +246,10 @@ namespace DungeonConfigurator
 
         private void AddUnstuckModule_onCreatureSpawn(Creature creature)
         {
-            creature.gameObject.AddComponent<CreatureDestuckModule>();
+            if (!creature.gameObject.TryGetComponent<CreatureDestuckModule>(out _))
+            {
+                creature.gameObject.AddComponent<CreatureDestuckModule>();
+            }
         }
 
         private void EventManager_onLevelLoad(LevelData levelData, EventTime eventTime)
