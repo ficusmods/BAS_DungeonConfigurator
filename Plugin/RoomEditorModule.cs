@@ -67,7 +67,7 @@ namespace DungeonConfigurator
             var spawners = room.GetComponentsInChildren<CreatureSpawner>(true);
             if(spawners != null && spawners.Length > 0)
             {
-                while (room.spawnerNPCCount != room.spawnerMaxNPC)
+                while (room.spawnerNPCCount <= room.spawnerMaxNPC)
                 {
                     CreatureSpawner spawner = spawners[rand.Next(spawners.Length)];
                     if (!spawner.spawning)
