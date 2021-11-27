@@ -76,7 +76,7 @@ namespace DungeonConfigurator
                         if (spawner.spawning)
                         {
                             room.spawnerNPCCount++;
-                            Logger.Detailed("Spawn CR: Spawning creature via {0} in room {1} {2}/{3}", spawner.name, room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
+                            Logger.Detailed("Spawn CR: Spawning creautre via {0} in room {1} {2}/{3}", spawner.name, room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
                             yield return new WaitForSeconds(1);
                         }
                     }
