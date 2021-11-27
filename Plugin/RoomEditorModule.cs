@@ -86,6 +86,12 @@ namespace DungeonConfigurator
                     }
                 }
             }
+
+            foreach(Creature c in room.creatures)
+            {
+                c.gameObject.AddComponent<CreatureDestuckModule>();
+            }
+            
             Logger.Detailed("Spawn CR: Finished for room {0}", room.name);
         }
 
