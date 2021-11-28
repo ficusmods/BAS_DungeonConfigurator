@@ -138,11 +138,17 @@ namespace DungeonConfigurator
                 if (eventTime == EventTime.OnEnd)
                 {
                     Logger.Basic("Applying inventory changes");
+
+                    Player.local.creature.equipment.UnequipWeapons();
+                    Player.local.creature.equipment.UnequipAllWardrobes();
+                    Player.local.creature.equipment.equipWardrobesOnLoad = false;
+                    Player.local.creature.equipment.equipWeaponsOnLoad = false;
+
                     Container playerContainer = Player.local.creature.container;
                     playerContainer.loadContent = Container.LoadContent.ContainerID;
                     playerContainer.containerID = player_container_id;
 
-                    ContainerData containterData = Catalog.GetData(Catalog.Category.Container, player_container_id) as ContainerData;
+                    ContainerData containterData = Catalog.GetData<ContainerData>(player_container_id);
                     containterData.contents = new List<ContainerData.Content>();
                     foreach (var entry in slots)
                     {
@@ -153,10 +159,9 @@ namespace DungeonConfigurator
                             Logger.Detailed("Equipping {0} from slot {1}", entry.Value.item.id, entry.Value.name);
                         }
                     }
+
                     playerContainer.Load();
                     Player.local.creature.mana.Load();
-                    Player.local.creature.equipment.UnequipWeapons();
-                    Player.local.creature.equipment.UnequipAllWardrobes();
                     Player.local.creature.equipment.EquipAllWardrobes(false, false);
                     Player.local.creature.equipment.EquipWeapons();
                 }
