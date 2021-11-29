@@ -218,16 +218,13 @@ namespace DungeonConfigurator
         {
             if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
             {
+                Level.current.dungeon.DespawnAllCreatures();
                 if (eventTime == EventTime.OnEnd)
                 {
                     Logger.Detailed("Replacing creature spawner ids");
                     foreach (Room room in Level.current.dungeon.rooms)
                     {
                         Logger.Detailed("Replacing creatures in room {0}", room.name);
-                        foreach (Creature c in new List<Creature>(room.creatures))
-                        {
-                            c.Despawn();
-                        }
                         room.spawnerNPCCount = 0;
 
                         var spawners = room.GetComponentsInChildren<CreatureSpawner>(true).Shuffle<CreatureSpawner>();
