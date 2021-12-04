@@ -219,9 +219,9 @@ namespace DungeonConfigurator
         {
             if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
             {
-                Level.current.dungeon.DespawnAllCreatures();
                 if (eventTime == EventTime.OnEnd)
                 {
+                    Level.current.dungeon.DespawnAllCreatures();
                     Logger.Detailed("Replacing creature spawner ids");
                     foreach (Room room in Level.current.dungeon.rooms)
                     {
