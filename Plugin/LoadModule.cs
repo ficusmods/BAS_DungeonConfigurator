@@ -23,10 +23,6 @@ namespace DungeonConfigurator
             Logger.init(mod_name, mod_version, logger_level);
             Logger.Basic("Loading {0}", mod_name);
 
-            Logger.Basic("Applying Harmony patches");
-            Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
-            harmony.PatchAll();
-
             return base.OnLoadCoroutine();
         }
     }
