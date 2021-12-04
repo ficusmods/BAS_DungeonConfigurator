@@ -62,7 +62,8 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.InputField lastEditedField = null;
 
         double timeLevelLoadStart;
-        
+
+        bool waveSpawnerPatched = false;
 
         public override void Init(MenuData menuData, ThunderRoad.Menu menu)
         {
@@ -264,21 +265,14 @@ namespace DungeonConfigurator
                 if (eventTime == EventTime.OnStart)
                 {
                     roomEditor.apply_changes();
-                    Logger.Basic("Applying Harmony patches");
-                    Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
-                    var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
-                    var waveSpawnerPatches = Harmony.GetPatchInfo(originalWaveSpawner);
-                    if (waveSpawnerPatches == null)
+                    if (!waveSpawnerPatched)
                     {
-                        Logger.Detailed("WaveSpawner not patched, applying patch...");
+                        Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
+                        var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
                         var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
                         harmony.Patch(originalWaveSpawner, transpiler: new HarmonyMethod(patchedWaveSpawner));
+                        waveSpawnerPatched = true;
                     }
-                    else
-                    {
-                        Logger.Detailed("WaveSpawner is already patched by {0}", waveSpawnerPatches.Owners);
-                    }
-
                 }
                 if (eventTime == EventTime.OnEnd)
                 {
@@ -288,18 +282,13 @@ namespace DungeonConfigurator
             }
             else
             {
-                Logger.Basic("Removing harmony patches");
-                Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
-                var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
-                var waveSpawnerPatches = Harmony.GetPatchInfo(originalWaveSpawner);
-                if (waveSpawnerPatches != null)
+                if (waveSpawnerPatched)
                 {
-                    if(waveSpawnerPatches.Owners.Contains("com.fksDungeonConfigurator.patch"))
-                    {
-                        Logger.Detailed("Removing patch for WaveSpawner...");
-                        var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
-                        harmony.Unpatch(originalWaveSpawner, patchedWaveSpawner);
-                    }
+                    Logger.Basic("Removing harmony patches");
+                    Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
+                    var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
+                    var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
+                    harmony.Unpatch(originalWaveSpawner, patchedWaveSpawner);
                 }
 
                 EventManager.onLevelLoad -= EventManager_onLevelLoad;

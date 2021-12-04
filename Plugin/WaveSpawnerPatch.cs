@@ -17,7 +17,7 @@ namespace DungeonConfigurator
     [HarmonyPatch(new Type[] { typeof(WaveData), typeof(float), typeof(bool) })]
     public static class WaveSpawnerPatch
     {
-        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator ilg)
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator ilg)
         {
             Logger.Detailed("Applying patch to WaveSpawner");
             FieldInfo waveDataField = typeof(WaveSpawner).GetField("waveData", BindingFlags.Instance | BindingFlags.Public);
