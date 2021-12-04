@@ -34,13 +34,16 @@ namespace DungeonConfigurator
                     System.Random rand = new System.Random();
                     foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
                     {
-                        Logger.Detailed("Adding {0} additional groups to {1} in room {2}", additional_wave_npc_count, spawner.name, room.name);
-                        var groups = Catalog.GetData<WaveData>(spawner.startWaveId).groups;
-                        if (groups.Count > 0)
+                        WaveData wData = Catalog.GetData<WaveData>(spawner.startWaveId);
+                        if (wData != null)
                         {
-                            for (int i = 0; i < additional_wave_npc_count; i++)
+                            Logger.Detailed("Adding {0} additional groups to {1} in room {2}", additional_wave_npc_count, spawner.name, room.name);
+                            if (wData.groups.Count > 0)
                             {
-                                groups.Add(groups[rand.Next(groups.Count)]);
+                                for (int i = 0; i < additional_wave_npc_count; i++)
+                                {
+                                    wData.groups.Add(wData.groups[rand.Next(wData.groups.Count)]);
+                                }
                             }
                         }
                     }
