@@ -12,6 +12,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DunGen;
 using HarmonyLib;
+using System.Reflection.Emit;
 
 namespace DungeonConfigurator
 {
@@ -240,7 +241,9 @@ namespace DungeonConfigurator
             inventoryEditor.apply_changes();
 
             Logger.Basic("Starting dungeon");
+            EventManager.onLevelLoad -= EventManager_onLevelLoad;
             EventManager.onLevelLoad += EventManager_onLevelLoad;
+            EventManager.onCreatureSpawn -= AddUnstuckModule_onCreatureSpawn;
             EventManager.onCreatureSpawn += AddUnstuckModule_onCreatureSpawn;
             timeLevelLoadStart = Time.timeAsDouble;
             GameManager.LoadLevel(ld, lm, options);

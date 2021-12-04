@@ -79,6 +79,7 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
+            EventManager.onLevelLoad -= apply_changes_impl;
             EventManager.onLevelLoad += apply_changes_impl;
         }
 

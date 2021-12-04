@@ -127,6 +127,7 @@ namespace DungeonConfigurator
         {
             if (changes)
             {
+                EventManager.onLevelLoad -= apply_changes_impl;
                 EventManager.onLevelLoad += apply_changes_impl;
             }
         }

@@ -210,6 +210,7 @@ namespace DungeonConfigurator
             if(newtable.drops.Count > 0)
             {
                 alter_table("DungeonConfiguratorGeneral", newtable);
+                EventManager.onLevelLoad -= HandleLevelLoad;
                 EventManager.onLevelLoad += HandleLevelLoad;
             }
         }
