@@ -1,0 +1,22 @@
+{
+  "$type": "ThunderRoad.ContainerData, ThunderRoad",
+  "id": "HairsOnly",
+  "saveFolder": "bas",
+  "version": 1,
+  "displayName": "",
+  "description": null,
+  "contents": [
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "Hairs",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "Beards",
+      "reference": "Table",
+      "customValues": []
+    }
+  ]
+}
