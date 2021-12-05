@@ -221,54 +221,57 @@ namespace DungeonConfigurator
             {
                 if (eventTime == EventTime.OnEnd)
                 {
-                    Level.current.dungeon.DespawnAllCreatures();
-                    Logger.Detailed("Replacing creature spawner ids");
-                    foreach (Room room in Level.current.dungeon.rooms)
+                    if (Level.current.dungeon != null)
                     {
-                        Logger.Detailed("Replacing creatures in room {0}", room.name);
-                        room.spawnerNPCCount = 0;
+                        Level.current.dungeon.DespawnAllCreatures();
+                        Logger.Detailed("Replacing creature spawner ids");
+                        foreach (Room room in Level.current.dungeon.rooms)
+                        {
+                            Logger.Detailed("Replacing creatures in room {0}", room.name);
+                            room.spawnerNPCCount = 0;
 
-                        var spawners = room.GetComponentsInChildren<CreatureSpawner>(true).Shuffle<CreatureSpawner>();
-                        foreach (CreatureSpawner spawner in spawners)
-                        {
-                            spawner.creatureTableID = "DungeonConfiguratorGeneral";
-                            Logger.Detailed("Respawning creatures in {0} using {1} (NPC: {2}/{3})", room.name, spawner.name, room.spawnerNPCCount, room.spawnerMaxNPC);
-                            if (spawner.ignoreRoomMaxNPC)
+                            var spawners = room.GetComponentsInChildren<CreatureSpawner>(true).Shuffle<CreatureSpawner>();
+                            foreach (CreatureSpawner spawner in spawners)
                             {
-                                spawner.Spawn();
-                                if (spawner.spawning)
-                                    ++room.spawnerNPCCount;
+                                spawner.creatureTableID = "DungeonConfiguratorGeneral";
+                                Logger.Detailed("Respawning creatures in {0} using {1} (NPC: {2}/{3})", room.name, spawner.name, room.spawnerNPCCount, room.spawnerMaxNPC);
+                                if (spawner.ignoreRoomMaxNPC)
+                                {
+                                    spawner.Spawn();
+                                    if (spawner.spawning)
+                                        ++room.spawnerNPCCount;
+                                }
+                                else if (room.spawnerNPCCount < Mathf.Min(Catalog.gameData.platformParameters.maxRoomNpc, room.spawnerMaxNPC))
+                                {
+                                    spawner.Spawn();
+                                    if (spawner.spawning)
+                                        ++room.spawnerNPCCount;
+                                }
                             }
-                            else if (room.spawnerNPCCount < Mathf.Min(Catalog.gameData.platformParameters.maxRoomNpc, room.spawnerMaxNPC))
-                            {
-                                spawner.Spawn();
-                                if (spawner.spawning)
-                                    ++room.spawnerNPCCount;
-                            }
-                        }
 
-                        Logger.Detailed("Replacing wave spawner ids in room {0}", room.name);
-                        wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
-                        WaveData.Group group = new WaveData.Group();
-                        group.factionID = 4;
-                        group.overrideFaction = true;
-                        group.reference = WaveData.Group.Reference.Table;
-                        group.referenceID = "DungeonConfiguratorGeneral";
-                        group.overrideContainer = false;
-                        group.overrideBrain = false;
-                        group.overrideMaxMelee = false;
-                        group.spawnPointIndex = -1;
-                        group.conditionStepIndex = -1;
-                        group.conditionThreshold = 0;
-                        for (int i = 0; i < waveGroupCount; i++)
-                        {
-                            wdDungeonConfiguratorGeneral.groups.Add(group);
-                        }
-                        foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
-                        {
-                            Logger.Detailed("Replacing WaveSpawner creatures in {0}", spawner.name);
-                            spawner.startWaveId = "DungeonConfiguratorGeneral";
-                            spawner.waveData = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral").CloneJson();
+                            Logger.Detailed("Replacing wave spawner ids in room {0}", room.name);
+                            wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
+                            WaveData.Group group = new WaveData.Group();
+                            group.factionID = 4;
+                            group.overrideFaction = true;
+                            group.reference = WaveData.Group.Reference.Table;
+                            group.referenceID = "DungeonConfiguratorGeneral";
+                            group.overrideContainer = false;
+                            group.overrideBrain = false;
+                            group.overrideMaxMelee = false;
+                            group.spawnPointIndex = -1;
+                            group.conditionStepIndex = -1;
+                            group.conditionThreshold = 0;
+                            for (int i = 0; i < waveGroupCount; i++)
+                            {
+                                wdDungeonConfiguratorGeneral.groups.Add(group);
+                            }
+                            foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
+                            {
+                                Logger.Detailed("Replacing WaveSpawner creatures in {0}", spawner.name);
+                                spawner.startWaveId = "DungeonConfiguratorGeneral";
+                                spawner.waveData = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral").CloneJson();
+                            }
                         }
                     }
                 }
