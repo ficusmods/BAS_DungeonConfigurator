@@ -1,0 +1,68 @@
+{
+  "$type": "ThunderRoad.CreatureTable, ThunderRoad",
+  "id": "RandomEquipmentHuman",
+  "saveFolder": "bas",
+  "version": 1,
+  "description": null,
+  "linkedToGenderRatio": false,
+  "minMaxDifficulty": {
+    "x": 0,
+    "y": 0
+  },
+  "drops": [
+    {
+      "$type": "ThunderRoad.CreatureTable+Drop, ThunderRoad",
+      "reference": "Table",
+      "referenceID": "RandomMeleeHuman",
+      "overrideFaction": false,
+      "factionID": 0,
+      "overrideContainer": false,
+      "overrideContainerID": "",
+      "overrideBrain": false,
+      "overrideBrainID": "",
+      "probabilityWeights": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "$type": "ThunderRoad.CreatureTable+Drop, ThunderRoad",
+      "reference": "Table",
+      "referenceID": "RandomArcherHuman",
+      "overrideFaction": false,
+      "factionID": 0,
+      "overrideContainer": false,
+      "overrideContainerID": "",
+      "overrideBrain": false,
+      "overrideBrainID": "",
+      "probabilityWeights": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "$type": "ThunderRoad.CreatureTable+Drop, ThunderRoad",
+      "reference": "Table",
+      "referenceID": "RandomMageHuman",
+      "overrideFaction": false,
+      "factionID": 0,
+      "overrideContainer": false,
+      "overrideContainerID": "",
+      "overrideBrain": false,
+      "overrideBrainID": "",
+      "probabilityWeights": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

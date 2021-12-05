@@ -1,0 +1,38 @@
+{
+  "$type": "ThunderRoad.LootTable, ThunderRoad",
+  "id": "RandomLegs",
+  "saveFolder": "bas",
+  "version": 1,
+  "drops": [
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": null,
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelBanditPants",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelBattlemagePants",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelCivilianLegs",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelSoldierPants",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    }
+  ]
+}

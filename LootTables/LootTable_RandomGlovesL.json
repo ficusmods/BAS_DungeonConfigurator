@@ -1,0 +1,44 @@
+{
+  "$type": "ThunderRoad.LootTable, ThunderRoad",
+  "id": "RandomGlovesL",
+  "saveFolder": "bas",
+  "version": 1,
+  "drops": [
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": null,
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelBanditGloveL",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelBattlemageGloveL",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelCivilianHandL",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelGladiatorGloveL",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelSoldierGloveL",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    }
+  ]
+}

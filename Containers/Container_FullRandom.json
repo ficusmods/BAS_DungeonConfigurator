@@ -1,0 +1,202 @@
+{
+  "$type": "ThunderRoad.ContainerData, ThunderRoad",
+  "id": "FullRandom",
+  "saveFolder": "bas",
+  "version": 1,
+  "displayName": "",
+  "description": null,
+  "contents": [
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "ApparelRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "WeaponRandom",
+      "reference": "Table",
+      "customValues": [
+        {
+          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
+          "id": "Holder",
+          "value": "HipsLeft"
+        }
+      ]
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "WeaponRandom",
+      "reference": "Table",
+      "customValues": [
+        {
+          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
+          "id": "Holder",
+          "value": "HipsRight"
+        }
+      ]
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "WeaponRandom",
+      "reference": "Table",
+      "customValues": [
+        {
+          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
+          "id": "Holder",
+          "value": "BackLeft"
+        }
+      ]
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "WeaponRandom",
+      "reference": "Table",
+      "customValues": [
+        {
+          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
+          "id": "Holder",
+          "value": "BackRight"
+        }
+      ]
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "AnyItemRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "AnyItemRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "AnyItemRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "AnyItemRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "SpellRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "SpellRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "SpellRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "SpellRandom",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "SpellRandom",
+      "reference": "Table",
+      "customValues": []
+    }
+  ]
+}

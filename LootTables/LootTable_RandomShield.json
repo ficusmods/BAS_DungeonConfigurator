@@ -1,0 +1,32 @@
+{
+  "$type": "ThunderRoad.LootTable, ThunderRoad",
+  "id": "RandomWeaponShield",
+  "saveFolder": "bas",
+  "version": 1,
+  "drops": [
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": null,
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ShieldRound",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ShieldKite",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "BucklerMetal",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    }
+  ]
+}

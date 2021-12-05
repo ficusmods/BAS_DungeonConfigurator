@@ -1,0 +1,68 @@
+{
+  "$type": "ThunderRoad.LootTable, ThunderRoad",
+  "id": "RandomJacket",
+  "saveFolder": "bas",
+  "version": 1,
+  "drops": [
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": null,
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelBanditJacket",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelBattlemageJacket",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelCivilianChest",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelGladiatorJacket",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelSoldierJacket",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelShirt01",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelShirt02",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelShirt03",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelShirt04",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    }
+  ]
+}
