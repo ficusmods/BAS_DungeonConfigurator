@@ -23,7 +23,8 @@ namespace DungeonConfigurator
             None,
             CreatureEditor,
             RoomEditor,
-            InventoryEditor
+            InventoryEditor,
+            LevelSelector
         }
 
         protected GameObject pageLeft;
@@ -33,6 +34,7 @@ namespace DungeonConfigurator
         CreatureEditor creatureEditor;
         RoomEditor roomEditor;
         InventoryEditor inventoryEditor;
+        LevelSelector levelSelector;
 
         protected UnityEngine.UI.InputField fieldSeed;
         protected UnityEngine.UI.Slider sliderDifficulty;
@@ -41,6 +43,7 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.Button buttonEditCreatures;
         protected UnityEngine.UI.Button buttonEditRooms;
         protected UnityEngine.UI.Button buttonEditInventory;
+        protected UnityEngine.UI.Button buttonSelectLevel;
 
         protected UnityEngine.UI.Button buttonStart;
 
@@ -76,6 +79,7 @@ namespace DungeonConfigurator
             creatureEditor = new CreatureEditor(menu.GetCustomReference("CreatureEditor").gameObject);
             roomEditor = new RoomEditor(menu.GetCustomReference("RoomEditor").gameObject);
             inventoryEditor = new InventoryEditor(menu.GetCustomReference("InventoryEditor").gameObject);
+            levelSelector = new LevelSelector(menu.GetCustomReference("LevelSelector").gameObject);
 
             fieldSeed = Utils.get_child(pageLeft, "SeedField").GetComponent<UnityEngine.UI.InputField>();
             sliderDifficulty = Utils.get_child(pageLeft, "DifficultySlider").GetComponent<UnityEngine.UI.Slider>();
@@ -84,6 +88,7 @@ namespace DungeonConfigurator
             buttonEditCreatures = Utils.get_child(pageLeft, "CreatureEditButton").GetComponent<UnityEngine.UI.Button>();
             buttonEditRooms = Utils.get_child(pageLeft, "RoomEditButton").GetComponent<UnityEngine.UI.Button>();
             buttonEditInventory = Utils.get_child(pageLeft, "InventoryEditButton").GetComponent<UnityEngine.UI.Button>();
+            buttonSelectLevel = Utils.get_child(pageLeft, "LevelEditButton").GetComponent<UnityEngine.UI.Button>();
 
             buttonStart = Utils.get_child(pageLeft, "StartButton").GetComponent<UnityEngine.UI.Button>();
 
@@ -180,6 +185,7 @@ namespace DungeonConfigurator
             buttonEditCreatures.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.CreatureEditor); });
             buttonEditRooms.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.RoomEditor); });
             buttonEditInventory.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.InventoryEditor); });
+            buttonSelectLevel.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.LevelSelector); });
             buttonStart.onClick.AddListener(Start);
             buttonCopy.onClick.AddListener(CopyFromCurrentField);
             buttonPaste.onClick.AddListener(PasteToCurrentField);
@@ -211,6 +217,9 @@ namespace DungeonConfigurator
                 case RightPageView.InventoryEditor:
                     inventoryEditor.setHidden(false);
                     break;
+                case RightPageView.LevelSelector:
+                    levelSelector.setHidden(false);
+                    break;
                 default:
                     break;
             }
@@ -221,6 +230,7 @@ namespace DungeonConfigurator
             creatureEditor.setHidden(true);
             roomEditor.setHidden(true);
             inventoryEditor.setHidden(true);
+            levelSelector.setHidden(true);
         }
 
         public virtual void Start()
@@ -235,9 +245,6 @@ namespace DungeonConfigurator
                 options["seed"] = seed;
             }
 
-            LevelData ld = Catalog.GetData<LevelData>("Dungeon");
-            LevelData.Mode lm = ld.GetMode();
-
             creatureEditor.apply_changes();
             inventoryEditor.apply_changes();
 
@@ -246,6 +253,11 @@ namespace DungeonConfigurator
             EventManager.onLevelLoad += EventManager_onLevelLoad;
             EventManager.onCreatureSpawn -= AddUnstuckModule_onCreatureSpawn;
             EventManager.onCreatureSpawn += AddUnstuckModule_onCreatureSpawn;
+
+            LevelData ld = levelSelector.selected;
+            LevelData.Mode lm = ld.GetMode();
+            
+            
             timeLevelLoadStart = Time.timeAsDouble;
             GameManager.LoadLevel(ld, lm, options);
         }
