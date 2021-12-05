@@ -65,7 +65,7 @@
       "referenceID": "ApparelRandom",
       "reference": "Table",
       "customValues": []
-    },,
+    },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "ApparelRandom",
