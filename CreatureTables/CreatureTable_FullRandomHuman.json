@@ -17,7 +17,7 @@
       "overrideFaction": false,
       "factionID": 0,
       "overrideContainer": true,
-      "overrideContainerID": "FullRandomHuman",
+      "overrideContainerID": "FullRandom",
       "overrideBrain": true,
       "overrideBrainID": "HumanHard",
       "probabilityWeights": [
