@@ -48,5 +48,14 @@ namespace DungeonConfigurator
             }
             return ret;
         }
+
+        public override void refresh_image()
+        {
+            if (this._item != null && _item.iconAddress == null)
+            {
+                _item.iconAddress = "Bas.Icon.sword";
+            }
+            base.refresh_image();
+        }
     }
 }

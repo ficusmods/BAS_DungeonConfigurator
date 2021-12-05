@@ -28,6 +28,7 @@ namespace DungeonConfigurator
         GameObject itemHint;
         Text slotHintText;
         Text itemHintText;
+        Button buttonRandomize;
 
         bool changes = false;
 
@@ -55,8 +56,11 @@ namespace DungeonConfigurator
             itemRowsEntryTemplate = Utils.get_child(viewItemSelect, "Item/ItemListEntryTemplate");
             scrollBarItem = Utils.get_child(viewItemSelect, "Item/ItemScrollbar").GetComponent<Scrollbar>();
 
+            buttonRandomize = Utils.get_child(inventoryEditor, "RandomizeButton").GetComponent<Button>();
+
             init_slot_map();
             init_button_callbacks();
+            init_random_loot_tables();
 
             add_default_apparel();
 
@@ -65,14 +69,49 @@ namespace DungeonConfigurator
             itemHint.SetActive(false);
         }
 
+        private void init_random_loot_tables()
+        {
+            LootTable ltAnyItem = Catalog.GetData<LootTable>("AnyItemRandom");
+            LootTable ltAnyWeapon = Catalog.GetData<LootTable>("WeaponRandom");
+            LootTable ltAnyApparel = Catalog.GetData<LootTable>("ApparelRandom");
+            LootTable ltAnySpell = Catalog.GetData<LootTable>("SpellRandom");
+
+            var allItems = Catalog.GetDataList(Catalog.Category.Item);
+
+            foreach(var item in allItems)
+            {
+                ItemData idata = item as ItemData;
+                LootTable.Drop idrop = new LootTable.Drop();
+                idrop.reference = LootTable.Drop.Reference.Item;
+                idrop.referenceID = idata.id;
+                idrop.probabilityWeight = 1.0f;
+                ltAnyItem.drops.Add(idrop);
+
+                if (idata.type == ItemData.Type.Weapon)
+                {
+                    ltAnyWeapon.drops.Add(idrop);
+                }
+                else if(idata.type == ItemData.Type.Wardrobe)
+                {
+                    ltAnyApparel.drops.Add(idrop);
+                }
+                else if (idata.type == ItemData.Type.Spell)
+                {
+                    ltAnySpell.drops.Add(idrop);
+                }
+            }
+
+            ltAnyItem.OnCatalogRefresh();
+            ltAnyWeapon.OnCatalogRefresh();
+            ltAnyApparel.OnCatalogRefresh();
+            ltAnySpell.OnCatalogRefresh();
+        }
+
         private void add_default_apparel()
         {
             ItemData chestData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
             ItemData legsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianLegs") as ItemData;
             ItemData bootsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianBoots") as ItemData;
-            chestData.iconAddress = "Bas.Icon.lamellar";
-            legsData.iconAddress = "Bas.Icon.lamellar";
-            bootsData.iconAddress = "Bas.Icon.lamellar";
             slots["ArmorChest"].item = chestData;
             slots["ArmorLegs"].item = legsData;
             slots["ArmorBoots"].item = bootsData;
@@ -179,9 +218,45 @@ namespace DungeonConfigurator
             Player.local.creature.equipment.EquipWeapons();
         }
 
+        private void randomize_slots()
+        {
+            LootTable ltAnyItem = Catalog.GetData<LootTable>("AnyItemRandom");
+            LootTable ltAnyWeapon = Catalog.GetData<LootTable>("WeaponRandom");
+            LootTable ltAnyApparel = Catalog.GetData<LootTable>("ApparelRandom");
+            LootTable ltAnySpell = Catalog.GetData<LootTable>("SpellRandom");
+            slots["HipsRight"].item = ltAnyWeapon.Pick();
+            slots["HipsLeft"].item = ltAnyWeapon.Pick();
+            slots["BackRight"].item = ltAnyWeapon.Pick();
+            slots["BackLeft"].item = ltAnyWeapon.Pick();
+
+            slots["ItemsExtra1"].item = ltAnyItem.Pick();
+            slots["ItemsExtra2"].item = ltAnyItem.Pick();
+            slots["ItemsExtra3"].item = ltAnyItem.Pick();
+            slots["ItemsExtra4"].item = ltAnyItem.Pick();
+
+            slots["ArmorChest"].item = ltAnyApparel.Pick();
+            slots["ArmorHelmet"].item = ltAnyApparel.Pick();
+            slots["ArmorHandLeft"].item = ltAnyApparel.Pick();
+            slots["ArmorHandRight"].item = ltAnyApparel.Pick();
+            slots["ArmorLegs"].item = ltAnyApparel.Pick();
+            slots["ArmorBoots"].item = ltAnyApparel.Pick();
+            slots["ArmorCosmetics1"].item = ltAnyApparel.Pick();
+            slots["ArmorCosmetics2"].item = ltAnyApparel.Pick();
+            slots["ArmorCosmetics3"].item = ltAnyApparel.Pick();
+            slots["ArmorCosmetics4"].item = ltAnyApparel.Pick();
+
+            slots["Spell1"].item = ltAnySpell.Pick();
+            slots["Spell2"].item = ltAnySpell.Pick();
+            slots["Spell3"].item = ltAnySpell.Pick();
+            slots["Spell4"].item = ltAnySpell.Pick();
+            slots["Spell5"].item = ltAnySpell.Pick();
+        }
+
         private void init_button_callbacks()
         {
-            foreach(var entry in slots)
+            buttonRandomize.onClick.AddListener(delegate { randomize_slots(); });
+
+            foreach (var entry in slots)
             {
                 entry.Value.onClick += delegate { handle_slot_click(entry.Value); };
                 entry.Value.onHoverStart += delegate { show_hint_for_slot(entry.Value); };

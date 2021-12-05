@@ -32,5 +32,14 @@ namespace DungeonConfigurator
             }
             return ret;
         }
+
+        public override void refresh_image()
+        {
+            if (this._item != null && _item.iconAddress == null)
+            {
+                _item.iconAddress = "Bas.Icon.pentacle";
+            }
+            base.refresh_image();
+        }
     }
 }
