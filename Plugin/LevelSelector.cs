@@ -36,7 +36,15 @@ namespace DungeonConfigurator
 
         public virtual void setHidden(bool hidden)
         {
-            levelSelector.SetActive(!hidden);
+            if(hidden == false)
+            {
+                levelSelector.SetActive(true);
+                fillSelectorWithLevel();
+            }
+            else
+            {
+                levelSelector.SetActive(false);
+            }
         }
 
         public virtual void fillSelectorWithLevel()
