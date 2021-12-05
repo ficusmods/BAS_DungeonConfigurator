@@ -75,6 +75,8 @@ namespace DungeonConfigurator
             LootTable ltAnyWeapon = Catalog.GetData<LootTable>("WeaponRandom");
             LootTable ltAnyApparel = Catalog.GetData<LootTable>("ApparelRandom");
             LootTable ltAnySpell = Catalog.GetData<LootTable>("SpellRandom");
+            LootTable ltAnyBow = Catalog.GetData<LootTable>("BowRandom");
+            LootTable ltAnyQuiver = Catalog.GetData<LootTable>("QuiverRandom");
 
             var allItems = Catalog.GetDataList(Catalog.Category.Item);
 
@@ -93,6 +95,14 @@ namespace DungeonConfigurator
                     || idata.type == ItemData.Type.Potion)
                 {
                     ltAnyWeapon.drops.Add(idrop);
+                    if(idata.slot == "Bow")
+                    {
+                        ltAnyBow.drops.Add(idrop);
+                    }
+                    else if(idata.slot == "Quiver")
+                    {
+                        ltAnyQuiver.drops.Add(idrop);
+                    }
                 }
                 else if(idata.type == ItemData.Type.Wardrobe)
                 {
@@ -108,6 +118,8 @@ namespace DungeonConfigurator
             ltAnyWeapon.OnCatalogRefresh();
             ltAnyApparel.OnCatalogRefresh();
             ltAnySpell.OnCatalogRefresh();
+            ltAnyBow.OnCatalogRefresh();
+            ltAnyQuiver.OnCatalogRefresh();
         }
 
         private void equip_default()

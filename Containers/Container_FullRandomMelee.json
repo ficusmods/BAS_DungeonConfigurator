@@ -1,0 +1,94 @@
+{
+  "$type": "ThunderRoad.ContainerData, ThunderRoad",
+  "id": "FullRandomMelee",
+  "saveFolder": "bas",
+  "version": 1,
+  "displayName": "",
+  "description": null,
+  "contents": [
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomHairs",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomBeard",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomBoots",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomJacket",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomGlovesL",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomGlovesR",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomHead",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomLegs",
+      "reference": "Table",
+      "customValues": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "WeaponRandom",
+      "reference": "Table",
+      "customValues": [
+        {
+          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
+          "id": "Holder",
+          "value": "HipsRight"
+        }
+      ]
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "WeaponRandom",
+      "reference": "Table",
+      "customValues": [
+        {
+          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
+          "id": "Holder",
+          "value": "BackLeft"
+        }
+      ]
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "WeaponRandom",
+      "reference": "Table",
+      "customValues": [
+        {
+          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
+          "id": "Holder",
+          "value": "BackRight"
+        }
+      ]
+    }
+  ]
+}
