@@ -220,6 +220,7 @@ namespace DungeonConfigurator
 
         private void randomize_slots()
         {
+            changes = true;
             LootTable ltAnyItem = Catalog.GetData<LootTable>("AnyItemRandom");
             LootTable ltAnyWeapon = Catalog.GetData<LootTable>("WeaponRandom");
             LootTable ltAnyApparel = Catalog.GetData<LootTable>("ApparelRandom");
