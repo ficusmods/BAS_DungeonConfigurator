@@ -87,7 +87,10 @@ namespace DungeonConfigurator
                 idrop.probabilityWeight = 1.0f;
                 ltAnyItem.drops.Add(idrop);
 
-                if (idata.type == ItemData.Type.Weapon)
+                if (idata.type == ItemData.Type.Weapon
+                    || idata.type == ItemData.Type.Quiver
+                    || idata.type == ItemData.Type.Shield
+                    || idata.type == ItemData.Type.Potion)
                 {
                     ltAnyWeapon.drops.Add(idrop);
                 }
