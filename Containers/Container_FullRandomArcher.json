@@ -111,7 +111,7 @@
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "QuiverRandom",
-      "reference": "Item",
+      "reference": "Table",
       "customValues": [
         {
           "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
