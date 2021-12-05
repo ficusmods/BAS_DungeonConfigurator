@@ -300,6 +300,7 @@ namespace DungeonConfigurator
                     var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
                     var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
                     harmony.Unpatch(originalWaveSpawner, patchedWaveSpawner);
+                    waveSpawnerPatched = false;
                 }
 
                 EventManager.onLevelLoad -= EventManager_onLevelLoad;
