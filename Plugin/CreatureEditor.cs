@@ -150,8 +150,8 @@ namespace DungeonConfigurator
                     currDrop.overrideContainer = true;
                     currDrop.overrideContainerID = idContainer;
                 }
-                currDrop.factionID = 0;
-                currDrop.overrideFaction = false;
+                currDrop.factionID = 4;
+                currDrop.overrideFaction = true;
                 
                 currDrop.probabilityWeights[0] = 1;
                 currDrop.probabilityWeights[1] = 1;
@@ -186,8 +186,8 @@ namespace DungeonConfigurator
                     currDrop.overrideContainer = true;
                     currDrop.overrideContainerID = idContainer;
                 }
-                currDrop.factionID = 0;
-                currDrop.overrideFaction = false;
+                currDrop.factionID = 4;
+                currDrop.overrideFaction = true;
                 
                 currDrop.probabilityWeights[0] = 1;
                 currDrop.probabilityWeights[1] = 1;
