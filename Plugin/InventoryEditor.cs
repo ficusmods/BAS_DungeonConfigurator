@@ -62,7 +62,7 @@ namespace DungeonConfigurator
             init_button_callbacks();
             init_random_loot_tables();
 
-            add_default_apparel();
+            equip_default();
 
             viewItemSelect.SetActive(false);
             slotHint.SetActive(false);
@@ -107,7 +107,7 @@ namespace DungeonConfigurator
             ltAnySpell.OnCatalogRefresh();
         }
 
-        private void add_default_apparel()
+        private void equip_default()
         {
             ItemData chestData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
             ItemData legsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianLegs") as ItemData;
@@ -229,11 +229,6 @@ namespace DungeonConfigurator
             slots["HipsLeft"].item = ltAnyWeapon.Pick();
             slots["BackRight"].item = ltAnyWeapon.Pick();
             slots["BackLeft"].item = ltAnyWeapon.Pick();
-
-            slots["ItemsExtra1"].item = ltAnyItem.Pick();
-            slots["ItemsExtra2"].item = ltAnyItem.Pick();
-            slots["ItemsExtra3"].item = ltAnyItem.Pick();
-            slots["ItemsExtra4"].item = ltAnyItem.Pick();
 
             slots["ArmorChest"].item = ltAnyApparel.Pick();
             slots["ArmorHelmet"].item = ltAnyApparel.Pick();
