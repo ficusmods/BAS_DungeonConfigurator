@@ -86,7 +86,7 @@
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "RandomWeaponBack",
+      "referenceID": "WandLowProb",
       "reference": "Table",
       "customValues": [
         {
