@@ -1,0 +1,7 @@
+{
+  "$type": "ThunderRoad.LootTable, ThunderRoad",
+  "id": "BowRandom",
+  "saveFolder": "bas",
+  "version": 1,
+  "drops": []
+}

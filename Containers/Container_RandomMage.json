@@ -1,6 +1,6 @@
 {
   "$type": "ThunderRoad.ContainerData, ThunderRoad",
-  "id": "RandomMage",
+  "id": "RandomMageVanilla",
   "saveFolder": "bas",
   "version": 1,
   "displayName": "",

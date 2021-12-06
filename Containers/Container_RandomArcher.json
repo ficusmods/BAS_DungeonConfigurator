@@ -1,6 +1,6 @@
 {
   "$type": "ThunderRoad.ContainerData, ThunderRoad",
-  "id": "RandomArcher",
+  "id": "RandomArcherVanilla",
   "saveFolder": "bas",
   "version": 1,
   "displayName": "",

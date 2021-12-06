@@ -98,37 +98,13 @@
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "WeaponRandom",
+      "referenceID": "WeaponRandomMeleeAI",
       "reference": "Table",
       "customValues": [
         {
           "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
           "id": "Holder",
           "value": "HipsRight"
-        }
-      ]
-    },
-    {
-      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "WeaponRandom",
-      "reference": "Table",
-      "customValues": [
-        {
-          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
-          "id": "Holder",
-          "value": "BackLeft"
-        }
-      ]
-    },
-    {
-      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "WeaponRandom",
-      "reference": "Table",
-      "customValues": [
-        {
-          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
-          "id": "Holder",
-          "value": "BackRight"
         }
       ]
     }

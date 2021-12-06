@@ -1,6 +1,6 @@
 {
   "$type": "ThunderRoad.CreatureTable, ThunderRoad",
-  "id": "RandomMeleeHuman",
+  "id": "RandomMeleeHumanVanilla",
   "saveFolder": "bas",
   "version": 1,
   "description": null,
@@ -17,7 +17,7 @@
       "overrideFaction": false,
       "factionID": 0,
       "overrideContainer": true,
-      "overrideContainerID": "RandomMelee",
+      "overrideContainerID": "RandomMeleeVanilla",
       "overrideBrain": true,
       "overrideBrainID": "HumanHard",
       "probabilityWeights": [

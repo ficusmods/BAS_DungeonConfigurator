@@ -77,6 +77,11 @@ namespace DungeonConfigurator
             LootTable ltAnySpell = Catalog.GetData<LootTable>("SpellRandom");
             LootTable ltAnyBow = Catalog.GetData<LootTable>("BowRandom");
             LootTable ltAnyQuiver = Catalog.GetData<LootTable>("QuiverRandom");
+            LootTable ltAnyMeleeAI = Catalog.GetData<LootTable>("WeaponRandomMeleeAI");
+            LootTable ltAnyBowAI = Catalog.GetData<LootTable>("BowRandomBowAI");
+            LootTable ltAnyShieldAI = Catalog.GetData<LootTable>("WeaponRandomShieldAI");
+            LootTable ltAnyWandAI = Catalog.GetData<LootTable>("WeaponRandomWandAI");
+            LootTable ltAnySpellAI = Catalog.GetData<LootTable>("SpellRandomAI");
 
             var allItems = Catalog.GetDataList(Catalog.Category.Item);
 
@@ -103,6 +108,27 @@ namespace DungeonConfigurator
                     {
                         ltAnyQuiver.drops.Add(idrop);
                     }
+
+                    if (idata.moduleAI != null)
+                    {
+                        if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Bow)
+                        {
+                            ltAnyBowAI.drops.Add(idrop);
+                        }
+                        else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Shield)
+                        {
+                            ltAnyShieldAI.drops.Add(idrop);
+                        }
+                        else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Wand)
+                        {
+                            ltAnyWandAI.drops.Add(idrop);
+                        }
+                        else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Melee && idata.moduleAI.weaponHandling == ItemModuleAI.WeaponHandling.OneHanded)
+                        {
+                            ltAnyMeleeAI.drops.Add(idrop);
+                        }
+                    }
+
                 }
                 else if(idata.type == ItemData.Type.Wardrobe)
                 {
@@ -110,7 +136,17 @@ namespace DungeonConfigurator
                 }
                 else if (idata.type == ItemData.Type.Spell)
                 {
-                    ltAnySpell.drops.Add(idrop);
+                    ItemModuleSpell module = idata.GetModule<ItemModuleSpell>();
+                    CatalogData sdata = Catalog.GetData(Catalog.Category.Spell, module.spellId);
+                    if(sdata is SpellCastData)
+                    {
+                        SpellCastData scdata = sdata as SpellCastData;
+                        ltAnySpell.drops.Add(idrop);
+                        if (scdata.aiCastMaxDistance != float.PositiveInfinity && scdata.aiCastMaxDistance != float.MaxValue)
+                        {
+                            ltAnySpellAI.drops.Add(idrop);
+                        }
+                    }
                 }
             }
 
@@ -120,6 +156,10 @@ namespace DungeonConfigurator
             ltAnySpell.OnCatalogRefresh();
             ltAnyBow.OnCatalogRefresh();
             ltAnyQuiver.OnCatalogRefresh();
+            ltAnyMeleeAI.OnCatalogRefresh();
+            ltAnyBowAI.OnCatalogRefresh();
+            ltAnyShieldAI.OnCatalogRefresh();
+            ltAnyWandAI.OnCatalogRefresh();
         }
 
         private void equip_default()

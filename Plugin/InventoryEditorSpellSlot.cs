@@ -23,11 +23,17 @@ namespace DungeonConfigurator
                 ItemData itemData = data as ItemData;
                 if (itemData.type == ItemData.Type.Spell)
                 {
-                    if(itemData.iconAddress == null)
+                    if (itemData.iconAddress == null)
                     {
                         itemData.iconAddress = "Bas.Icon.pentacle";
                     }
-                    ret.Add(itemData);
+
+                    ItemModuleSpell module = itemData.GetModule<ItemModuleSpell>();
+                    CatalogData sdata = Catalog.GetData(Catalog.Category.Spell, module.spellId);
+                    if (sdata is SpellCastData)
+                    {
+                        ret.Add(itemData);
+                    }
                 }
             }
             return ret;

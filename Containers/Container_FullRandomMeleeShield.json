@@ -1,6 +1,6 @@
 {
   "$type": "ThunderRoad.ContainerData, ThunderRoad",
-  "id": "FullRandomMage",
+  "id": "FullRandomMeleeShield",
   "saveFolder": "bas",
   "version": 1,
   "displayName": "",
@@ -98,36 +98,6 @@
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "SpellRandomAI",
-      "reference": "Table",
-      "customValues": []
-    },
-    {
-      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "SpellRandomAI",
-      "reference": "Table",
-      "customValues": []
-    },
-    {
-      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "SpellRandomAI",
-      "reference": "Table",
-      "customValues": []
-    },
-    {
-      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "SpellRandomAI",
-      "reference": "Table",
-      "customValues": []
-    },
-    {
-      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "SpellRandomAI",
-      "reference": "Table",
-      "customValues": []
-    },
-    {
-      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "WeaponRandomMeleeAI",
       "reference": "Table",
       "customValues": [
@@ -140,15 +110,15 @@
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "WeaponRandomWandAILowProb",
+      "referenceID": "WeaponRandomShieldAI",
       "reference": "Table",
       "customValues": [
         {
           "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
           "id": "Holder",
-          "value": "BackRight"
+          "value": "BackLeft"
         }
       ]
-    },
+    }
   ]
 }
