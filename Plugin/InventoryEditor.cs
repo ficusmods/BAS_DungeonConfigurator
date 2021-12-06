@@ -160,6 +160,7 @@ namespace DungeonConfigurator
             ltAnyBowAI.OnCatalogRefresh();
             ltAnyShieldAI.OnCatalogRefresh();
             ltAnyWandAI.OnCatalogRefresh();
+            ltAnySpellAI.OnCatalogRefresh();
         }
 
         private void equip_default()
@@ -273,34 +274,47 @@ namespace DungeonConfigurator
             Player.local.creature.equipment.EquipWeapons();
         }
 
+        private void equip_random(InventoryEditorSlot slot, LootTable table, List<ItemData> equipped)
+        {
+            var pick = table.Pick();
+            if(!equipped.Contains(pick))
+            {
+                equipped.Add(pick);
+                slot.item = pick;
+            }
+        }
+
         private void randomize_slots()
         {
             changes = true;
+            List<ItemData> equipped = new List<ItemData>();
+
             LootTable ltAnyItem = Catalog.GetData<LootTable>("AnyItemRandom");
             LootTable ltAnyWeapon = Catalog.GetData<LootTable>("WeaponRandom");
             LootTable ltAnyApparel = Catalog.GetData<LootTable>("ApparelRandom");
             LootTable ltAnySpell = Catalog.GetData<LootTable>("SpellRandom");
-            slots["HipsRight"].item = ltAnyWeapon.Pick();
-            slots["HipsLeft"].item = ltAnyWeapon.Pick();
-            slots["BackRight"].item = ltAnyWeapon.Pick();
-            slots["BackLeft"].item = ltAnyWeapon.Pick();
 
-            slots["ArmorChest"].item = ltAnyApparel.Pick();
-            slots["ArmorHelmet"].item = ltAnyApparel.Pick();
-            slots["ArmorHandLeft"].item = ltAnyApparel.Pick();
-            slots["ArmorHandRight"].item = ltAnyApparel.Pick();
-            slots["ArmorLegs"].item = ltAnyApparel.Pick();
-            slots["ArmorBoots"].item = ltAnyApparel.Pick();
-            slots["ArmorCosmetics1"].item = ltAnyApparel.Pick();
-            slots["ArmorCosmetics2"].item = ltAnyApparel.Pick();
-            slots["ArmorCosmetics3"].item = ltAnyApparel.Pick();
-            slots["ArmorCosmetics4"].item = ltAnyApparel.Pick();
+            equip_random(slots["HipsRight"], ltAnyWeapon, equipped);
+            equip_random(slots["HipsLeft"], ltAnyWeapon, equipped);
+            equip_random(slots["BackRight"], ltAnyWeapon, equipped);
+            equip_random(slots["BackLeft"], ltAnyWeapon, equipped);
 
-            slots["Spell1"].item = ltAnySpell.Pick();
-            slots["Spell2"].item = ltAnySpell.Pick();
-            slots["Spell3"].item = ltAnySpell.Pick();
-            slots["Spell4"].item = ltAnySpell.Pick();
-            slots["Spell5"].item = ltAnySpell.Pick();
+            equip_random(slots["ArmorChest"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorHelmet"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorHandLeft"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorHandRight"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorLegs"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorBoots"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorCosmetics1"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorCosmetics2"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorCosmetics3"], ltAnyApparel, equipped);
+            equip_random(slots["ArmorCosmetics4"], ltAnyApparel, equipped);
+
+            equip_random(slots["Spell1"], ltAnySpell, equipped);
+            equip_random(slots["Spell2"], ltAnySpell, equipped);
+            equip_random(slots["Spell3"], ltAnySpell, equipped);
+            equip_random(slots["Spell4"], ltAnySpell, equipped);
+            equip_random(slots["Spell5"], ltAnySpell, equipped);
         }
 
         private void init_button_callbacks()
