@@ -78,7 +78,7 @@ namespace DungeonConfigurator
             LootTable ltAnyBow = Catalog.GetData<LootTable>("BowRandom");
             LootTable ltAnyQuiver = Catalog.GetData<LootTable>("QuiverRandom");
             LootTable ltAnyMeleeAI = Catalog.GetData<LootTable>("WeaponRandomMeleeAI");
-            LootTable ltAnyBowAI = Catalog.GetData<LootTable>("BowRandomBowAI");
+            LootTable ltAnyBowAI = Catalog.GetData<LootTable>("WeaponRandomBowAI");
             LootTable ltAnyShieldAI = Catalog.GetData<LootTable>("WeaponRandomShieldAI");
             LootTable ltAnyWandAI = Catalog.GetData<LootTable>("WeaponRandomWandAI");
             LootTable ltAnySpellAI = Catalog.GetData<LootTable>("SpellRandomAI");
