@@ -289,7 +289,6 @@ namespace DungeonConfigurator
             changes = true;
             List<ItemData> equipped = new List<ItemData>();
 
-            LootTable ltAnyItem = Catalog.GetData<LootTable>("AnyItemRandom");
             LootTable ltAnyWeapon = Catalog.GetData<LootTable>("WeaponRandom");
             LootTable ltAnyApparel = Catalog.GetData<LootTable>("ApparelRandom");
             LootTable ltAnySpell = Catalog.GetData<LootTable>("SpellRandom");
