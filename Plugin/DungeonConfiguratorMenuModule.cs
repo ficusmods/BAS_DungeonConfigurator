@@ -276,13 +276,16 @@ namespace DungeonConfigurator
                 if (eventTime == EventTime.OnStart)
                 {
                     roomEditor.apply_changes();
-                    if (!waveSpawnerPatched)
+                    if (levelData.dungeonFlowAddresses.Count() > 0)
                     {
-                        Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
-                        var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
-                        var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
-                        harmony.Patch(originalWaveSpawner, transpiler: new HarmonyMethod(patchedWaveSpawner));
-                        waveSpawnerPatched = true;
+                        if (!waveSpawnerPatched)
+                        {
+                            Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
+                            var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
+                            var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
+                            harmony.Patch(originalWaveSpawner, transpiler: new HarmonyMethod(patchedWaveSpawner));
+                            waveSpawnerPatched = true;
+                        }
                     }
                 }
                 if (eventTime == EventTime.OnEnd)
