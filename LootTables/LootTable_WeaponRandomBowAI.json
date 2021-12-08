@@ -1,6 +1,6 @@
 {
   "$type": "ThunderRoad.LootTable, ThunderRoad",
-  "id": "BowRandomBowAI",
+  "id": "WeaponRandomBowAI",
   "saveFolder": "bas",
   "version": 1,
   "drops": []
