@@ -88,63 +88,67 @@ namespace DungeonConfigurator
             foreach(var item in allItems)
             {
                 ItemData idata = item as ItemData;
-                LootTable.Drop idrop = new LootTable.Drop();
-                idrop.reference = LootTable.Drop.Reference.Item;
-                idrop.referenceID = idata.id;
-                idrop.probabilityWeight = 1.0f;
-                ltAnyItem.drops.Add(idrop);
-
-                if (idata.type == ItemData.Type.Weapon
-                    || idata.type == ItemData.Type.Quiver
-                    || idata.type == ItemData.Type.Shield
-                    || idata.type == ItemData.Type.Potion)
+                if (!LoadModule.g_random_excluded_items.Contains(idata.id))
                 {
-                    ltAnyWeapon.drops.Add(idrop);
-                    if(idata.slot == "Bow")
-                    {
-                        ltAnyBow.drops.Add(idrop);
-                    }
-                    else if(idata.slot == "Quiver")
-                    {
-                        ltAnyQuiver.drops.Add(idrop);
-                    }
+                    LootTable.Drop idrop = new LootTable.Drop();
+                    idrop.reference = LootTable.Drop.Reference.Item;
+                    idrop.referenceID = idata.id;
+                    idrop.probabilityWeight = 1.0f;
+                    ltAnyItem.drops.Add(idrop);
 
-                    if (idata.moduleAI != null)
+                    if (idata.type == ItemData.Type.Weapon
+                        || idata.type == ItemData.Type.Quiver
+                        || idata.type == ItemData.Type.Shield
+                        || idata.type == ItemData.Type.Potion)
                     {
-                        if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Bow)
+                        ltAnyWeapon.drops.Add(idrop);
+                        if (idata.slot == "Bow")
                         {
-                            ltAnyBowAI.drops.Add(idrop);
+                            ltAnyBow.drops.Add(idrop);
                         }
-                        else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Shield)
+                        else if (idata.slot == "Quiver")
                         {
-                            ltAnyShieldAI.drops.Add(idrop);
+                            ltAnyQuiver.drops.Add(idrop);
                         }
-                        else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Wand)
-                        {
-                            ltAnyWandAI.drops.Add(idrop);
-                        }
-                        else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Melee && idata.moduleAI.weaponHandling == ItemModuleAI.WeaponHandling.OneHanded)
-                        {
-                            ltAnyMeleeAI.drops.Add(idrop);
-                        }
-                    }
 
-                }
-                else if(idata.type == ItemData.Type.Wardrobe)
-                {
-                    ltAnyApparel.drops.Add(idrop);
-                }
-                else if (idata.type == ItemData.Type.Spell)
-                {
-                    ItemModuleSpell module = idata.GetModule<ItemModuleSpell>();
-                    CatalogData sdata = Catalog.GetData(Catalog.Category.Spell, module.spellId);
-                    if(sdata is SpellCastData)
-                    {
-                        SpellCastData scdata = sdata as SpellCastData;
-                        ltAnySpell.drops.Add(idrop);
-                        if (scdata.aiCastMaxDistance != float.PositiveInfinity && scdata.aiCastMaxDistance != float.MaxValue)
+                        if (idata.moduleAI != null)
                         {
-                            ltAnySpellAI.drops.Add(idrop);
+                            if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Bow)
+                            {
+                                ltAnyBowAI.drops.Add(idrop);
+                            }
+                            else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Shield)
+                            {
+                                ltAnyShieldAI.drops.Add(idrop);
+                            }
+                            else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Wand)
+                            {
+                                ltAnyWandAI.drops.Add(idrop);
+                            }
+                            else if (idata.moduleAI.weaponClass == ItemModuleAI.WeaponClass.Melee && idata.moduleAI.weaponHandling == ItemModuleAI.WeaponHandling.OneHanded)
+                            {
+                                ltAnyMeleeAI.drops.Add(idrop);
+                            }
+                        }
+
+                    }
+                    else if (idata.type == ItemData.Type.Wardrobe)
+                    {
+
+                        ltAnyApparel.drops.Add(idrop);
+                    }
+                    else if (idata.type == ItemData.Type.Spell)
+                    {
+                        ItemModuleSpell module = idata.GetModule<ItemModuleSpell>();
+                        CatalogData sdata = Catalog.GetData(Catalog.Category.Spell, module.spellId);
+                        if (sdata is SpellCastData)
+                        {
+                            SpellCastData scdata = sdata as SpellCastData;
+                            ltAnySpell.drops.Add(idrop);
+                            if (scdata.aiCastMaxDistance != float.PositiveInfinity && scdata.aiCastMaxDistance != float.MaxValue)
+                            {
+                                ltAnySpellAI.drops.Add(idrop);
+                            }
                         }
                     }
                 }
@@ -172,6 +176,15 @@ namespace DungeonConfigurator
             slots["ArmorLegs"].item = legsData;
             slots["ArmorBoots"].item = bootsData;
         }
+
+        private void unequip_all_slots()
+        {
+            foreach(var entry in slots)
+            {
+                entry.Value.item = null;
+            }
+        }
+
         private void init_slot_map()
         {
             Logger.Detailed("Initializing slots");
@@ -286,6 +299,7 @@ namespace DungeonConfigurator
 
         private void randomize_slots()
         {
+            unequip_all_slots();
             changes = true;
             List<ItemData> equipped = new List<ItemData>();
 

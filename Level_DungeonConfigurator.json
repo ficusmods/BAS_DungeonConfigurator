@@ -10,7 +10,11 @@
           "$type": "DungeonConfigurator.LoadModule, DungeonConfigurator",
           "mod_name": "DungeonConfigurator",
           "mod_version": "1.2",
-          "logger_level": "Basic"
+          "logger_level": "Basic",
+          
+          "random_excluded_items": [
+            "SantaHat"
+          ]
         }
       ]
     }
