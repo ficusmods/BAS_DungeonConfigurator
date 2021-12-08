@@ -3,13 +3,19 @@
   "id": "DungeonConfiguratorGeneral",
   "saveFolder": "bas",
   "version": 2,
-  "category": "DungeonConfigurator",
-  "title": "DungeonConfigurator",
+  "category": "1DungeonConfigurator",
+  "title": "1DungeonConfigurator",
   "description": "Wave used to override the waves in the level",
   "loop": false,
   "maxAlive": 4,
   "alwaysAvailable": false,
-  "waveSelectors": [],
+  "waveSelectors": [
+    "Arena",
+    "Ruins",
+    "Market",
+    "Canyon",
+    "Citadel"
+  ],
   "playerHealthMultiplier": 1.0,
   "enemiesHealthMultiplier": 1.0,
   "groups": []
