@@ -263,9 +263,12 @@ namespace DungeonConfigurator
 
         private void AddUnstuckModule_onCreatureSpawn(Creature creature)
         {
-            if (!creature.gameObject.TryGetComponent<CreatureDestuckModule>(out _))
+            if (!creature.isPlayer)
             {
-                creature.gameObject.AddComponent<CreatureDestuckModule>();
+                if (!creature.gameObject.TryGetComponent<CreatureDestuckModule>(out _))
+                {
+                    creature.gameObject.AddComponent<CreatureDestuckModule>();
+                }
             }
         }
 
