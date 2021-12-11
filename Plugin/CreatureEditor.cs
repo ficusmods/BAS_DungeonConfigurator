@@ -217,6 +217,7 @@ namespace DungeonConfigurator
         private void fill_wave_data()
         {
             wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
+            wdDungeonConfiguratorGeneral.maxAlive = 4;
             WaveData.Group group = new WaveData.Group();
             group.factionID = 4;
             group.overrideFaction = true;
