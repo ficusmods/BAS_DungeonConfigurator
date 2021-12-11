@@ -9,7 +9,7 @@
         {
           "$type": "DungeonConfigurator.LoadModule, DungeonConfigurator",
           "mod_name": "DungeonConfigurator",
-          "mod_version": "1.2",
+          "mod_version": "1.3",
           "logger_level": "Basic",
           
           "random_excluded_items": [
