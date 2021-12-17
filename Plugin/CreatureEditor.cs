@@ -148,8 +148,8 @@ namespace DungeonConfigurator
                     currDrop.overrideContainer = true;
                     currDrop.overrideContainerID = idContainer;
                 }
-                currDrop.factionID = 4;
-                currDrop.overrideFaction = true;
+                currDrop.factionID = 0;
+                currDrop.overrideFaction = false;
                 
                 currDrop.probabilityWeights[0] = 1;
                 currDrop.probabilityWeights[1] = 1;
@@ -184,8 +184,8 @@ namespace DungeonConfigurator
                     currDrop.overrideContainer = true;
                     currDrop.overrideContainerID = idContainer;
                 }
-                currDrop.factionID = 4;
-                currDrop.overrideFaction = true;
+                currDrop.factionID = 0;
+                currDrop.overrideFaction = false;
                 
                 currDrop.probabilityWeights[0] = 1;
                 currDrop.probabilityWeights[1] = 1;
@@ -219,8 +219,8 @@ namespace DungeonConfigurator
             wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
             wdDungeonConfiguratorGeneral.maxAlive = 4;
             WaveData.Group group = new WaveData.Group();
-            group.factionID = 4;
-            group.overrideFaction = true;
+            group.factionID = 0;
+            group.overrideFaction = false;
             group.reference = WaveData.Group.Reference.Table;
             group.referenceID = "DungeonConfiguratorGeneral";
             group.overrideContainer = false;
