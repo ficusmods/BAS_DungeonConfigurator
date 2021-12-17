@@ -21,6 +21,7 @@ namespace DungeonConfigurator
         {
             None,
             CreatureEditor,
+            FactionEditor,
             RoomEditor,
             InventoryEditor,
             LevelSelector
@@ -31,6 +32,7 @@ namespace DungeonConfigurator
         protected GameObject pageInput;
 
         CreatureEditor creatureEditor;
+        FactionEditor factionEditor;
         RoomEditor roomEditor;
         InventoryEditor inventoryEditor;
         LevelSelector levelSelector;
@@ -40,6 +42,7 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.Slider sliderLength;
 
         protected UnityEngine.UI.Button buttonEditCreatures;
+        protected UnityEngine.UI.Button buttonEditFactions;
         protected UnityEngine.UI.Button buttonEditRooms;
         protected UnityEngine.UI.Button buttonEditInventory;
         protected UnityEngine.UI.Button buttonSelectLevel;
@@ -76,6 +79,7 @@ namespace DungeonConfigurator
             pageRight = menu.GetCustomReference("PageRight").gameObject;
             pageInput = menu.GetCustomReference("PageInput").gameObject;
             creatureEditor = new CreatureEditor(menu.GetCustomReference("CreatureEditor").gameObject);
+            factionEditor = new FactionEditor(menu.GetCustomReference("FactionEditor").gameObject);
             roomEditor = new RoomEditor(menu.GetCustomReference("RoomEditor").gameObject);
             inventoryEditor = new InventoryEditor(menu.GetCustomReference("InventoryEditor").gameObject);
             levelSelector = new LevelSelector(menu.GetCustomReference("LevelSelector").gameObject);
@@ -85,6 +89,7 @@ namespace DungeonConfigurator
             sliderLength = Utils.get_child(pageLeft, "LengthSlider").GetComponent<UnityEngine.UI.Slider>();
 
             buttonEditCreatures = Utils.get_child(pageLeft, "CreatureEditButton").GetComponent<UnityEngine.UI.Button>();
+            buttonEditFactions = Utils.get_child(pageLeft, "FactionEditButton").GetComponent<UnityEngine.UI.Button>();
             buttonEditRooms = Utils.get_child(pageLeft, "RoomEditButton").GetComponent<UnityEngine.UI.Button>();
             buttonEditInventory = Utils.get_child(pageLeft, "InventoryEditButton").GetComponent<UnityEngine.UI.Button>();
             buttonSelectLevel = Utils.get_child(pageLeft, "LevelEditButton").GetComponent<UnityEngine.UI.Button>();
@@ -182,6 +187,7 @@ namespace DungeonConfigurator
         private void add_button_events()
         {
             buttonEditCreatures.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.CreatureEditor); });
+            buttonEditFactions.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.FactionEditor); });
             buttonEditRooms.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.RoomEditor); });
             buttonEditInventory.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.InventoryEditor); });
             buttonSelectLevel.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.LevelSelector); });
@@ -219,6 +225,9 @@ namespace DungeonConfigurator
                 case RightPageView.LevelSelector:
                     levelSelector.setHidden(false);
                     break;
+                case RightPageView.FactionEditor:
+                    factionEditor.setHidden(false);
+                    break;
                 default:
                     break;
             }
@@ -230,6 +239,7 @@ namespace DungeonConfigurator
             roomEditor.setHidden(true);
             inventoryEditor.setHidden(true);
             levelSelector.setHidden(true);
+            factionEditor.setHidden(true);
         }
 
         public virtual void Start()
@@ -245,6 +255,7 @@ namespace DungeonConfigurator
             }
 
             creatureEditor.apply_changes();
+            factionEditor.apply_changes();
             inventoryEditor.apply_changes();
 
             Logger.Basic("Starting dungeon");
