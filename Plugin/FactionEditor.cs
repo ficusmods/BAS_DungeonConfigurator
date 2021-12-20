@@ -139,6 +139,7 @@ namespace DungeonConfigurator
         {
             EventManager.onCreatureSpawn -= EventManager_onCreatureSpawn;
             EventManager.onCreatureSpawn += EventManager_onCreatureSpawn;
+            EventManager.onLevelLoad -= EventManager_onLevelLoad;
             EventManager.onLevelLoad += EventManager_onLevelLoad;
         }
 
