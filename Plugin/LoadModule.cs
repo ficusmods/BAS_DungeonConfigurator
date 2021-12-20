@@ -17,7 +17,18 @@ namespace DungeonConfigurator
         public string mod_version = "0.0";
         public string mod_name = "UnnamedMod";
         public string logger_level = "Basic";
-        public static List<string> random_excluded_items;
+
+        public List<string> random_excluded_items
+        {
+            get
+            {
+                return Config.cfg_randomExcludedItems;
+            }
+            set
+            {
+                Config.cfg_randomExcludedItems = value;
+            }
+        }
 
         public override IEnumerator OnLoadCoroutine()
         {

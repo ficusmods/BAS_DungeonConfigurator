@@ -88,7 +88,7 @@ namespace DungeonConfigurator
             foreach(var item in allItems)
             {
                 ItemData idata = item as ItemData;
-                if (!LoadModule.random_excluded_items.Contains(idata.id))
+                if (!Config.cfg_randomExcludedItems.Contains(idata.id))
                 {
                     LootTable.Drop idrop = new LootTable.Drop();
                     idrop.reference = LootTable.Drop.Reference.Item;
