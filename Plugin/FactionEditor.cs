@@ -113,7 +113,7 @@ namespace DungeonConfigurator
                         creature.SetFaction(0);
                         break;
                     case FactionType.Peaceful:
-                        creature.SetFaction(1);
+                        creature.SetFaction(2);
                         break;
                     case FactionType.AlliesEnemies:
                         faction = UnityEngine.Random.Range(2, 4);
