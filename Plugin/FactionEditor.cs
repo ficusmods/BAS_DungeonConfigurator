@@ -32,6 +32,7 @@ namespace DungeonConfigurator
         Toggle togglePeaceful;
         Toggle toggleFFA;
 
+        FactionType prevSelected = FactionType.AllAgainst;
         FactionType selected = FactionType.AllAgainst;
 
         public FactionEditor(GameObject obj)
@@ -92,34 +93,39 @@ namespace DungeonConfigurator
                     Logger.Detailed("Switched to faction type {0}", selected);
                 }
             });
+
+            toggleAllAgainst.isOn = true;
         }
 
         private void EventManager_onCreatureSpawn(Creature creature)
         {
-            int faction;
-            switch (selected)
+            if (!creature.isPlayer)
             {
-                case FactionType.AllAgainst:
-                    creature.SetFaction(3);
-                    break;
-                case FactionType.Default:
-                    break;
-                case FactionType.FFA:
-                    creature.SetFaction(0);
-                    break;
-                case FactionType.Peaceful:
-                    creature.SetFaction(1);
-                    break;
-                case FactionType.AlliesEnemies:
-                    faction = UnityEngine.Random.Range(2,4);
-                    creature.SetFaction(faction);
-                    break;
-                case FactionType.Three:
-                    faction = UnityEngine.Random.Range(3, 6);
-                    creature.SetFaction(faction);
-                    break;
-                default:
-                    break;
+                int faction;
+                switch (prevSelected)
+                {
+                    case FactionType.AllAgainst:
+                        creature.SetFaction(3);
+                        break;
+                    case FactionType.Default:
+                        break;
+                    case FactionType.FFA:
+                        creature.SetFaction(0);
+                        break;
+                    case FactionType.Peaceful:
+                        creature.SetFaction(1);
+                        break;
+                    case FactionType.AlliesEnemies:
+                        faction = UnityEngine.Random.Range(2, 4);
+                        creature.SetFaction(faction);
+                        break;
+                    case FactionType.Three:
+                        faction = UnityEngine.Random.Range(3, 6);
+                        creature.SetFaction(faction);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -137,6 +143,7 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
+            prevSelected = selected;
             EventManager.onCreatureSpawn -= EventManager_onCreatureSpawn;
             EventManager.onCreatureSpawn += EventManager_onCreatureSpawn;
             EventManager.onLevelLoad -= EventManager_onLevelLoad;
