@@ -8,6 +8,6 @@ namespace DungeonConfigurator
 {
     public class Config
     {
-        public static List<string> cfg_randomExcludedItems;
+        public static HashSet<string> cfg_randomExcludedItems;
     }
 }

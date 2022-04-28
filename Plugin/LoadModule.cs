@@ -26,7 +26,11 @@ namespace DungeonConfigurator
             Logger.init(mod_name, mod_version, logger_level);
             Logger.Basic("Loading {0}", mod_name);
 
-            Config.cfg_randomExcludedItems = random_excluded_items.ToList();
+            Config.cfg_randomExcludedItems = random_excluded_items.ToHashSet();
+            foreach(string id in random_excluded_items)
+            {
+                Logger.Basic("{0} is excluded from the random pool", id);
+            }
 
             return base.OnLoadCoroutine();
         }
