@@ -18,22 +18,15 @@ namespace DungeonConfigurator
         public string mod_name = "UnnamedMod";
         public string logger_level = "Basic";
 
-        public List<string> random_excluded_items
-        {
-            get
-            {
-                return Config.cfg_randomExcludedItems;
-            }
-            set
-            {
-                Config.cfg_randomExcludedItems = value;
-            }
-        }
+        public IList<string> random_excluded_items;
 
         public override IEnumerator OnLoadCoroutine()
         {
+
             Logger.init(mod_name, mod_version, logger_level);
             Logger.Basic("Loading {0}", mod_name);
+
+            Config.cfg_randomExcludedItems = random_excluded_items.ToList();
 
             return base.OnLoadCoroutine();
         }
