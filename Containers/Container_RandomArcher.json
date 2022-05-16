@@ -10,85 +10,98 @@
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomHairs",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomBeard",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomBoots",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomJacket",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomGlovesL",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomGlovesR",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomHead",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomLegs",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "RandomWeaponHips",
       "reference": "Table",
-      "customValues": [
-        {
-          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
-          "id": "Holder",
-          "value": "HipsRight"
-        }
-      ]
+      "quantity": 1,
+      "state": {
+        "$type": "ThunderRoad.ContentStateHolder, ThunderRoad",
+        "holderName": "HipsRight"
+      },
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "Quiver",
       "reference": "Item",
-      "customValues": [
-        {
-          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
-          "id": "Holder",
-          "value": "BackRight"
-        }
-      ]
+      "quantity": 1,
+      "state": {
+        "$type": "ThunderRoad.ContentStateHolder, ThunderRoad",
+        "holderName": "BackRight"
+      },
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "BowCommon",
       "reference": "Item",
-      "customValues": [
-        {
-          "$type": "ThunderRoad.Item+SavedValue, ThunderRoad",
-          "id": "Holder",
-          "value": "BackLeft"
-        }
-      ]
+      "quantity": 1,
+      "state": {
+        "$type": "ThunderRoad.ContentStateHolder, ThunderRoad",
+        "holderName": "BackLeft"
+      },
+      "customDataList": []
     }
   ]
 }

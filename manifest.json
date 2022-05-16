@@ -1,7 +1,7 @@
 ﻿{
   "Name": "DungeonConfigurator",
   "Description": "Allows customizing the generated dungeon",
-  "Author": "fks",
-  "ModVersion": "1.6",
-  "GameVersion": "10.0"
+  "Author": "ficus",
+  "ModVersion": "1.7",
+  "GameVersion": "11.0"
 }

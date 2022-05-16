@@ -4,10 +4,11 @@
   "saveFolder": "bas",
   "version": 2,
   "category": "1DungeonConfigurator",
+  "localizationId": "DungeonConfigurator",
   "title": "1DungeonConfigurator",
   "description": "Wave used to override the waves in the level",
-  "loop": false,
-  "maxAlive": 4,
+  "loopBehavior": "NoLoop",
+  "totalMaxAlive": 4,
   "alwaysAvailable": false,
   "waveSelectors": [
     "Arena",
@@ -18,5 +19,13 @@
   ],
   "playerHealthMultiplier": 1.0,
   "enemiesHealthMultiplier": 1.0,
+  "factions": [
+    {
+      "$type": "ThunderRoad.WaveData+WaveFaction, ThunderRoad",
+      "factionID": 3,
+      "factionHealthMultiplier": 1.0,
+      "factionMaxAlive": 4
+    }
+  ],
   "groups": []
 }

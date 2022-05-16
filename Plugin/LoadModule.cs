@@ -18,6 +18,8 @@ namespace DungeonConfigurator
         public string mod_name = "UnnamedMod";
         public string logger_level = "Basic";
 
+        public static bool spawning = false;
+
         public IList<string> random_excluded_items;
 
         public override IEnumerator OnLoadCoroutine()

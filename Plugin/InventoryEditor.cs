@@ -96,10 +96,7 @@ namespace DungeonConfigurator
                     idrop.probabilityWeight = 1.0f;
                     ltAnyItem.drops.Add(idrop);
 
-                    if (idata.type == ItemData.Type.Weapon
-                        || idata.type == ItemData.Type.Quiver
-                        || idata.type == ItemData.Type.Shield
-                        || idata.type == ItemData.Type.Potion)
+                    if (InventoryEditorItemSlot.itemTypes.Contains(idata.type))
                     {
                         ltAnyWeapon.drops.Add(idrop);
                         if (idata.slot == "Bow")
@@ -259,10 +256,10 @@ namespace DungeonConfigurator
 
         private IEnumerator change_equipment()
         {
-            while (Player.local.creature.equipment.spawningItemCount > 0)
+            while (Player.local.creature.holders.Any((Holder holder) => holder.spawningItem))
                 yield return new WaitForSeconds(1.0f);
 
-            Player.local.creature.equipment.UnequipWeapons();
+            Player.local.creature.holders.ForEach((Holder holder) => holder.UnSnapAll());
             Player.local.creature.equipment.UnequipAllWardrobes();
 
             Container playerContainer = Player.local.creature.container;
@@ -281,10 +278,9 @@ namespace DungeonConfigurator
                 }
             }
 
-            playerContainer.Load();
             Player.local.creature.mana.Load();
             Player.local.creature.equipment.EquipAllWardrobes(false, false);
-            Player.local.creature.equipment.EquipWeapons();
+            playerContainer.Load();
         }
 
         private void equip_random(InventoryEditorSlot slot, LootTable table, List<ItemData> equipped)

@@ -10,13 +10,17 @@
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "Hairs",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
       "referenceID": "Beards",
       "reference": "Table",
-      "customValues": []
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
     }
   ]
 }

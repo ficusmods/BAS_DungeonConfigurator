@@ -42,8 +42,9 @@ namespace DungeonConfigurator
                 WaveData wData = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral");
                 if (wData != null)
                 {
-                    wData.maxAlive += additional_wave_alive_npc_count;
-                    Logger.Detailed("Alive count for wave {0} set to {2}", wData.id, wData.maxAlive);
+                    wData.totalMaxAlive += additional_wave_alive_npc_count;
+                    wData.factions[0].factionMaxAlive += additional_wave_alive_npc_count;
+                    Logger.Detailed("Alive count for wave {0} set to {2}", wData.id, wData.totalMaxAlive);
                 }
             }
         }
@@ -84,12 +85,12 @@ namespace DungeonConfigurator
                 {
                     foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
                     {
-                        spawner.waveData.maxAlive += additional_wave_alive_npc_count;
+                        spawner.waveData.totalMaxAlive += additional_wave_alive_npc_count;
                         if (additional_room_npc_count == 0)
                         {
                             room.spawnerMaxNPC += additional_wave_alive_npc_count;
                         }
-                        Logger.Detailed("Alive count for wave {0} in room {1} set to {2}", spawner.name, room.name, spawner.waveData.maxAlive);
+                        Logger.Detailed("Alive count for wave {0} in room {1} set to {2}", spawner.name, room.name, spawner.waveData.totalMaxAlive);
                     }
                 }
             }

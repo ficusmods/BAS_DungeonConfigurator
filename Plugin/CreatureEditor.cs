@@ -217,7 +217,7 @@ namespace DungeonConfigurator
         private void fill_wave_data()
         {
             wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
-            wdDungeonConfiguratorGeneral.maxAlive = 4;
+            wdDungeonConfiguratorGeneral.totalMaxAlive = 4;
             WaveData.Group group = new WaveData.Group();
             group.factionID = 0;
             group.overrideFaction = false;
@@ -227,8 +227,8 @@ namespace DungeonConfigurator
             group.overrideBrain = false;
             group.overrideMaxMelee = false;
             group.spawnPointIndex = -1;
-            group.conditionStepIndex = -1;
-            group.conditionThreshold = 0;
+            group.prereqGroupIndex = -1;
+            group.prereqMaxRemainingAlive = 0;
             for (int i = 0; i < waveGroupCount; i++)
             {
                 wdDungeonConfiguratorGeneral.groups.Add(group);

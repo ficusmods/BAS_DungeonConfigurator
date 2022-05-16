@@ -14,6 +14,16 @@ namespace DungeonConfigurator
     {
         public Holder.DrawSlot drawSlot;
 
+        public static HashSet<ItemData.Type> itemTypes = new HashSet<ItemData.Type>(){
+                ItemData.Type.Weapon,
+                ItemData.Type.Tool,
+                ItemData.Type.Body,
+                ItemData.Type.Food,
+                ItemData.Type.Potion,
+                ItemData.Type.Quiver,
+                ItemData.Type.Shield
+        };
+
         public InventoryEditorItemSlot(GameObject obj, string _name, Holder.DrawSlot _drawSlot = Holder.DrawSlot.None) : base(obj, _name)
         {
             drawSlot = _drawSlot;
@@ -25,8 +35,7 @@ namespace DungeonConfigurator
             if (drawSlot != Holder.DrawSlot.None)
             {
                 Holder holder = Player.local.creature.equipment.GetHolder(drawSlot);
-                Item.SavedValue cval = new Item.SavedValue("Holder", holder.name);
-                ret.customValues.Add(cval);
+                ret.state = new ContentStateHolder(holder.name);
             }
             return ret;
         }
@@ -37,7 +46,7 @@ namespace DungeonConfigurator
             foreach (var data in Catalog.GetDataList(Catalog.Category.Item))
             {
                 ItemData itemData = data as ItemData;
-                if (itemData.categoryPath.Length > 0)
+                if (itemTypes.Contains(itemData.type))
                 {
                     if(itemData.iconAddress == null)
                     {

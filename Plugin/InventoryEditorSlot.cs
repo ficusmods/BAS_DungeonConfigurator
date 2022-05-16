@@ -75,6 +75,7 @@ namespace DungeonConfigurator
             ret.reference = ContainerData.Content.Reference.Item;
             ret.referenceID = this._item.id;
             ret.itemData = Catalog.GetData<ItemData>(ret.referenceID);
+            ret.quantity = 1;
             return ret;
         }
 

@@ -244,14 +244,14 @@ namespace DungeonConfigurator
 
         public virtual void Start()
         {
-            Dictionary<string, double> options = new Dictionary<string, double>();
+            Dictionary<string, string> options = new Dictionary<string, string>();
 
-            options["difficulty"] = sliderDifficulty.value;
-            options["length"] = sliderLength.value;
+            options["difficulty"] = sliderDifficulty.value.ToString();
+            options["length"] = sliderLength.value.ToString();
             double seed = evaluate_seed();
             if(seed != 0.0)
             {
-                options["seed"] = seed;
+                options["seed"] = seed.ToString();
             }
 
             creatureEditor.apply_changes();
@@ -265,11 +265,9 @@ namespace DungeonConfigurator
             EventManager.onCreatureSpawn += AddUnstuckModule_onCreatureSpawn;
 
             LevelData ld = levelSelector.selected;
-            LevelData.Mode lm = ld.GetMode();
-            
             
             timeLevelLoadStart = Time.timeAsDouble;
-            GameManager.LoadLevel(ld, lm, options);
+            GameManager.LoadLevel(ld.id, "Sandbox", options);
         }
 
         private void AddUnstuckModule_onCreatureSpawn(Creature creature)
@@ -365,18 +363,18 @@ namespace DungeonConfigurator
         }
         public virtual void refresh_difficulty()
         {
-            double difficulty;
+            string difficulty;
             if (Level.current.options.TryGetValue("difficulty", out difficulty))
             {
-                sliderDifficulty.value = (int)difficulty;
+                sliderDifficulty.value = int.Parse(difficulty);
             }
         }
         public virtual void refresh_length()
         {
-            double length;
+            string length;
             if (Level.current.options.TryGetValue("length", out length))
             {
-                sliderLength.value = (int)length;
+                sliderLength.value = int.Parse(length);
             }
         }
 
