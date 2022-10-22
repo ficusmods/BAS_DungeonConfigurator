@@ -1,0 +1,10 @@
+{
+  "$type": "ThunderRoad.ContainerData, ThunderRoad",
+  "id": "DCCurrent",
+  "saveFolder": "bas",
+  "version": 1,
+  "displayName": "",
+  "description": null,
+  "contents": [
+  ]
+}

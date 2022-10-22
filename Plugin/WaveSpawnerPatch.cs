@@ -26,9 +26,6 @@ namespace DungeonConfigurator
             var codes_patched = new List<CodeInstruction>();
             Label checkEnd = ilg.DefineLabel();
 
-            var checkPatchStart = codes[3];
-            var checkPatchEnd = codes[6];
-            var accessPatchStart = checkPatchEnd;
             bool accessReplace = false;
 
             for (int i=0; i < codes.Count(); i++)
@@ -36,7 +33,7 @@ namespace DungeonConfigurator
                 CodeInstruction instruction = codes[i];
                 bool use_original = true;
 
-                if (instruction == checkPatchStart)
+                if (i == 8)
                 {
                     Logger.Detailed("Patch start instruction for waveData found, applying patch");
                     codes_patched.Add(new CodeInstruction(
@@ -46,14 +43,10 @@ namespace DungeonConfigurator
                     codes_patched.Add(new CodeInstruction(
                         OpCodes.Brtrue_S, checkEnd));
                 }
-                else if (instruction == checkPatchEnd)
+                else if (i == 11)
                 {
                     Logger.Detailed("Label 'checkEnd' added");
                     instruction.labels.Add(checkEnd);
-                }
-                
-                if(instruction == accessPatchStart)
-                {
                     accessReplace = true;
                 }
 

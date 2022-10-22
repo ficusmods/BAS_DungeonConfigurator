@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using UnityEngine;
+﻿
 using ThunderRoad;
+using UnityEngine;
 
 namespace DungeonConfigurator
 {
@@ -15,8 +9,6 @@ namespace DungeonConfigurator
         public int additional_room_npc_count = 0;
         public int additional_wave_npc_count = 0;
         public int additional_wave_alive_npc_count = 0;
-
-        List<string> waveAlreadyAddedNPCs = new List<string>();
 
         private void alter_level()
         {
@@ -30,9 +22,28 @@ namespace DungeonConfigurator
                     Logger.Detailed("Adding {0} additional groups to {1}", additional_wave_npc_count, wData.id);
                     if (wData.groups.Count > 0)
                     {
+                        int oriCount = wData.groups.Count;
                         for (int i = 0; i < additional_wave_npc_count; i++)
                         {
-                            wData.groups.Add(wData.groups[rand.Next(wData.groups.Count)]);
+                            WaveData.Group currGroup = wData.groups[rand.Next(oriCount)].CloneJson();
+                            currGroup.minMaxCount = new Vector2Int(1, 1);
+                            wData.groups.Add(currGroup);
+                        }
+                    }
+                }
+
+                wData = Catalog.GetData<WaveData>("DungeonConfiguratorDuel");
+                if (wData != null)
+                {
+                    Logger.Detailed("Adding {0} additional groups to {1}", additional_wave_npc_count, wData.id);
+                    if (wData.groups.Count > 0)
+                    {
+                        int oriCount = wData.groups.Count;
+                        for (int i = 0; i < additional_wave_npc_count; i++)
+                        {
+                            WaveData.Group currGroup = wData.groups[rand.Next(oriCount)].CloneJson();
+                            currGroup.minMaxCount = new Vector2Int(1, 1);
+                            wData.groups.Add(currGroup);
                         }
                     }
                 }
@@ -42,9 +53,23 @@ namespace DungeonConfigurator
                 WaveData wData = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral");
                 if (wData != null)
                 {
-                    wData.totalMaxAlive += additional_wave_alive_npc_count;
-                    wData.factions[0].factionMaxAlive += additional_wave_alive_npc_count;
-                    Logger.Detailed("Alive count for wave {0} set to {2}", wData.id, wData.totalMaxAlive);
+                    wData.totalMaxAlive = 4 + additional_wave_alive_npc_count;
+                    foreach (WaveData.WaveFaction factionData in wData.factions)
+                    {
+                        factionData.factionMaxAlive = wData.totalMaxAlive;
+                    }
+                    Logger.Detailed("Alive count for wave {0} set to {1}", wData.id, wData.totalMaxAlive);
+                }
+
+                wData = Catalog.GetData<WaveData>("DungeonConfiguratorDuel");
+                if (wData != null)
+                {
+                    wData.totalMaxAlive = 1 + additional_wave_alive_npc_count;
+                    foreach (WaveData.WaveFaction factionData in wData.factions)
+                    {
+                        factionData.factionMaxAlive = wData.totalMaxAlive;
+                    }
+                    Logger.Detailed("Alive count for wave {0} set to {1}", wData.id, wData.totalMaxAlive);
                 }
             }
         }
@@ -55,42 +80,52 @@ namespace DungeonConfigurator
                 if (additional_room_npc_count > 0)
                 {
                     room.spawnerMaxNPC += additional_room_npc_count;
-                    Logger.Detailed("Starting creature spawning coroutine for room {0}", room.name);
-                    this.StartCoroutine(spawn_until_full(room));
+                    Logger.Detailed("Adding module creature spawner module to room {0}", room.name);
+                    add_spawner_module(room);
                 }
+
                 if (additional_wave_npc_count > 0)
                 {
                     System.Random rand = new System.Random();
-                    foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
+                    WaveSpawner[] spawners = room.GetComponentsInChildren<WaveSpawner>(true);
+                    if (spawners.Length > 0)
                     {
-                        if (!waveAlreadyAddedNPCs.Contains(spawner.startWaveId))
+                        int addToEach = Mathf.CeilToInt((float)additional_wave_npc_count / (float)spawners.Length);
+                        foreach (WaveSpawner spawner in spawners)
                         {
-                            WaveData wData = Catalog.GetData<WaveData>(spawner.startWaveId);
-                            if (wData != null)
+                            if (Catalog.GetData<WaveData>(spawner.startWaveId) != null)
                             {
+                                WaveData wData = Catalog.GetData<WaveData>(spawner.startWaveId).CloneJson();
                                 Logger.Detailed("Adding {0} additional groups to {1} in room {2}", additional_wave_npc_count, spawner.name, room.name);
                                 if (wData.groups.Count > 0)
                                 {
-                                    for (int i = 0; i < additional_wave_npc_count; i++)
+                                    int oriCount = wData.groups.Count;
+                                    for (int i = 0; i < addToEach; i++)
                                     {
-                                        wData.groups.Add(wData.groups[rand.Next(wData.groups.Count)]);
+                                        WaveData.Group currGroup = wData.groups[rand.Next(oriCount)].CloneJson();
+                                        currGroup.minMaxCount = new Vector2Int(1, 1);
+                                        wData.groups.Add(currGroup);
                                     }
-                                    waveAlreadyAddedNPCs.Add(spawner.startWaveId);
                                 }
+                                wData.OnCatalogRefresh();
+                                spawner.waveData = wData;
                             }
                         }
                     }
-                }
-                if (additional_wave_alive_npc_count > 0)
-                {
-                    foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
+
+                    if (additional_wave_alive_npc_count > 0)
                     {
-                        spawner.waveData.totalMaxAlive += additional_wave_alive_npc_count;
-                        if (additional_room_npc_count == 0)
+                        foreach (WaveSpawner spawner in room.GetComponentsInChildren<WaveSpawner>(true))
                         {
-                            room.spawnerMaxNPC += additional_wave_alive_npc_count;
+                            if (spawner.waveData == null) continue;
+                            spawner.waveData.totalMaxAlive = 4 + additional_wave_alive_npc_count;
+                            room.spawnerMaxNPC = Mathf.Max(spawner.waveData.totalMaxAlive, room.spawnerMaxNPC);
+                            foreach (WaveData.WaveFaction factionData in spawner.waveData.factions)
+                            {
+                                factionData.factionMaxAlive = room.spawnerMaxNPC;
+                            }
+                            Logger.Detailed("Alive count for wave in room {0} set to {1}", room.name, room.spawnerMaxNPC);
                         }
-                        Logger.Detailed("Alive count for wave {0} in room {1} set to {2}", spawner.name, room.name, spawner.waveData.totalMaxAlive);
                     }
                 }
             }
@@ -98,9 +133,6 @@ namespace DungeonConfigurator
 
         public void apply_changes()
         {
-            Catalog.gameData.platformParameters.maxRoomNpc = int.MaxValue;
-            Catalog.gameData.platformParameters.maxWaveAlive = int.MaxValue;
-
             if (Level.current.dungeon != null)
             {
                 alter_dungeon();
@@ -111,34 +143,9 @@ namespace DungeonConfigurator
             }
         }
 
-        private IEnumerator spawn_until_full(Room room)
+        private void add_spawner_module(Room room)
         {
-            Logger.Detailed("Spawn CR: Creatures in room {0}: {1}/{2}", room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
-            var spawners = room.GetComponentsInChildren<CreatureSpawner>(true);
-            
-            if (spawners != null && spawners.Length > 0)
-            {
-                while (room.spawnerNPCCount <= room.spawnerMaxNPC)
-                {
-                    CreatureSpawner spawner = spawners[UnityEngine.Random.Range(0, spawners.Length-1)];
-                    if (!spawner.spawning)
-                    {
-                        spawner.Spawn();
-                        if (spawner.spawning)
-                        {
-                            room.spawnerNPCCount++;
-                            Logger.Detailed("Spawn CR: Spawning creautre via {0} in room {1} {2}/{3}", spawner.name, room.name, room.spawnerNPCCount, room.spawnerMaxNPC);
-                            yield return new WaitForSeconds(1);
-                        }
-                    }
-                    else
-                    {
-                        yield return new WaitForSeconds(1);
-                    }
-                }
-            }
-
-            Logger.Detailed("Spawn CR: Finished for room {0}", room.name);
+            room.gameObject.AddComponent<RoomSpawnerModule>();
         }
     }
 }

@@ -18,9 +18,58 @@ namespace DungeonConfigurator
         public string mod_name = "UnnamedMod";
         public string logger_level = "Basic";
 
-        public static bool spawning = false;
-
         public IList<string> random_excluded_items;
+
+        public float cfg_patrol_maxradius
+        {
+            get => Config.cfg_patrol_maxradius;
+            set
+            {
+                if (value < 0.1f) Config.cfg_patrol_maxradius = 0.1f;
+                else Config.cfg_patrol_maxradius = value;
+            }
+        }
+
+        public int cfg_spawner_sampling_angle_count
+        {
+            get => Config.cfg_spawner_sampling_angle_count;
+            set
+            {
+                if (value < 1) Config.cfg_spawner_sampling_angle_count = 1;
+                else Config.cfg_spawner_sampling_angle_count = value;
+            }
+        }
+
+        public float cfg_spawner_sampling_block_distance
+        {
+            get => Config.cfg_spawner_sampling_block_distance;
+            set
+            {
+                if (value < 1.0f) Config.cfg_spawner_sampling_block_distance = 1.0f;
+                else Config.cfg_spawner_sampling_block_distance = value;
+            }
+        }
+
+        public int cfg_spawner_sampling_block_retry_count
+        {
+            get => Config.cfg_spawner_sampling_block_retry_count;
+            set
+            {
+                if (value < 1) Config.cfg_spawner_sampling_block_retry_count = 1;
+                else Config.cfg_spawner_sampling_block_retry_count = value;
+            }
+        }
+
+        public float cfg_spawner_navsampling_distance
+        {
+            get => Config.cfg_spawner_navsampling_distance;
+            set
+            {
+                if (value < 1.0f) Config.cfg_spawner_navsampling_distance = 1.0f;
+                else Config.cfg_spawner_navsampling_distance = value;
+            }
+        }
+
 
         public override IEnumerator OnLoadCoroutine()
         {

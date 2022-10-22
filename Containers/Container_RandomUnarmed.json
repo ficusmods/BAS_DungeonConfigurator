@@ -1,0 +1,66 @@
+{
+  "$type": "ThunderRoad.ContainerData, ThunderRoad",
+  "id": "RandomUnarmedVanilla",
+  "saveFolder": "bas",
+  "version": 1,
+  "displayName": "",
+  "description": null,
+  "contents": [
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomHairs",
+      "reference": "Table",
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomBeard",
+      "reference": "Table",
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomBoots",
+      "reference": "Table",
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomJacket",
+      "reference": "Table",
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomGlovesL",
+      "reference": "Table",
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomGlovesR",
+      "reference": "Table",
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
+    },
+    {
+      "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
+      "referenceID": "RandomLegs",
+      "reference": "Table",
+      "quantity": 1,
+      "state": null,
+      "customDataList": []
+    }
+  ]
+}

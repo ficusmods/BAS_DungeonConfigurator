@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using ThunderRoad;
+using ThunderRoad.AI;
 
 namespace DungeonConfigurator
 {
@@ -79,30 +80,30 @@ namespace DungeonConfigurator
 
         public virtual void apply_changes()
         {
-            EventManager.onLevelLoad -= apply_changes_impl;
-            EventManager.onLevelLoad += apply_changes_impl;
+            var module = Level.current.gameObject.AddComponent<RoomEditorModule>();
+            apply_patrol_brain_change();
+            module.additional_room_npc_count = room_plus_npc_count;
+            module.additional_wave_npc_count = wave_plus_npc_count;
+            module.additional_wave_alive_npc_count = wave_alive_plus_npc_count;
+            module.apply_changes();
         }
 
-        private void apply_changes_impl(LevelData levelData, EventTime eventTime)
+        public virtual void apply_patrol_brain_change()
         {
-            if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
-            {
-                if (eventTime == EventTime.OnEnd)
-                {
-                    if (!Level.current.gameObject.TryGetComponent<RoomEditorModule>(out _))
-                    {
-                        var module = Level.current.gameObject.AddComponent<RoomEditorModule>();
-                        module.additional_room_npc_count = room_plus_npc_count;
-                        module.additional_wave_npc_count = wave_plus_npc_count;
-                        module.additional_wave_alive_npc_count = wave_alive_plus_npc_count;
-                        module.apply_changes();
-                    }
-                }
-            }
-            else
-            {
-                EventManager.onLevelLoad -= apply_changes_impl;
-            }
+            CatalogData data = Catalog.GetData(Catalog.Category.BehaviorTree, "HumanPatrol");
+            if (data == null) return;
+
+            BehaviorTreeData treeData = data as BehaviorTreeData;
+            if (treeData == null) return;
+
+            ThunderRoad.AI.Control.Sequence root = treeData.rootNode as ThunderRoad.AI.Control.Sequence;
+            if (root == null) return;
+
+            if (root.childs.Count < 6) return;
+            ThunderRoad.AI.Action.MoveTo moveTo = root.childs[5] as ThunderRoad.AI.Action.MoveTo;
+            if (moveTo == null) return;
+
+            moveTo.targetMaxRadius = Config.cfg_patrol_maxradius;
         }
     }
 }

@@ -8,7 +8,7 @@
   "contents": [
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "Hairs",
+      "referenceID": "RandomHairs",
       "reference": "Table",
       "quantity": 1,
       "state": null,
@@ -16,7 +16,7 @@
     },
     {
       "$type": "ThunderRoad.ContainerData+Content, ThunderRoad",
-      "referenceID": "Beards",
+      "referenceID": "RandomBeard",
       "reference": "Table",
       "quantity": 1,
       "state": null,

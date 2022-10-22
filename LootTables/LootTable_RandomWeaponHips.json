@@ -24,6 +24,12 @@
     },
     {
       "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "SwordOldieFalchion",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
       "referenceID": "MaceShortCommon",
       "reference": "Item",
       "probabilityWeight": 1.0

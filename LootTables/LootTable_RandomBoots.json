@@ -18,6 +18,12 @@
     },
     {
       "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelMercenaryBoots",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
       "referenceID": "ApparelBattlemageBoots",
       "reference": "Item",
       "probabilityWeight": 1.0

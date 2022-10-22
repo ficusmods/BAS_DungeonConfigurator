@@ -6,7 +6,7 @@
   "order": 4.0,
   "isDefault": false,
   "iconAddress": "Bas.Icon.wolf-trap",
-  "prefabAddress": "fks.Menu.DungeonConfigurator",
+  "prefabAddress": "ficus.Menu.DungeonConfigurator",
   "module": {
     "$type": "DungeonConfigurator.DungeonConfiguratorMenuModule, DungeonConfigurator"
   }

@@ -31,10 +31,11 @@ namespace DungeonConfigurator
 
         CreatureTable ctDungeonConfiguratorEmpty;
         WaveData wdDungeonConfiguratorGeneral;
+        WaveData wdDungeonConfiguratorDuel;
 
         LinkedList<string> idCreatures = new LinkedList<string>();
         LinkedList<string> idTables = new LinkedList<string>();
-        string idContainer = "";
+        LinkedList<string> idContainers = new LinkedList<string>();
         string idBrain = "";
 
         int waveGroupCount = 8;
@@ -80,7 +81,7 @@ namespace DungeonConfigurator
                 {
                     Logger.Detailed("Container set to None");
                     clearSelector();
-                    idContainer = "";
+                    idContainers.Clear();
                 }
             });
             toggleOverrideContainer.onValueChanged.AddListener((bool active) =>
@@ -88,7 +89,7 @@ namespace DungeonConfigurator
                 if (active)
                 {
                     Logger.Detailed("Container set to Override");
-                    idContainer = "";
+                    idContainers.Clear();
                     fillSelectorWithContainer();
                 }
             });
@@ -111,6 +112,7 @@ namespace DungeonConfigurator
 
             ctDungeonConfiguratorEmpty = Catalog.GetData<CreatureTable>("DungeonConfiguratorGeneral").CloneJson();
             wdDungeonConfiguratorGeneral = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral");
+            wdDungeonConfiguratorDuel = Catalog.GetData<WaveData>("DungeonConfiguratorDuel");
         }
 
         public virtual void setHidden(bool hidden)
@@ -128,7 +130,8 @@ namespace DungeonConfigurator
         private List<CreatureTable.Drop> getCreatureDrops()
         {
             List<CreatureTable.Drop> ret = new List<CreatureTable.Drop>();
-            foreach(string id in idCreatures)
+
+            foreach (string id in idCreatures)
             {
                 Logger.Detailed("Adding drop via creature id: {0}", id);
                 CreatureTable.Drop currDrop = new CreatureTable.Drop();
@@ -142,12 +145,13 @@ namespace DungeonConfigurator
                     currDrop.overrideBrain = true;
                     currDrop.overrideBrainID = idBrain;
                 }
-                if (idContainer != "")
+
+                if (idContainers.First != null)
                 {
-                    Logger.Detailed("Changing drop {0} to override Container with id: {1}", id, idContainer);
                     currDrop.overrideContainer = true;
-                    currDrop.overrideContainerID = idContainer;
+                    currDrop.overrideContainerID = "DCCurrent";
                 }
+
                 currDrop.factionID = 0;
                 currDrop.overrideFaction = false;
                 
@@ -164,7 +168,8 @@ namespace DungeonConfigurator
         private List<CreatureTable.Drop> getTableDrops()
         {
             List<CreatureTable.Drop> ret = new List<CreatureTable.Drop>();
-            foreach(string id in idTables)
+
+            foreach (string id in idTables)
             {
                 Logger.Detailed("Adding drop via CreatureTable id: {0}", id);
                 CreatureTable.Drop currDrop = new CreatureTable.Drop();
@@ -178,12 +183,13 @@ namespace DungeonConfigurator
                     currDrop.overrideBrain = true;
                     currDrop.overrideBrainID = idBrain;
                 }
-                if (idContainer != "")
+
+                if (idContainers.First != null)
                 {
-                    Logger.Detailed("Changing drop {0} to override Container with id: {1}", id, idContainer);
                     currDrop.overrideContainer = true;
-                    currDrop.overrideContainerID = idContainer;
+                    currDrop.overrideContainerID = "DCCurrent";
                 }
+
                 currDrop.factionID = 0;
                 currDrop.overrideFaction = false;
                 
@@ -205,34 +211,47 @@ namespace DungeonConfigurator
             var tableDrops = getTableDrops();
             newtable.drops = creatureDrops.Concat(tableDrops).ToList();
 
+            ContainerData mergedContainer = Catalog.GetData<ContainerData>("DCCurrent");
+            mergedContainer.contents.Clear();
+            for (var node = idContainers.First; node != null; node = node.Next)
+            {
+                Logger.Detailed("Changing drop override Container with id: {0}", node.Value);
+                ContainerData currContainer = Catalog.GetData<ContainerData>(node.Value);
+                mergedContainer.contents.AddRange(currContainer.contents);
+            }
+            mergedContainer.OnCatalogRefresh();
+
             if (newtable.drops.Count > 0)
             {
                 alter_table("DungeonConfiguratorGeneral", newtable);
-                fill_wave_data();
+                fill_wave_data(wdDungeonConfiguratorGeneral);
+                fill_wave_data(wdDungeonConfiguratorDuel);
                 EventManager.onLevelLoad -= HandleLevelLoad;
                 EventManager.onLevelLoad += HandleLevelLoad;
             }
         }
 
-        private void fill_wave_data()
+        private void fill_wave_data(WaveData waveData)
         {
-            wdDungeonConfiguratorGeneral.groups = new List<WaveData.Group>();
-            wdDungeonConfiguratorGeneral.totalMaxAlive = 4;
+            waveData.groups = new List<WaveData.Group>();
             WaveData.Group group = new WaveData.Group();
             group.factionID = 0;
             group.overrideFaction = false;
             group.reference = WaveData.Group.Reference.Table;
             group.referenceID = "DungeonConfiguratorGeneral";
+            group.minMaxCount = new Vector2Int(1, 1);
             group.overrideContainer = false;
             group.overrideBrain = false;
             group.overrideMaxMelee = false;
             group.spawnPointIndex = -1;
             group.prereqGroupIndex = -1;
+            group.prereqGroup = null;
             group.prereqMaxRemainingAlive = 0;
             for (int i = 0; i < waveGroupCount; i++)
             {
-                wdDungeonConfiguratorGeneral.groups.Add(group);
+                waveData.groups.Add(group.CloneJson());
             }
+            waveData.OnCatalogRefresh();
         }
 
         private void HandleLevelLoad(LevelData levelData, EventTime eventTime)
@@ -261,15 +280,22 @@ namespace DungeonConfigurator
                                 Logger.Detailed("Respawning creatures in {0} using {1} (NPC: {2}/{3})", room.name, spawner.name, room.spawnerNPCCount, room.spawnerMaxNPC);
                                 if (spawner.ignoreRoomMaxNPC)
                                 {
-                                    spawner.Spawn();
-                                    if (spawner.spawning)
-                                        ++room.spawnerNPCCount;
+                                    if (FieldAccess.WriteProperty(spawner, "CurrentState", CreatureSpawner.State.Init))
+                                    {
+                                        spawner.Spawn();
+                                        if (spawner.CurrentState == CreatureSpawner.State.Spawning)
+                                            ++room.spawnerNPCCount;
+                                    }
                                 }
+
                                 else if (room.spawnerNPCCount < Mathf.Min(Catalog.gameData.platformParameters.maxRoomNpc, room.spawnerMaxNPC))
                                 {
-                                    spawner.Spawn();
-                                    if (spawner.spawning)
-                                        ++room.spawnerNPCCount;
+                                    if (FieldAccess.WriteProperty(spawner, "CurrentState", CreatureSpawner.State.Init))
+                                    {
+                                        spawner.Spawn();
+                                        if (spawner.CurrentState == CreatureSpawner.State.Spawning)
+                                            ++room.spawnerNPCCount;
+                                    }
                                 }
                             }
 
@@ -278,7 +304,7 @@ namespace DungeonConfigurator
                             {
                                 Logger.Detailed("Replacing WaveSpawner creatures in {0}", spawner.name);
                                 spawner.startWaveId = "DungeonConfiguratorGeneral";
-                                spawner.waveData = Catalog.GetData<WaveData>("DungeonConfiguratorGeneral").CloneJson();
+                                spawner.waveData = wdDungeonConfiguratorGeneral;
                             }
                         }
                     }
@@ -300,13 +326,17 @@ namespace DungeonConfigurator
             data.generationContainer = change.generationContainer;
             data.generationFaction = change.generationFaction;
             data.minMaxDifficulty = change.minMaxDifficulty;
+            data.OnCatalogRefresh();
         }
 
         public virtual void fillSelectorWithCreature()
         {
             clearSelector();
             var creaturesData = Catalog.GetDataList(Catalog.Category.Creature);
-            foreach(CatalogData data in creaturesData)
+            creaturesData.Sort(delegate (CatalogData data1, CatalogData data2) {
+                return String.Compare(data1.id, data2.id, StringComparison.Ordinal);
+            });
+            foreach (CatalogData data in creaturesData)
             {
                 CreatureData cdata = data as CreatureData;
                 GameObject entry = GameObject.Instantiate(toggleSelectorTemplate, selectorAreaContent.transform);
@@ -334,6 +364,9 @@ namespace DungeonConfigurator
         {
             clearSelector();
             var tablesData = Catalog.GetDataList(Catalog.Category.CreatureTable);
+            tablesData.Sort(delegate (CatalogData data1, CatalogData data2) {
+                return String.Compare(data1.id, data2.id, StringComparison.Ordinal);
+            });
             foreach (CatalogData data in tablesData)
             {
                 CreatureTable ctdata = data as CreatureTable;
@@ -361,17 +394,26 @@ namespace DungeonConfigurator
         {
             clearSelector();
             var containersData = Catalog.GetDataList(Catalog.Category.Container);
+            containersData.Sort(delegate (CatalogData data1, CatalogData data2) {
+                return String.Compare(data1.id, data2.id, StringComparison.Ordinal);
+            });
             foreach (CatalogData data in containersData)
             {
                 ContainerData cdata = data as ContainerData;
                 GameObject entry = GameObject.Instantiate(toggleSelectorTemplate, selectorAreaContent.transform);
                 Text label = entry.GetComponentInChildren<Text>(true);
                 Toggle toggle = entry.GetComponentInChildren<Toggle>(true);
+                toggle.group = null;
                 toggle.onValueChanged.AddListener((bool active) => {
                     if (active)
                     {
                         Logger.Detailed("Selected Container {0}", cdata.id);
-                        idContainer = cdata.id;
+                        idContainers.AddLast(cdata.id);
+                    }
+                    else
+                    {
+                        idContainers.Remove(cdata.id);
+                        Logger.Detailed("Removed Container {0}", cdata.id);
                     }
                 });
                 label.text = cdata.id;
@@ -382,6 +424,9 @@ namespace DungeonConfigurator
         {
             clearSelector();
             var brainsData = Catalog.GetDataList(Catalog.Category.Brain);
+            brainsData.Sort(delegate (CatalogData data1, CatalogData data2) {
+                return String.Compare(data1.id, data2.id, StringComparison.Ordinal);
+            });
             foreach (CatalogData data in brainsData)
             {
                 BrainData bdata = data as BrainData;

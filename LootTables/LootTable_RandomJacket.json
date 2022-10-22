@@ -42,6 +42,12 @@
     },
     {
       "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelMercenaryJacket",
+      "reference": "Item",
+      "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
       "referenceID": "ApparelShirt01",
       "reference": "Item",
       "probabilityWeight": 1.0

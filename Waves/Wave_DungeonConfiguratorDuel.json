@@ -1,14 +1,14 @@
 {
   "$type": "ThunderRoad.WaveData, ThunderRoad",
-  "id": "DungeonConfiguratorGeneral",
+  "id": "DungeonConfiguratorDuel",
   "saveFolder": "bas",
   "version": 2,
   "category": "1DungeonConfigurator",
   "localizationId": "DungeonConfigurator",
-  "title": "1DungeonConfigurator",
-  "description": "Wave used to override the waves in the level",
-  "loopBehavior": "NoLoop",
-  "totalMaxAlive": 4,
+  "title": "2DungeonConfigurator 1v1",
+  "description": "You can use this to test container setups or just to fight one on one",
+  "loopBehavior": "Loop",
+  "totalMaxAlive": 1,
   "alwaysAvailable": true,
   "waveSelectors": [],
   "playerHealthMultiplier": 1.0,
@@ -18,7 +18,7 @@
       "$type": "ThunderRoad.WaveData+WaveFaction, ThunderRoad",
       "factionID": 3,
       "factionHealthMultiplier": 1.0,
-      "factionMaxAlive": 4
+      "factionMaxAlive": 1
     }
   ],
   "groups": []

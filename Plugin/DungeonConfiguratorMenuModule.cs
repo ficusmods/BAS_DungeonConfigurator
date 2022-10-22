@@ -48,6 +48,7 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.Button buttonSelectLevel;
 
         protected UnityEngine.UI.Button buttonStart;
+        protected UnityEngine.UI.Button buttonApply;
 
         protected UnityEngine.UI.Button buttonCopy;
         protected UnityEngine.UI.Button buttonPaste;
@@ -65,8 +66,6 @@ namespace DungeonConfigurator
         protected UnityEngine.UI.Button Keypad_9;
 
         protected UnityEngine.UI.InputField lastEditedField = null;
-
-        double timeLevelLoadStart;
 
         bool waveSpawnerPatched = false;
 
@@ -95,6 +94,7 @@ namespace DungeonConfigurator
             buttonSelectLevel = Utils.get_child(pageLeft, "LevelEditButton").GetComponent<UnityEngine.UI.Button>();
 
             buttonStart = Utils.get_child(pageLeft, "StartButton").GetComponent<UnityEngine.UI.Button>();
+            buttonApply = Utils.get_child(pageLeft, "ApplyButton").GetComponent<UnityEngine.UI.Button>();
 
             buttonCopy = Utils.get_child(pageInput, "CopyButton").GetComponent<UnityEngine.UI.Button>();
             buttonPaste = Utils.get_child(pageInput, "PasteButton").GetComponent<UnityEngine.UI.Button>();
@@ -179,7 +179,6 @@ namespace DungeonConfigurator
                 {
                     fieldSeed.text = "";
                 }
-                //hideInputPage();
             });
         }
 
@@ -192,6 +191,7 @@ namespace DungeonConfigurator
             buttonEditInventory.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.InventoryEditor); });
             buttonSelectLevel.onClick.AddListener(() => { SwitchToRightPageView(RightPageView.LevelSelector); });
             buttonStart.onClick.AddListener(Start);
+            buttonApply.onClick.AddListener(Apply);
             buttonCopy.onClick.AddListener(CopyFromCurrentField);
             buttonPaste.onClick.AddListener(PasteToCurrentField);
             buttonDelete.onClick.AddListener(RemoveLastCharFromCurrentField);
@@ -246,12 +246,12 @@ namespace DungeonConfigurator
         {
             Dictionary<string, string> options = new Dictionary<string, string>();
 
-            options["difficulty"] = sliderDifficulty.value.ToString();
-            options["length"] = sliderLength.value.ToString();
+            options["Difficulty"] = sliderDifficulty.value.ToString();
+            options["DungeonLength"] = sliderLength.value.ToString();
             double seed = evaluate_seed();
             if(seed != 0.0)
             {
-                options["seed"] = seed.ToString();
+                options["DungeonSeed"] = seed.ToString();
             }
 
             creatureEditor.apply_changes();
@@ -261,52 +261,25 @@ namespace DungeonConfigurator
             Logger.Basic("Starting dungeon");
             EventManager.onLevelLoad -= EventManager_onLevelLoad;
             EventManager.onLevelLoad += EventManager_onLevelLoad;
-            EventManager.onCreatureSpawn -= AddUnstuckModule_onCreatureSpawn;
-            EventManager.onCreatureSpawn += AddUnstuckModule_onCreatureSpawn;
 
             LevelData ld = levelSelector.selected;
             
-            timeLevelLoadStart = Time.timeAsDouble;
             GameManager.LoadLevel(ld.id, "Sandbox", options);
         }
 
-        private void AddUnstuckModule_onCreatureSpawn(Creature creature)
+        public virtual void Apply()
         {
-            if (!creature.isPlayer)
-            {
-                if (!creature.gameObject.TryGetComponent<CreatureDestuckModule>(out _))
-                {
-                    creature.gameObject.AddComponent<CreatureDestuckModule>();
-                }
-            }
+            Logger.Basic("Applying changes");
+            creatureEditor.apply_changes();
+            factionEditor.apply_changes();
+            inventoryEditor.apply_changes();
+            EventManager.onLevelLoad -= EventManager_onLevelLoad;
+            EventManager.onLevelLoad += EventManager_onLevelLoad;
         }
 
         private void EventManager_onLevelLoad(LevelData levelData, EventTime eventTime)
         {
-            if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
-            {
-                if (eventTime == EventTime.OnStart)
-                {
-                    roomEditor.apply_changes();
-                    if (levelData.dungeonFlowAddresses.Count() > 0)
-                    {
-                        if (!waveSpawnerPatched)
-                        {
-                            Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
-                            var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
-                            var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
-                            harmony.Patch(originalWaveSpawner, transpiler: new HarmonyMethod(patchedWaveSpawner));
-                            waveSpawnerPatched = true;
-                        }
-                    }
-                }
-                if (eventTime == EventTime.OnEnd)
-                {
-                    double timeLevelLoadEnd = Time.timeAsDouble;
-                    Logger.Basic("Loading the level took {0} seconds", timeLevelLoadEnd - timeLevelLoadStart);
-                }
-            }
-            else
+            if(eventTime == EventTime.OnStart)
             {
                 if (waveSpawnerPatched)
                 {
@@ -317,9 +290,21 @@ namespace DungeonConfigurator
                     harmony.Unpatch(originalWaveSpawner, patchedWaveSpawner);
                     waveSpawnerPatched = false;
                 }
-
-                EventManager.onLevelLoad -= EventManager_onLevelLoad;
-                EventManager.onCreatureSpawn -= AddUnstuckModule_onCreatureSpawn;
+            }
+            else
+            {
+                if (levelData.id.ToLower() != "master" && levelData.id.ToLower() != "home")
+                {
+                    roomEditor.apply_changes();
+                    if (levelData.dungeonFlowAddresses.Count() > 0)
+                    {
+                        Harmony harmony = new Harmony("com.fksDungeonConfigurator.patch");
+                        var originalWaveSpawner = typeof(WaveSpawner).GetMethod("StartWave", new Type[] { typeof(WaveData), typeof(float), typeof(bool) });
+                        var patchedWaveSpawner = typeof(WaveSpawnerPatch).GetMethod("Transpiler");
+                        harmony.Patch(originalWaveSpawner, transpiler: new HarmonyMethod(patchedWaveSpawner));
+                        waveSpawnerPatched = true;
+                    }
+                }
             }
         }
 

@@ -1,5 +1,5 @@
 {
-  "$type": "ThunderRoad.LevelData, Assembly-CSharp",
+  "$type": "ThunderRoad.LevelData, ThunderRoad",
   "id": "Master",
   "version": 3,
   "modes": [
@@ -8,13 +8,17 @@
       "modules": [
         {
           "$type": "DungeonConfigurator.LoadModule, DungeonConfigurator",
+          "mod_version": "1.8",
           "mod_name": "DungeonConfigurator",
-          "mod_version": "1.7",
           "logger_level": "Basic",
-          
           "random_excluded_items": [
             "SantaHat"
-          ]
+          ],
+          "cfg_patrol_maxradius": 2.0,
+          "cfg_spawner_sampling_angle_count": 4,
+          "cfg_spawner_sampling_block_distance": 2.0,
+          "cfg_spawner_sampling_block_retry_count": 4,
+          "cfg_spawner_navsampling_distance": 4.0
         }
       ]
     }

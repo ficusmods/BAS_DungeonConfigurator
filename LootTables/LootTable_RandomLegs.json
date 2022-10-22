@@ -33,6 +33,12 @@
       "referenceID": "ApparelSoldierPants",
       "reference": "Item",
       "probabilityWeight": 1.0
+    },
+    {
+      "$type": "ThunderRoad.LootTable+Drop, ThunderRoad",
+      "referenceID": "ApparelMercenaryPants",
+      "reference": "Item",
+      "probabilityWeight": 1.0
     }
   ]
 }

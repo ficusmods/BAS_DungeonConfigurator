@@ -29,6 +29,7 @@ namespace DungeonConfigurator
         Text slotHintText;
         Text itemHintText;
         Button buttonRandomize;
+        Button buttonReset;
 
         bool changes = false;
 
@@ -57,6 +58,7 @@ namespace DungeonConfigurator
             scrollBarItem = Utils.get_child(viewItemSelect, "Item/ItemScrollbar").GetComponent<Scrollbar>();
 
             buttonRandomize = Utils.get_child(inventoryEditor, "RandomizeButton").GetComponent<Button>();
+            buttonReset = Utils.get_child(inventoryEditor, "ResetButton").GetComponent<Button>();
 
             init_slot_map();
             init_button_callbacks();
@@ -166,6 +168,8 @@ namespace DungeonConfigurator
 
         private void equip_default()
         {
+            unequip_all_slots();
+            changes = false;
             ItemData chestData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianChest") as ItemData;
             ItemData legsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianLegs") as ItemData;
             ItemData bootsData = Catalog.GetData(Catalog.Category.Item, "ApparelCivilianBoots") as ItemData;
@@ -236,6 +240,10 @@ namespace DungeonConfigurator
                 EventManager.onLevelLoad -= apply_changes_impl;
                 EventManager.onLevelLoad += apply_changes_impl;
             }
+            else
+            {
+                Player.characterData.Save(true);
+            }
         }
 
         private void apply_changes_impl(LevelData levelData, EventTime eventTime)
@@ -244,8 +252,11 @@ namespace DungeonConfigurator
             {
                 if (eventTime == EventTime.OnEnd)
                 {
-                    Logger.Basic("Applying inventory changes");
-                    GameManager.local.StartCoroutine(change_equipment());
+                    if (changes)
+                    {
+                        Logger.Basic("Applying inventory changes");
+                        GameManager.local.StartCoroutine(change_equipment());
+                    }
                 }
             }
             else
@@ -277,10 +288,34 @@ namespace DungeonConfigurator
                     Logger.Detailed("Equipping {0} from slot {1}", entry.Value.item.id, entry.Value.name);
                 }
             }
+            AddDefaultSpells(containterData);
+
 
             Player.local.creature.mana.Load();
             Player.local.creature.equipment.EquipAllWardrobes(false, false);
             playerContainer.Load();
+        }
+
+        private void AddDefaultSpells(ContainerData container)
+        {
+            container.contents.Add(ContentFromId("SpellTelekinesis"));
+            container.contents.Add(ContentFromId("SpellSlowTime"));
+            container.contents.Add(ContentFromId("SpellFire"));
+            container.contents.Add(ContentFromId("SpellLightning"));
+            container.contents.Add(ContentFromId("SpellGravity"));
+            container.contents.Add(ContentFromId("SpellFireMerge"));
+            container.contents.Add(ContentFromId("SpellLightningMerge"));
+            container.contents.Add(ContentFromId("SpellGravityMerge"));
+        }
+
+        private ContainerData.Content ContentFromId(string id)
+        {
+            ContainerData.Content content = new ContainerData.Content();
+            content.reference = ContainerData.Content.Reference.Item;
+            content.referenceID = id;
+            content.itemData = Catalog.GetData<ItemData>(content.referenceID);
+            content.quantity = 1;
+            return content;
         }
 
         private void equip_random(InventoryEditorSlot slot, LootTable table, List<ItemData> equipped)
@@ -329,6 +364,8 @@ namespace DungeonConfigurator
         private void init_button_callbacks()
         {
             buttonRandomize.onClick.AddListener(delegate { randomize_slots(); });
+
+            buttonReset.onClick.AddListener(delegate { equip_default(); });
 
             foreach (var entry in slots)
             {
